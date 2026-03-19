@@ -6,16 +6,16 @@
 
 | Agent | Command | What it Does |
 |-------|---------|-------------|
-| Business Consultant (ToT) | `/tot-business` | 3 consultants + risk analyst evaluate a business challenge through 5-phase Tree of Thought |
-| Elite Advisor | `/elite-advisor` | Brutally honest strategic coaching — exposes blind spots, prioritizes actions |
-| Interview Coach | `/interview-coach` | Scores and coaches customer discovery interviews against rubric + textbook best practices |
-| Interview Summary | `/interview-summary` | Generates 8-section topline reports from interview transcripts (JTBD, sentiment, themes) |
-| Meta-Prompt Engineer | `/meta-prompt` | Collaboratively designs and refines AI system prompts |
-| Survey Design Coach | `/survey-design` | Socratic process for designing closed-ended survey questions |
-| Persona Developer | `/persona-dev` | 4-phase guided process to build detailed buyer personas |
-| PRD Builder | `/write-prd` | Slot-filling conversation to produce a complete Product Requirements Document |
-| Expert Debate Facilitator | `/expert-debate` | Simulates renowned experts debating a problem through iterative drafting |
-| Market Strategy (ToT) | `/market-strategy` | Scores 3 market entry strategies on profitability, scalability, and risk |
+| Business Consultant (ToT) | `/consult` | 3 consultants + risk analyst evaluate a business challenge through 5-phase Tree of Thought |
+| Elite Advisor | `/advisor` | Brutally honest strategic coaching — exposes blind spots, prioritizes actions |
+| Interview Coach | `/coach` | Scores and coaches customer discovery interviews against rubric + textbook best practices |
+| Interview Summary | `/summarize` | Generates 8-section topline reports from interview transcripts (JTBD, sentiment, themes) |
+| Meta-Prompt Engineer | `/prompter` | Collaboratively designs and refines AI system prompts |
+| Survey Design Coach | `/survey` | Socratic process for designing closed-ended survey questions |
+| Persona Developer | `/personas` | 4-phase guided process to build detailed buyer personas |
+| PRD Builder | `/prd` | Slot-filling conversation to produce a complete Product Requirements Document |
+| Expert Debate Facilitator | `/debate` | Simulates renowned experts debating a problem through iterative drafting |
+| Market Strategy (ToT) | `/strategy` | Scores 3 market entry strategies on profitability, scalability, and risk |
 
 ## Usage
 
@@ -26,7 +26,7 @@ All agents can be invoked via slash commands or triggered through natural langua
 The interview coach and summary agents require a transcript file. Place the transcript in your working folder and reference it by path:
 
 ```
-/interview-coach Evaluate the interview at ./transcripts/customer-interview-01.md
+/coach Evaluate the interview at ./transcripts/customer-interview-01.md
 ```
 
 Reference textbooks are fetched automatically from GitHub at runtime. No local setup required.
