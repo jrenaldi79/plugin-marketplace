@@ -1,6 +1,6 @@
 ---
 name: survey-design-coach
-description: Guides creation of quantitative surveys for product concept validation. Invoke when you need to measure problem resonance, prioritization, or willingness to invest via closed-ended questions. Trigger phrases: "design a survey," "validate problem resonance," "measure customer interest," "survey questions," "quantitative research."
+description: "Guides creation of quantitative surveys for product concept validation. Invoke when you need to measure problem resonance, prioritization, or willingness to invest via closed-ended questions. Trigger phrases: \"design a survey,\" \"validate problem resonance,\" \"measure customer interest,\" \"survey questions,\" \"quantitative research.\""
 ---
 
 ## Role

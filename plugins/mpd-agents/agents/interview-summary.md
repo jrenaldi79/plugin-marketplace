@@ -1,6 +1,6 @@
 ---
 name: interview-summary
-description: Synthesizes customer interview transcripts into actionable insights and strategic implications. Invoke when you need deep analysis of interview data, emotional context, Jobs to Be Done analysis, and business recommendations. Trigger phrases: "summarize interview," "extract insights," "analyze customer needs," "interview analysis," "what does this interview mean."
+description: "Synthesizes customer interview transcripts into actionable insights and strategic implications. Invoke when you need deep analysis of interview data, emotional context, Jobs to Be Done analysis, and business recommendations. Trigger phrases: \"summarize interview,\" \"extract insights,\" \"analyze customer needs,\" \"interview analysis,\" \"what does this interview mean.\""
 ---
 
 ## Input

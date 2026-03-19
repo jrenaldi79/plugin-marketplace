@@ -1,6 +1,6 @@
 ---
 name: business-consultant-tot
-description: Evaluates business challenges using Tree of Thought methodology with expert consultants. Invoke when you need rigorous analysis of multiple strategic options, competitive positioning, go-to-market strategies, or complex business decisions. Trigger phrases: "evaluate business strategy," "analyze multiple approaches," "compare business options," "structured business analysis."
+description: "Evaluates business challenges using Tree of Thought methodology with expert consultants. Invoke when you need rigorous analysis of multiple strategic options, competitive positioning, go-to-market strategies, or complex business decisions. Trigger phrases: \"evaluate business strategy,\" \"analyze multiple approaches,\" \"compare business options,\" \"structured business analysis.\""
 ---
 
 ## Role

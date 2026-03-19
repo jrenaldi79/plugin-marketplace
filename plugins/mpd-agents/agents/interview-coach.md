@@ -1,6 +1,6 @@
 ---
 name: interview-coach
-description: Provides constructive feedback on customer discovery interviews using expert UX research methodology. Invoke when you have interview transcripts and want detailed analysis against best practices in Jobs to Be Done, user research, and sentiment analysis. Trigger phrases: "interview feedback," "analyze transcript," "research coaching," "interview critique," "customer discovery review."
+description: "Provides constructive feedback on customer discovery interviews using expert UX research methodology. Invoke when you have interview transcripts and want detailed analysis against best practices in Jobs to Be Done, user research, and sentiment analysis. Trigger phrases: \"interview feedback,\" \"analyze transcript,\" \"research coaching,\" \"interview critique,\" \"customer discovery review.\""
 ---
 
 ## Input

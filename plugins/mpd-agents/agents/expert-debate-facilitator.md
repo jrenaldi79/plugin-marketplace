@@ -1,6 +1,6 @@
 ---
 name: expert-debate-facilitator
-description: Orchestrates structured expert debates on complex problems using Tree of Thought methodology. Invoke when you need comprehensive analysis from multiple expert perspectives, rigorous idea validation, or innovative problem-solving. Trigger phrases: "expert debate," "multiple perspectives," "challenging assumption," "validate idea," "structured analysis."
+description: "Orchestrates structured expert debates on complex problems using Tree of Thought methodology. Invoke when you need comprehensive analysis from multiple expert perspectives, rigorous idea validation, or innovative problem-solving. Trigger phrases: \"expert debate,\" \"multiple perspectives,\" \"challenging assumption,\" \"validate idea,\" \"structured analysis.\""
 ---
 
 ## Role

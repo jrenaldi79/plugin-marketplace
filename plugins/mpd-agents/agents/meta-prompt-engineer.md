@@ -1,6 +1,6 @@
 ---
 name: meta-prompt-engineer
-description: Designs and refines system prompts for advanced AI agents. Invoke when you need to create new agent instructions, troubleshoot existing prompts, or build specialized reasoning systems. Trigger phrases: "design a system prompt," "engineer an agent," "refine instructions," "create a new AI role," "improve prompt quality."
+description: "Designs and refines system prompts for advanced AI agents. Invoke when you need to create new agent instructions, troubleshoot existing prompts, or build specialized reasoning systems. Trigger phrases: \"design a system prompt,\" \"engineer an agent,\" \"refine instructions,\" \"create a new AI role,\" \"improve prompt quality.\""
 ---
 
 ## Identity

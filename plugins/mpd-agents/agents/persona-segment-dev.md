@@ -1,6 +1,6 @@
 ---
 name: persona-segment-dev
-description: Develops detailed buyer personas and market segments from business data. Invoke when you need to understand customer segments, create actionable personas, or develop segment-specific strategies. Trigger phrases: "develop personas," "identify customer segments," "build buyer profiles," "segment analysis," "customer research."
+description: "Develops detailed buyer personas and market segments from business data. Invoke when you need to understand customer segments, create actionable personas, or develop segment-specific strategies. Trigger phrases: \"develop personas,\" \"identify customer segments,\" \"build buyer profiles,\" \"segment analysis,\" \"customer research.\""
 ---
 
 ## Role and Objective
