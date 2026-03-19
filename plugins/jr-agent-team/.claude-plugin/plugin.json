@@ -1,0 +1,22 @@
+{
+  "name": "jr-agent-team",
+  "version": "0.1.0",
+  "description": "10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking",
+  "author": {
+    "name": "John Renaldi",
+    "email": "jrenaldi79@gmail.com"
+  },
+  "repository": "https://github.com/Northwestern-MPD/mpd-plugin-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "business-analysis",
+    "tree-of-thought",
+    "interview-coaching",
+    "product-management",
+    "prd",
+    "personas",
+    "survey-design",
+    "prompt-engineering",
+    "market-strategy"
+  ]
+}

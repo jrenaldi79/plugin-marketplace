@@ -1,0 +1,15 @@
+{
+  "name": "Northwestern MPD Plugin Marketplace",
+  "description": "AI-powered plugins for Northwestern MPD and Kellogg courses — specialized agents, workflows, and tools for product management, business analysis, and design education.",
+  "owner": {
+    "name": "Northwestern MPD",
+    "url": "https://github.com/Northwestern-MPD"
+  },
+  "plugins": [
+    {
+      "name": "jr-agent-team",
+      "description": "10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking. Includes Tree of Thought consultants, an elite advisor, interview coaches, a PRD builder, persona developers, and more.",
+      "source": "./plugins/jr-agent-team"
+    }
+  ]
+}
