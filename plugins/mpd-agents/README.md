@@ -1,4 +1,4 @@
-# JR Agent Team
+# MPD Agents
 
 10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking. Designed for Northwestern MPD/Kellogg coursework and consulting workflows.
 

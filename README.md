@@ -20,7 +20,7 @@ Then browse available plugins:
 
 | Plugin | Description |
 |--------|-------------|
-| [jr-agent-team](./plugins/jr-agent-team/) | 10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking |
+| [mpd-agents](./plugins/mpd-agents/) | 10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking |
 
 ## Adding Plugins
 
