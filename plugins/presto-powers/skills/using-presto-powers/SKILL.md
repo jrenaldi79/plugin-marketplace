@@ -63,13 +63,14 @@ Based on what you've shared, here's the plan I'd recommend:
 
 1. /research — Your competitive landscape section is thin. I'll fill that in.
 2. /consult — Explore 3 strategic approaches with the research as context.
-3. /personas — Define your target users before GTM planning.
-4. /strategy — Build the go-to-market plan with personas defined.
-5. /prd — Capture everything into a PRD (it'll pull from all prior outputs).
-6. /advisor (review mode) — Adversarial review of the PRD before you ship it.
+3. /debate — Have domain experts stress-test the top approaches.
+4. /personas — Define your target users before GTM planning.
+5. /strategy — Build the go-to-market plan with personas defined.
+6. /advisor — Honest gut check on the full strategy before we document it.
+7. /prd — Capture everything into a PRD (it'll pull from all prior outputs).
+8. /advisor (review mode) — Adversarial review of the PRD before you ship it.
 
 Skipping: /yc-review (your deck already answers the forcing questions),
-/debate (save for later if /consult surfaces disagreement),
 /ceo-review (scope looks right-sized already).
 
 Want to adjust anything, or should we start?
@@ -77,13 +78,11 @@ Want to adjust anything, or should we start?
 
 **Once approved, create a task list** in Cowork to track progress through each step. Update it as each agent completes.
 
-### Available Phases (all optional, mix and match)
+### Core Pipeline (every step is optional — include based on what the founder needs)
 
 #### Research & Evidence Gathering
 
 **`/research`** — Scans everything uploaded and all prior outputs, scores evidence density across five dimensions (market sizing, competitive landscape, customer evidence, domain knowledge, trends), then goes to the web to fill gaps. If the founder's materials are already strong, it says so and stops. Run this early so downstream agents have real data.
-
-**`/coach`** and **`/summarize`** — Use alongside the pipeline whenever customer interviews happen. `/coach` scores interviewing technique. `/summarize` turns transcripts into research-ready topline reports. These can run at any point — before research (to validate the problem) or after strategy (to validate GTM assumptions).
 
 #### Exploration & Strategy
 
@@ -93,35 +92,43 @@ Want to adjust anything, or should we start?
 
 **`/strategy`** — Develops go-to-market plans. Score entry strategies on profitability, scalability, and risk. Best run after personas are defined.
 
-**`/debate`** — Expert panel stress-tests approaches from different angles. Most useful when `/consult` surfaces 2-3 viable paths and you need to pick. Optional if the path is clear.
+#### Challenge & Stress Test
 
-#### Pressure Testing & Refinement
+**`/debate`** — Expert panel stress-tests approaches from different angles. **Strongly recommended.** Having domain experts with distinct viewpoints argue the merits of your strategy reveals weaknesses that internal thinking misses. Run this after `/consult` or `/strategy` to pressure-test the direction before committing.
 
-**`/yc-review`** — Six forcing questions that pressure-test the concept: demand reality, status quo analysis, desperate specificity, narrowest wedge, founder observation, future-fit. Produces a verdict (strong/underspecified/rethink). Most valuable after the concept has shape — use it to find remaining gaps, not as a cold open.
+**`/advisor`** (coaching mode) — Brutally honest gut check. **Strongly recommended.** Exposes blind spots, emulates a top-tier domain expert, prescribes the single most impactful next step. Effective at any stage, but especially powerful after the strategy has shape.
 
-**`/advisor`** (coaching mode) — Brutally honest gut check. Exposes blind spots, emulates a top-tier domain expert, prescribes the single most impactful next step. Good at any stage, but especially after the strategy is in place.
-
-**`/ceo-review`** — Founder-mode scope calibration. Use when the plan feels too small (Mode A: Scope Expansion), too sprawling (Mode D: Scope Reduction), or needs to be bulletproof (Mode C: Hold Scope). Optional — most useful for plans that feel off-balance.
-
-#### Documentation & Validation
+#### Documentation
 
 **`/prd`** — Context-harvesting PRD generator. Scans `./outputs/` for everything from prior agents and pre-fills sections automatically. Only prompts for genuinely missing information. Run this after the thinking work is done.
 
-**`/advisor`** (document review mode) — Point it at the PRD for a 6-pass adversarial review: adversarial findings, edge case hunting, consistency checks, executability tests, hard questions, and a Ship/Fix/Rethink verdict. The final quality gate.
+**`/advisor`** (document review mode) — Point it at the PRD for a 6-pass adversarial review: adversarial findings, edge case hunting, consistency checks, executability tests, hard questions, and a Ship/Fix/Rethink verdict. **The final quality gate.** Strongly recommended before shipping any PRD.
 
-**`/survey`** — Designs closed-ended validation surveys to test remaining assumptions with real users. Run after the PRD to design the next round of primary research.
+#### Optional — Add When Relevant
+
+**`/yc-review`** — Six forcing questions that pressure-test the concept: demand reality, status quo, desperate specificity, narrowest wedge, founder observation, future-fit. Useful when the concept needs a structured reality check or when preparing for an investor conversation. Not required if the concept has already been validated through research and debate.
+
+**`/ceo-review`** — Founder-mode scope calibration. Use when the plan feels too small (Scope Expansion), too sprawling (Scope Reduction), or needs to be bulletproof (Hold Scope). Most useful for plans that feel off-balance.
+
+### Supplementary Agents (use alongside the pipeline, not inside it)
+
+**`/coach`** and **`/summarize`** — Use whenever customer interviews happen. `/coach` scores interviewing technique. `/summarize` turns transcripts into research-ready topline reports. Run at any point — before research (to validate the problem) or after strategy (to validate GTM assumptions).
+
+**`/survey`** — Designs closed-ended validation surveys to test remaining assumptions with real users. Use when you need to design quantitative primary research, independent of where you are in the pipeline.
+
+**`/prompter`** — Designs AI system prompts. Unrelated to the concept-to-plan pipeline but available when needed.
 
 ### Example Plans by Stage
 
-**"I just have an idea"** → `/research` → `/consult` → `/personas` → `/strategy` → `/prd`
+**"I just have an idea"** → `/research` → `/consult` → `/debate` → `/personas` → `/strategy` → `/advisor` → `/prd` → `/advisor` (review)
 
-**"I have a pitch deck and some interviews"** → `/research` (gaps only) → `/strategy` → `/yc-review` → `/prd` → `/advisor` (review)
+**"I have a pitch deck and some interviews"** → `/research` (gaps only) → `/consult` → `/debate` → `/strategy` → `/prd` → `/advisor` (review)
 
-**"I need to pressure-test before Demo Day"** → `/yc-review` → `/advisor` (coaching) → `/ceo-review`
+**"I need to pressure-test before Demo Day"** → `/advisor` (coaching) → `/debate` → `/yc-review`
 
 **"I have a PRD, is it any good?"** → `/advisor` (document review) → fix issues → `/advisor` (review again)
 
-**"I'm entering an unfamiliar market"** → `/research` (domain mode) → `/consult` → `/debate` → `/personas`
+**"I'm entering an unfamiliar market"** → `/research` (domain mode) → `/consult` → `/debate` → `/personas` → `/strategy`
 
 ## How to Choose (Quick Reference)
 
