@@ -1,9 +1,9 @@
 ---
 name: using-mpd-agents
-description: "Guide for using MPD specialized AI agents. Use when the user asks about available agents, wants help choosing the right agent, or says 'what agents are available', 'help me pick an agent', 'which agent should I use', or 'list agents'."
+description: "Guide for using specialized AI agents. Use when the user asks about available agents, wants help choosing the right agent, or says 'what agents are available', 'help me pick an agent', 'which agent should I use', or 'list agents'."
 ---
 
-# Using MPD Agents
+# Using Agents
 
 This plugin provides 10 specialized AI sub-agents. Each agent runs in its own context window and can be invoked via slash command or natural language.
 

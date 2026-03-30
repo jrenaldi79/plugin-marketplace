@@ -1,13 +1,13 @@
-# Northwestern MPD Plugin Marketplace
+# Plugin Marketplace
 
-Plugin marketplace for Northwestern MPD and Kellogg courses. Provides AI-powered agents and workflows for product management, business analysis, and design education.
+A personal plugin marketplace for AI agents, skills, and workflows. Covers product management, business analysis, interview coaching, and more.
 
 ## Installation
 
 Add this marketplace in Claude Code or Cowork:
 
 ```
-/plugin marketplace add Northwestern-MPD/mpd-plugin-marketplace
+/plugin marketplace add jrenaldi79/plugin-marketplace
 ```
 
 Then browse available plugins:

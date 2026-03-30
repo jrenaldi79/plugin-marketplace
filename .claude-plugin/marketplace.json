@@ -1,11 +1,11 @@
 {
-  "name": "Northwestern MPD Plugin Marketplace",
+  "name": "Plugin Marketplace",
   "owner": {
-    "name": "Northwestern MPD",
-    "email": "jrenaldi@northwestern.edu"
+    "name": "John Renaldi",
+    "email": "jrenaldi79@gmail.com"
   },
   "metadata": {
-    "description": "AI-powered plugins for Northwestern MPD and Kellogg courses",
+    "description": "AI-powered plugins for product management, business analysis, and consulting workflows",
     "version": "0.1.0"
   },
   "plugins": [
