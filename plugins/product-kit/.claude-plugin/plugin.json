@@ -1,6 +1,6 @@
 {
   "name": "product-kit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "16 specialized AI sub-agents for product management, business analysis, concept validation, interview coaching, pricing strategy, and strategic thinking",
   "author": {
     "name": "John Renaldi",
@@ -20,6 +20,10 @@
     "market-strategy",
     "yc-review",
     "ceo-review",
-    "concept-validation"
+    "concept-validation",
+    "vc-review",
+    "investor-diligence",
+    "pricing-strategy",
+    "business-model"
   ]
 }
