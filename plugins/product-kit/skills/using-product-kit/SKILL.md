@@ -5,7 +5,7 @@ description: "Guide for using Product Kit AI agents. Use when the user asks abou
 
 # Using Product Kit
 
-This plugin provides 15 specialized AI sub-agents. Each agent runs in its own context window, can be invoked via slash command or natural language, and saves its full analysis to `./outputs/` as a standalone markdown file.
+This plugin provides 16 specialized AI sub-agents. Each agent runs in its own context window, can be invoked via slash command or natural language, and saves its full analysis to `./outputs/` as a standalone markdown file.
 
 ## Available Agents
 
@@ -14,6 +14,7 @@ This plugin provides 15 specialized AI sub-agents. Each agent runs in its own co
 | Command | Agent | What It Does |
 |---------|-------|-------------|
 | `/yc-review` | YC Review | Six forcing questions that pressure-test a product concept: demand reality, status quo analysis, desperate specificity, narrowest wedge, founder observation, and future-fit. Produces a verdict (strong/underspecified/rethink), strongest element, biggest gap, and concrete next steps. |
+| `/vc-review` | VC Review | Investor-grade diligence combining gated screening (Elevator Clarity, Problem Severity, TAM, Timing Catalyst), deep analysis (Delta 4, Problem Decomposition, Solution-Problem Fit, Competitive Positioning, Pre-Mortem), and five BMAD adversarial stress tests (First Principles, Reverse Brainstorming, Six Thinking Hats, Red Team vs Blue Team, Analogous Company Analysis) capped by a Debate Club Showdown. Designed to run in parallel with `/yc-review`. |
 | `/ceo-review` | CEO Review | Founder-mode plan review with four modes: Scope Expansion (dream big), Selective Expansion (cherry-pick), Hold Scope (maximum rigor), and Scope Reduction (strip to essentials). Enforces nine prime directives including zero silent failures and mandatory diagrams. |
 | `/consult` | Business Consultant (ToT) | Three expert consultants and a skeptical risk analyst evaluate a business challenge through five phases: branch generation (3 distinct approaches), exploration (desirability/viability/feasibility per approach), cross-branch evaluation, convergence on the optimal path, and deep-dive execution planning. |
 | `/critic` | Critic | Dual-mode agent: **Coaching mode** — brutally honest strategic coaching that extracts context, exposes blind spots, emulates the top 0.01% domain expert, and builds a prioritized action plan. **Document review mode** — point it at any file (especially a PRD) for a 6-pass BMAD-influenced adversarial analysis: adversarial findings, edge case hunting, internal consistency checks, executability tests, hard questions, and a Ship/Fix/Rethink verdict with ranked findings. |
@@ -115,6 +116,8 @@ Want to adjust anything, or should we start?
 
 **`/yc-review`** — Six forcing questions that pressure-test the concept: demand reality, status quo, desperate specificity, narrowest wedge, founder observation, future-fit. Useful when the concept needs a structured reality check or when preparing for an investor conversation. Not required if the concept has already been validated through research and debate.
 
+**`/vc-review`** — Investor-grade diligence: gated screening, deep analysis, and BMAD adversarial stress-testing with a Debate Club Showdown verdict. Runs in parallel with `/yc-review` — together they provide comprehensive outside-in evaluation. Use when preparing for investor conversations or when you want structured scrutiny of the venture's thesis, competitive positioning, and risk profile.
+
 **`/ceo-review`** — Founder-mode scope calibration. Use when the plan feels too small (Scope Expansion), too sprawling (Scope Reduction), or needs to be bulletproof (Hold Scope). Most useful for plans that feel off-balance.
 
 ### Supplementary Agents (use alongside the pipeline, not inside it)
@@ -131,7 +134,7 @@ Want to adjust anything, or should we start?
 
 **"I have a pitch deck and some interviews"** → `/research` (gaps only) → `/consult` → `/debate` → `/bizmodel` → `/pricing` → `/strategy` → `/prd` → `/critic` (review)
 
-**"I need to pressure-test before Demo Day"** → `/critic` (coaching) → `/debate` → `/yc-review`
+**"I need to pressure-test before Demo Day"** → `/critic` (coaching) → `/debate` → `/yc-review` + `/vc-review` (in parallel)
 
 **"I have a PRD, is it any good?"** → `/critic` (document review) → fix issues → `/critic` (review again)
 
@@ -139,7 +142,7 @@ Want to adjust anything, or should we start?
 
 ## How to Choose (Quick Reference)
 
-**"I have an idea, is it any good?"** → `/yc-review`
+**"I have an idea, is it any good?"** → `/yc-review` + `/vc-review` (in parallel)
 
 **"What does the competitive landscape look like?"** → `/research`
 
@@ -156,6 +159,8 @@ Want to adjust anything, or should we start?
 **"Am I leaving money on the table?"** → `/pricing`
 
 **"What's my go-to-market?"** → `/strategy`
+
+**"Is this fundable?"** → `/vc-review`
 
 **"Give me the honest truth about my plan"** → `/critic` (coaching mode)
 

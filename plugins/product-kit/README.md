@@ -1,6 +1,6 @@
 # Product Kit
 
-15 specialized AI sub-agents for business analysis, interview coaching, product management, concept validation, and strategic thinking. Every agent writes its full analysis to `./outputs/` as a standalone markdown deliverable.
+16 specialized AI sub-agents for business analysis, interview coaching, product management, concept validation, and strategic thinking. Every agent writes its full analysis to `./outputs/` as a standalone markdown deliverable.
 
 ## Flagship Agents
 
@@ -33,6 +33,7 @@
 | Business Model Architect | `/bizmodel` | Socratic business model coaching: Business Model Canvas (9 blocks with misalignment diagnosis), Ten Types of Innovation (full value chain), 50+ model patterns with Blue Ocean strategy, and model stress test (unit economics, defensibility, assumptions) | `outputs/bizmodel-*.md` |
 | Pricing Strategist | `/pricing` | Socratic monetization coaching: diagnoses 4 monetization failures (Feature Shocks, Minivations, Hidden Gems, Undeads), enforces 9 Rules of Monetization (WTP, segmentation, configuration, model selection, strategy, business case, value communication, behavioral tactics, price integrity), stress-tests pricing architecture | `outputs/pricing-*.md` || Market Strategy (ToT) | `/strategy` | Scores 3 market entry strategies on profitability, scalability, and risk | `outputs/strategy-*.md` |
 | YC Review | `/yc-review` | YC-style office hours — 6 forcing questions to pressure-test a product concept | `outputs/yc-review-*.md` |
+| VC Review | `/vc-review` | Investor-grade diligence — gated screening, deep analysis, BMAD adversarial stress-testing, Debate Club Showdown. Runs in parallel with `/yc-review`. | `outputs/vc-review-*.md` |
 | CEO Review | `/ceo-review` | Founder-mode plan review — scope, strategy, and ambition check (4 modes) | `outputs/ceo-review-*.md` |
 
 ## Deliverables
@@ -72,7 +73,9 @@ This plugin uses the `agents/` directory pattern from the Claude Code plugin spe
 ## Credits
 
 - **[gstack](https://github.com/garrytan/gstack)** by [Garry Tan](https://github.com/garrytan) — YC Review and CEO Review agents build on gstack's office-hours and plan-ceo-review frameworks.
-- **[BMAD Method](https://github.com/bmadcode/BMAD-METHOD)** by [BMad](https://github.com/bmadcode) — Critic's 6-pass document review mode is influenced by the BMAD Method's adversarial PRD analysis pattern.
+- **[BMAD Method
+- **Jonathan Ellis / Sandalphon Capital** — VC diligence pipeline adapted for `/vc-review`](https://github.com/bmadcode/BMAD-METHOD)** by [BMad](https://github.com/bmadcode) — Critic's 6-pass document review mode is influenced by the BMAD Method
+- **Jonathan Ellis / Sandalphon Capital** — VC diligence pipeline adapted for `/vc-review`'s adversarial PRD analysis pattern.
 
 ## Author
 
