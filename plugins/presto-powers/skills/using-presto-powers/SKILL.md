@@ -1,9 +1,9 @@
 ---
-name: using-mpd-agents
-description: "Guide for using specialized AI agents. Use when the user asks about available agents, wants help choosing the right agent, or says 'what agents are available', 'help me pick an agent', 'which agent should I use', or 'list agents'."
+name: using-presto-powers
+description: "Guide for using Presto Powers AI agents. Use when the user asks about available agents, wants help choosing the right agent, or says 'what agents are available', 'help me pick an agent', 'which agent should I use', or 'list agents'."
 ---
 
-# Using Agents
+# Using Presto Powers
 
 This plugin provides 10 specialized AI sub-agents. Each agent runs in its own context window and can be invoked via slash command or natural language.
 

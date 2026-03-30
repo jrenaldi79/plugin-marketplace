@@ -10,9 +10,9 @@
   },
   "plugins": [
     {
-      "name": "mpd-agents",
+      "name": "presto-powers",
       "description": "10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking",
-      "source": "./plugins/mpd-agents",
+      "source": "./plugins/presto-powers",
       "version": "0.1.0"
     }
   ]

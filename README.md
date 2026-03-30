@@ -20,7 +20,7 @@ Then browse available plugins:
 
 | Plugin | Description |
 |--------|-------------|
-| [mpd-agents](./plugins/mpd-agents/) | 10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking |
+| [presto-powers](./plugins/presto-powers/) | 10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking |
 
 ## Adding Plugins
 

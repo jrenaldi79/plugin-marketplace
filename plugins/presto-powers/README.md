@@ -1,4 +1,4 @@
-# Agents
+# Presto Powers
 
 10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking.
 
@@ -45,4 +45,4 @@ This plugin uses the `agents/` directory pattern from the Claude Code plugin spe
 
 ## Author
 
-John Renaldi — [jrenaldi79](https://github.com/jrenaldi79)
+John Renaldi — [jrenaldi79](https://github.com/jrenaldi79) | [presto.consulting](https://presto.consulting)
