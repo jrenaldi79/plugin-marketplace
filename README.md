@@ -1,4 +1,4 @@
-# Presto Powers — Plugin Marketplace
+# Product Kit — Plugin Marketplace
 
 A plugin marketplace for Claude Code and Cowork with 15 specialized AI agents for product management, business analysis, concept validation, interview coaching, and strategic thinking. Every agent writes its full analysis to `./outputs/` as a standalone deliverable.
 
@@ -51,7 +51,7 @@ Then browse available plugins:
 
 | Skill | Description |
 |-------|-------------|
-| `using-presto-powers` | Index skill — helps Claude route to the right agent based on natural language requests |
+| `using-product-kit` | Index skill — helps Claude route to the right agent based on natural language requests |
 
 ## Deliverables
 
@@ -67,7 +67,7 @@ All agents can be invoked via slash commands or triggered through natural langua
 
 The agents chain together, but the workflow adapts to where you are. Start by describing your concept and what materials you have — Claude will assess your stage, propose which agents to run (and which to skip), and create a task list to track progress. Every step is optional. A founder with a pitch deck and interview data gets a different plan than someone with just an idea.
 
-See the `using-presto-powers` skill for full workflow documentation with example plans by stage.
+See the `using-product-kit` skill for full workflow documentation with example plans by stage.
 
 ### Interview agents
 

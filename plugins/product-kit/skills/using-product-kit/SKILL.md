@@ -1,9 +1,9 @@
 ---
-name: using-presto-powers
-description: "Guide for using Presto Powers AI agents. Use when the user asks about available agents, wants help choosing the right agent, or says 'what agents are available', 'help me pick an agent', 'which agent should I use', 'list agents', 'what's the workflow', or 'how do I use these'."
+name: using-product-kit
+description: "Guide for using Product Kit AI agents. Use when the user asks about available agents, wants help choosing the right agent, or says 'what agents are available', 'help me pick an agent', 'which agent should I use', 'list agents', 'what's the workflow', or 'how do I use these'."
 ---
 
-# Using Presto Powers
+# Using Product Kit
 
 This plugin provides 15 specialized AI sub-agents. Each agent runs in its own context window, can be invoked via slash command or natural language, and saves its full analysis to `./outputs/` as a standalone markdown file.
 

@@ -61,6 +61,6 @@ jobs:
           git push origin "$BRANCH"
           gh pr create \
             --title "Sync gstack frameworks $(date +%Y-%m-%d)" \
-            --body "Automated sync of upstream gstack framework changes into Presto Powers agents." \
+            --body "Automated sync of upstream gstack framework changes into Product Kit agents." \
             --base main \
             --head "$BRANCH"

@@ -1,4 +1,4 @@
-# Presto Powers
+# Product Kit
 
 15 specialized AI sub-agents for business analysis, interview coaching, product management, concept validation, and strategic thinking. Every agent writes its full analysis to `./outputs/` as a standalone markdown deliverable.
 

@@ -10,9 +10,9 @@
   },
   "plugins": [
     {
-      "name": "presto-powers",
-      "description": "12 specialized AI sub-agents for business analysis, concept validation, interview coaching, product management, and strategic thinking",
-      "source": "./plugins/presto-powers",
+      "name": "product-kit",
+      "description": "15 specialized AI sub-agents for product management, business analysis, concept validation, interview coaching, pricing strategy, and strategic thinking",
+      "source": "./plugins/product-kit",
       "version": "0.2.0"
     }
   ]
