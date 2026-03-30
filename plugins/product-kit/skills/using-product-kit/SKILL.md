@@ -114,9 +114,7 @@ Want to adjust anything, or should we start?
 
 #### Optional — Add When Relevant
 
-**`/yc-review`** — Six forcing questions that pressure-test the concept: demand reality, status quo, desperate specificity, narrowest wedge, founder observation, future-fit. Useful when the concept needs a structured reality check or when preparing for an investor conversation. Not required if the concept has already been validated through research and debate.
-
-**`/vc-review`** — Investor-grade diligence: gated screening, deep analysis, and BMAD adversarial stress-testing with a Debate Club Showdown verdict. Runs in parallel with `/yc-review` — together they provide comprehensive outside-in evaluation. Use when preparing for investor conversations or when you want structured scrutiny of the venture's thesis, competitive positioning, and risk profile.
+**`/yc-review` + `/vc-review` (run in parallel)** — These two agents are designed to run simultaneously and produce complementary investor-perspective evaluations. `/yc-review` runs YC-style forcing questions (demand reality, status quo, desperate specificity, narrowest wedge, founder observation, future-fit). `/vc-review` runs gated screening, deep analysis (Delta 4, competitive positioning, pre-mortem), and five BMAD adversarial stress tests capped by a Debate Club Showdown where a Bull and Bear argue the investment decision. Launch both at once — each reads your prior outputs independently, and together they cover the full investor lens. Use when preparing for an investor conversation or when you want an outside-in reality check on whether the venture holds up under structured scrutiny.
 
 **`/ceo-review`** — Founder-mode scope calibration. Use when the plan feels too small (Scope Expansion), too sprawling (Scope Reduction), or needs to be bulletproof (Hold Scope). Most useful for plans that feel off-balance.
 
@@ -190,3 +188,10 @@ Every agent saves a complete markdown document to `./outputs/`. You get a concis
 - **Interview agents** (coach, summarize) need a transcript file path. Place the transcript in your working folder and reference it by path.
 - **Chain outputs forward.** Each agent's deliverable file can be fed into the next agent. Tell the next agent: "Read ./outputs/yc-review-2026-03-30.md and use it as context."
 - All agents can also be triggered by natural language — just describe what you need and Claude will route to the right agent.
+
+## Credits
+
+- **Garry Tan / Y Combinator** — [gstack](https://github.com/garrytan/gstack) office-hours framework, adapted for `/yc-review` and `/ceo-review`
+- **Jonathan Ellis / Sandalphon Capital** — VC diligence pipeline (gated screening frameworks + BMAD adversarial stress-testing techniques), generalized from healthcare for `/vc-review`
+- **BMAD Method** — Adversarial document analysis methodology, influences `/critic` 6-pass review and `/vc-review` stress-testing techniques
+- **Simon Ramanujam & Madhavan Tacke** — *Monetizing Innovation*, the framework behind `/pricing`
