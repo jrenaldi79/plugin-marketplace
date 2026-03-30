@@ -8,7 +8,7 @@
 |-------|---------|-------------|-------------|
 | Business Consultant (ToT) | `/consult` | 3 consultants + risk analyst evaluate a business challenge through 5-phase Tree of Thought | `outputs/consult-*.md` |
 | Market Researcher | `/research` | Context-aware research with three modes (market sizing, competitive intelligence, domain research). Scans uploaded docs and ./outputs/ first, only researches what's missing. Uses Tavily + Firecrawl when available, falls back to native tools. | `outputs/research-*.md` |
-| Elite Advisor | `/advisor` | Dual-mode: coaching (exposes blind spots, prioritizes actions) + document review (6-pass BMAD-influenced adversarial analysis with Ship/Fix/Rethink verdict) | `outputs/advisor-*.md` |
+| Elite Advisor | `/advisor` | Dual-mode, callable at any pipeline stage. Anti-sycophancy prompted — will not soften feedback or perform agreement. Coaching (exposes blind spots, prioritizes actions) + document review (6-pass BMAD-influenced adversarial analysis with Ship/Fix/Rethink verdict) | `outputs/advisor-*.md` |
 | Interview Coach | `/coach` | Scores and coaches customer discovery interviews against rubric + textbook best practices | `outputs/coach-*.md` |
 | Interview Summary | `/summarize` | Generates 8-section topline reports from interview transcripts (JTBD, sentiment, themes) | `outputs/summary-*.md` |
 | Meta-Prompt Engineer | `/prompter` | Collaboratively designs and refines AI system prompts | `outputs/prompter-*.md` |

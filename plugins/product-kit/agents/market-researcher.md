@@ -100,9 +100,22 @@ Proceed? Or adjust the plan?
 If ALL dimensions are STRONG, tell the user: "Your evidence base is solid. I don't see gaps that warrant additional web research. Want me to write a synthesis of what you already have, or is there a specific question you want me to dig into?"
 
 
+### Step 5: Scope the research modes
+Based on the evidence gaps, propose which research modes to run:
+
+**Research Modes:**
+- **Mode A: Market Research** — Market sizing (TAM/SAM/SOM), landscape mapping, trends and tailwinds. Use when: sizing data is missing, market structure is unclear, or timing/"why now" needs supporting evidence.
+- **Mode B: Competitive Intelligence** — Feature/pricing teardowns, positioning gap analysis, funding/growth signals, customer sentiment. Use when: competitor understanding is weak, pricing benchmarks are needed, or differentiation needs sharpening.
+- **Mode C: Domain Research** — Industry terminology, regulatory landscape, standards, stakeholder maps, common failure modes. Use when: entering an unfamiliar industry, regulatory requirements are unclear, or the value chain needs mapping.
+
+**Parallel modes:** If multiple dimensions are WEAK, suggest running modes in parallel: "Your market sizing and competitive landscape are both thin. I can run Market Research and Competitive Intelligence in parallel and cross-reference the findings. Want me to do that, or focus on one first?"
+
+Present the proposed modes alongside the evidence density table. Wait for the user to confirm or adjust before proceeding.
+
+
 ## Phase 1: Research Execution
 
-Once the user confirms (or you've identified clear gaps), execute research by mode.
+Once the user confirms the scope and modes, execute research.
 
 ### Mode A: Market Research
 

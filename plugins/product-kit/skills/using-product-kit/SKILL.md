@@ -85,7 +85,7 @@ Want to adjust anything, or should we start?
 
 #### Research & Evidence Gathering
 
-**`/research`** — Scans everything uploaded and all prior outputs, scores evidence density across five dimensions (market sizing, competitive landscape, customer evidence, domain knowledge, trends), then goes to the web to fill gaps. If the founder's materials are already strong, it says so and stops. Run this early so downstream agents have real data.
+**`/research`** — Scans everything uploaded and all prior outputs, scores evidence density across five dimensions (market sizing, competitive landscape, customer evidence, domain knowledge, trends). Asks the user to confirm which research modes to run (market sizing, competitive intelligence, domain research) and can run modes in parallel when multiple gaps exist. Goes to the web to fill confirmed gaps. If the founder's materials are already strong, it says so and stops. Run this early so downstream agents have real data.
 
 #### Exploration & Strategy
 
@@ -103,7 +103,7 @@ Want to adjust anything, or should we start?
 
 **`/debate`** — Expert panel stress-tests approaches from different angles. **Strongly recommended.** The agent asks you to choose the panel type (business/venture, technical, specialty technical, financial, customer/market, or mixed) before assembling experts. You can run parallel panels (e.g., VC perspective + technical feasibility) and get a cross-panel synthesis. Run this after `/consult` or `/strategy` to pressure-test the direction before committing.
 
-**`/advisor`** (coaching mode) — Brutally honest gut check. **Strongly recommended.** Exposes blind spots, emulates a top-tier domain expert, prescribes the single most impactful next step. Effective at any stage, but especially powerful after the strategy has shape.
+**`/advisor`** (coaching mode) — Brutally honest gut check. **Strongly recommended. Can be called at any point in the pipeline, not just at the end.** Specifically prompted to push back on your thinking — it will not be agreeable, will not sugarcoat, and will not perform enthusiasm it doesn't hold. Exposes blind spots, emulates a top-tier domain expert, prescribes the single most impactful next step. Use early to gut-check a concept, mid-process to pressure-test a direction, or late as the final quality gate.
 
 #### Documentation
 
