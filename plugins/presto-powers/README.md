@@ -1,6 +1,6 @@
 # Presto Powers
 
-14 specialized AI sub-agents for business analysis, interview coaching, product management, concept validation, and strategic thinking. Every agent writes its full analysis to `./outputs/` as a standalone markdown deliverable.
+15 specialized AI sub-agents for business analysis, interview coaching, product management, concept validation, and strategic thinking. Every agent writes its full analysis to `./outputs/` as a standalone markdown deliverable.
 
 ## Agents
 
@@ -17,7 +17,7 @@
 | PRD Builder | `/prd` | Context-harvesting PRD generator — scans ./outputs/ for prior deliverables, pre-fills automatically, covers 11 sections with narrative journeys and NFRs, self-validates | `outputs/prd-*.md` |
 | Expert Debate Facilitator | `/debate` | Simulates renowned experts debating a problem through iterative drafting | `outputs/debate-*.md` |
 | Business Model Architect | `/bizmodel` | Socratic business model coaching: Business Model Canvas (9 blocks with misalignment diagnosis), Ten Types of Innovation (full value chain), 50+ model patterns with Blue Ocean strategy, and model stress test (unit economics, defensibility, assumptions) | `outputs/bizmodel-*.md` |
-| Market Strategy (ToT) | `/strategy` | Scores 3 market entry strategies on profitability, scalability, and risk | `outputs/strategy-*.md` |
+| Pricing Strategist | `/pricing` | Socratic monetization coaching: diagnoses 4 monetization failures (Feature Shocks, Minivations, Hidden Gems, Undeads), enforces 9 Rules of Monetization (WTP, segmentation, configuration, model selection, strategy, business case, value communication, behavioral tactics, price integrity), stress-tests pricing architecture | `outputs/pricing-*.md` || Market Strategy (ToT) | `/strategy` | Scores 3 market entry strategies on profitability, scalability, and risk | `outputs/strategy-*.md` |
 | YC Review | `/yc-review` | YC-style office hours — 6 forcing questions to pressure-test a product concept | `outputs/yc-review-*.md` |
 | CEO Review | `/ceo-review` | Founder-mode plan review — scope, strategy, and ambition check (4 modes) | `outputs/ceo-review-*.md` |
 
