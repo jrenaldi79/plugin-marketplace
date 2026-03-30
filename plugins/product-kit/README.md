@@ -55,6 +55,11 @@ This plugin uses the `agents/` directory pattern from the Claude Code plugin spe
 
 **Deliverable-first:** Every agent writes a complete markdown file to `./outputs/`. The student always has a tangible artifact to review, share, or iterate on.
 
+## Credits
+
+- **[gstack](https://github.com/garrytan/gstack)** by [Garry Tan](https://github.com/garrytan) — YC Review and CEO Review agents build on gstack's office-hours and plan-ceo-review frameworks.
+- **[BMAD Method](https://github.com/bmadcode/BMAD-METHOD)** by [BMad](https://github.com/bmadcode) — Elite Advisor's 6-pass document review mode is influenced by the BMAD Method's adversarial PRD analysis pattern.
+
 ## Author
 
 John Renaldi — [jrenaldi79](https://github.com/jrenaldi79) | [presto.consulting](https://presto.consulting)

@@ -110,6 +110,8 @@ The sync pipeline has a 31-test TDD suite covering extraction, merge, diff detec
 
 - **[gstack](https://github.com/garrytan/gstack)** by [Garry Tan](https://github.com/garrytan) — The YC Review and CEO Review agents build on Garry's office-hours and plan-ceo-review frameworks. gstack is an open-source AI builder framework with 28+ specialized skills for startup founders and engineers. The framework content is used under gstack's license and synced automatically to stay current with upstream improvements.
 
+- **[BMAD Method](https://github.com/bmadcode/BMAD-METHOD)** by [BMad](https://github.com/bmadcode) — The Elite Advisor's document review mode uses a 6-pass adversarial analysis pattern influenced by the BMAD Method's approach to systematic PRD and planning document review. BMAD (Breakthrough Method of Agile AI-Driven Development) provides structured frameworks for AI-assisted software development, including multi-persona orchestration and document validation workflows.
+
 ## Author
 
 John Renaldi — [jrenaldi79](https://github.com/jrenaldi79) | [presto.consulting](https://presto.consulting)
