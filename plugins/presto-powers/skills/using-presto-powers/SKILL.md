@@ -51,10 +51,9 @@ These agents are designed to chain together, but not every concept needs every a
 Before running any agents, have a short planning conversation with the founder. Understand what they have, what they need, and what stage they're at.
 
 **Assess what exists:**
-- Did they upload documents? (pitch deck, one-pager, business plan, market research)
-- Do they have customer interview transcripts?
-- Have they already run agents in a prior session? (check `./outputs/`)
-- How developed is their thinking? (just an idea vs. validated concept vs. ready to build)
+- **Read any uploaded files first.** If the founder attached a pitch deck, one-pager, business plan, or market research, read them in full before asking questions. These are your primary context — most of your planning decisions come from what's in these documents.
+- Check `./outputs/` for prior agent deliverables from earlier sessions.
+- Based on what you've read, assess how developed their thinking is: just an idea vs. validated concept vs. ready to build. Note what's strong and what has gaps.
 
 **Propose a plan:** Based on the assessment, recommend which agents to run and in what order. Present it as a checklist the founder can approve, modify, or trim:
 
