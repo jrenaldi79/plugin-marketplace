@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Product Kit Plugin Marketplace — AI-powered plugins for product management, business analysis, and consulting workflows",
-    "version": "0.3.0"
+    "version": "0.3.1"
   },
   "plugins": [
     {
       "name": "product-kit",
       "description": "16 specialized AI sub-agents for product management, business analysis, concept validation, interview coaching, pricing strategy, and strategic thinking",
       "source": "./plugins/product-kit",
-      "version": "0.3.0"
+      "version": "0.3.1"
     }
   ]
 }

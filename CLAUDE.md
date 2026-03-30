@@ -55,6 +55,7 @@ Before pushing a new version:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 0.3.1 | 2026-03-30 | Behavioral rules for plan approval gate + source file passing to subagents, CLAUDE.md, repo moved to ~/claude-code-projects |
 | 0.3.0 | 2026-03-30 | Added `/vc-review`, `/critic` rename, behavioral rules in SKILL.md, MIT license |
 | 0.2.0 | 2026-03-29 | Added `/bizmodel`, `/pricing`, `/debate` scoping, `/research` modes |
 | 0.1.0 | 2026-03-28 | Initial release — 13 agents |
