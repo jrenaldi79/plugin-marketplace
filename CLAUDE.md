@@ -130,3 +130,6 @@ The SKILL.md file in `skills/using-product-kit/` controls how the main Claude ag
 
 - **DC `read_file` returns metadata for .md files** — use `cat` via `start_process` as a workaround when Desktop Commander is in play.
 - **Cowork subagents start with blank context** — the SKILL.md Launching Agents section exists specifically to address this. Always pass file paths.
+- **NEVER rename the marketplace `name` field.** Cowork uses it as a lookup key in `cowork_settings.json` (e.g., `product-kit@plugin-marketplace`). Renaming it breaks the link and the plugin disappears on restart. Use `metadata.description` for the friendly name instead.
+- **Cowork plugins are session-immutable.** Plugins are cloned at session start and read-only during the session. Version bumps only take effect in new sessions — no amount of reinstalling within the same session will pick up changes.
+- **Plugin caching is aggressive.** If a new version isn't picked up, manually clear `~/.claude/plugins/cache/` and restart. There is no built-in cache-bust command yet.
