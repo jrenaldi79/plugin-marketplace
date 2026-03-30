@@ -1,21 +1,29 @@
 # Presto Powers
 
-10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking.
+12 specialized AI sub-agents for business analysis, interview coaching, product management, concept validation, and strategic thinking. Every agent writes its full analysis to `./outputs/` as a standalone markdown deliverable.
 
 ## Agents
 
-| Agent | Command | What it Does |
-|-------|---------|-------------|
-| Business Consultant (ToT) | `/consult` | 3 consultants + risk analyst evaluate a business challenge through 5-phase Tree of Thought |
-| Elite Advisor | `/advisor` | Brutally honest strategic coaching — exposes blind spots, prioritizes actions |
-| Interview Coach | `/coach` | Scores and coaches customer discovery interviews against rubric + textbook best practices |
-| Interview Summary | `/summarize` | Generates 8-section topline reports from interview transcripts (JTBD, sentiment, themes) |
-| Meta-Prompt Engineer | `/prompter` | Collaboratively designs and refines AI system prompts |
-| Survey Design Coach | `/survey` | Socratic process for designing closed-ended survey questions |
-| Persona Developer | `/personas` | 4-phase guided process to build detailed buyer personas |
-| PRD Builder | `/prd` | Slot-filling conversation to produce a complete Product Requirements Document |
-| Expert Debate Facilitator | `/debate` | Simulates renowned experts debating a problem through iterative drafting |
-| Market Strategy (ToT) | `/strategy` | Scores 3 market entry strategies on profitability, scalability, and risk |
+| Agent | Command | What it Does | Deliverable |
+|-------|---------|-------------|-------------|
+| Business Consultant (ToT) | `/consult` | 3 consultants + risk analyst evaluate a business challenge through 5-phase Tree of Thought | `outputs/consult-*.md` |
+| Elite Advisor | `/advisor` | Brutally honest strategic coaching — exposes blind spots, prioritizes actions | `outputs/advisor-*.md` |
+| Interview Coach | `/coach` | Scores and coaches customer discovery interviews against rubric + textbook best practices | `outputs/coach-*.md` |
+| Interview Summary | `/summarize` | Generates 8-section topline reports from interview transcripts (JTBD, sentiment, themes) | `outputs/summary-*.md` |
+| Meta-Prompt Engineer | `/prompter` | Collaboratively designs and refines AI system prompts | `outputs/prompter-*.md` |
+| Survey Design Coach | `/survey` | Socratic process for designing closed-ended survey questions | `outputs/survey-*.md` |
+| Persona Developer | `/personas` | 4-phase guided process to build detailed buyer personas | `outputs/personas-*.md` |
+| PRD Builder | `/prd` | Slot-filling conversation to produce a complete Product Requirements Document | `outputs/prd-*.md` |
+| Expert Debate Facilitator | `/debate` | Simulates renowned experts debating a problem through iterative drafting | `outputs/debate-*.md` |
+| Market Strategy (ToT) | `/strategy` | Scores 3 market entry strategies on profitability, scalability, and risk | `outputs/strategy-*.md` |
+| YC Review | `/yc-review` | YC-style office hours — 6 forcing questions to pressure-test a product concept | `outputs/yc-review-*.md` |
+| CEO Review | `/ceo-review` | Founder-mode plan review — scope, strategy, and ambition check (4 modes) | `outputs/ceo-review-*.md` |
+
+## Deliverables
+
+Every agent saves its complete analysis to `./outputs/` as a standalone markdown file. The file is timestamped (e.g., `consult-2026-03-30.md`) and contains the full reasoning, frameworks applied, and recommendations. A concise summary is returned to the conversation with a pointer to the file.
+
+This means you always get both: a quick answer in the chat, and a complete document you can share, reference, or build on.
 
 ## Usage
 
@@ -42,6 +50,8 @@ This plugin uses the `agents/` directory pattern from the Claude Code plugin spe
 **Context externalization:** Agents read files via the Read tool and fetch references via WebFetch — they never expect content to be injected into their launch prompt.
 
 **Resume support:** Multi-turn agents (elite advisor, PRD builder, persona developer, etc.) maintain full context across rounds. Ask follow-ups naturally.
+
+**Deliverable-first:** Every agent writes a complete markdown file to `./outputs/`. The student always has a tangible artifact to review, share, or iterate on.
 
 ## Author
 

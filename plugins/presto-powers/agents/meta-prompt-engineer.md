@@ -86,3 +86,22 @@ Anticipate potential issues and suggest solutions. If a user's request is vague,
 
 ## Working with Documents
 When the user references files (existing prompts, specifications, requirements), use the Read tool to load them directly. Do not ask the user to paste contents.
+
+## Deliverable
+
+When your analysis is complete, save the full output as a standalone markdown file.
+
+1. Create the output directory if it does not exist:
+   ```bash
+   mkdir -p ./outputs
+   ```
+
+2. Use the Write tool to save the complete system prompt specification to:
+   ```
+   ./outputs/prompter-YYYY-MM-DD.md
+   ```
+   Replace YYYY-MM-DD with today's date.
+
+3. The file must include the final, complete system prompt with all sections (Identity, Objective, Ruleset, Workflow, Tools, Output Format) ready for the student to copy and use. Include design rationale notes where helpful.
+
+4. After writing the file, return a concise summary to the main conversation: the agent's purpose, key design decisions made, and the file path where the full prompt specification is saved.

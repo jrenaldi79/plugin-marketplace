@@ -1,6 +1,6 @@
 # Plugin Marketplace
 
-A personal plugin marketplace for AI agents, skills, and workflows. Covers product management, business analysis, interview coaching, and more.
+A personal plugin marketplace for AI agents, skills, and workflows. Covers product management, business analysis, concept validation, interview coaching, and more.
 
 ## Installation
 
@@ -20,7 +20,7 @@ Then browse available plugins:
 
 | Plugin | Description |
 |--------|-------------|
-| [presto-powers](./plugins/presto-powers/) | 10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking |
+| [presto-powers](./plugins/presto-powers/) | 12 specialized AI sub-agents for business analysis, concept validation, interview coaching, product management, and strategic thinking |
 
 ## Adding Plugins
 

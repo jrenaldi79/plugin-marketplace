@@ -1,7 +1,7 @@
 {
   "name": "presto-powers",
-  "version": "0.1.0",
-  "description": "10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking",
+  "version": "0.2.0",
+  "description": "12 specialized AI sub-agents for business analysis, concept validation, interview coaching, product management, and strategic thinking",
   "author": {
     "name": "John Renaldi",
     "email": "jrenaldi79@gmail.com"
@@ -17,6 +17,9 @@
     "personas",
     "survey-design",
     "prompt-engineering",
-    "market-strategy"
+    "market-strategy",
+    "yc-review",
+    "ceo-review",
+    "concept-validation"
   ]
 }

@@ -76,3 +76,22 @@ The transcript is loaded via the Read tool from the file path provided by the us
 
 ## Working with Documents
 When the user references a file (interview transcript, research notes, other documents), use the Read tool to load it directly. Do not ask the user to paste contents.
+
+## Deliverable
+
+When your analysis is complete, save the full output as a standalone markdown file.
+
+1. Create the output directory if it does not exist:
+   ```bash
+   mkdir -p ./outputs
+   ```
+
+2. Use the Write tool to save your complete coaching feedback report to:
+   ```
+   ./outputs/coach-YYYY-MM-DD.md
+   ```
+   Replace YYYY-MM-DD with today's date.
+
+3. The file must include the full rubric-scored assessment, all 8 feedback sections (overall score, category scores, positives, improvements, digging deeper, JTBD, sentiment, recommendations). It should read as a complete interview coaching report the student can reference and act on.
+
+4. After writing the file, return a concise summary to the main conversation: the overall score, top 2 strengths, top 2 improvement areas, and the file path where the full report is saved.

@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "AI-powered plugins for product management, business analysis, and consulting workflows",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "plugins": [
     {
       "name": "presto-powers",
-      "description": "10 specialized AI sub-agents for business analysis, interview coaching, product management, and strategic thinking",
+      "description": "12 specialized AI sub-agents for business analysis, concept validation, interview coaching, product management, and strategic thinking",
       "source": "./plugins/presto-powers",
-      "version": "0.1.0"
+      "version": "0.2.0"
     }
   ]
 }

@@ -5,7 +5,7 @@ description: "Guide for using Presto Powers AI agents. Use when the user asks ab
 
 # Using Presto Powers
 
-This plugin provides 10 specialized AI sub-agents. Each agent runs in its own context window and can be invoked via slash command or natural language.
+This plugin provides 12 specialized AI sub-agents. Each agent runs in its own context window, can be invoked via slash command or natural language, and saves its full analysis to `./outputs/` as a standalone markdown file.
 
 ## Available Agents
 
@@ -13,6 +13,8 @@ This plugin provides 10 specialized AI sub-agents. Each agent runs in its own co
 |---------|-------|----------|
 | `/consult` | Business Consultant (ToT) | Multi-approach business challenge analysis with 3 consultants + risk analyst |
 | `/advisor` | Elite Advisor | Brutally honest strategic coaching, blind spot exposure |
+| `/yc-review` | YC Review | Pressure-testing product concepts with 6 YC-style forcing questions |
+| `/ceo-review` | CEO Review | Founder-mode scope, strategy, and ambition review (4 modes) |
 | `/coach` | Interview Coach | Scoring and coaching customer discovery interview transcripts |
 | `/summarize` | Interview Summary | Structured topline reports from interview transcripts |
 | `/prompter` | Meta-Prompt Engineer | Designing and refining AI system prompts collaboratively |
@@ -24,7 +26,7 @@ This plugin provides 10 specialized AI sub-agents. Each agent runs in its own co
 
 ## How to Choose
 
-**Need to analyze a business decision?** Use `/consult` for structured multi-approach analysis or `/advisor` for direct coaching.
+**Need to pressure-test a product concept?** Start with `/yc-review` for the 6 forcing questions, then `/ceo-review` for scope and ambition. Use `/consult` for structured multi-approach analysis or `/advisor` for direct coaching.
 
 **Working with interview transcripts?** Use `/coach` for skill-building feedback or `/summarize` for a research-ready topline report.
 
@@ -33,6 +35,10 @@ This plugin provides 10 specialized AI sub-agents. Each agent runs in its own co
 **Solving a complex problem?** Use `/debate` to simulate expert discussion or `/consult` for business-specific analysis.
 
 **Designing AI prompts?** Use `/prompter` for collaborative prompt engineering.
+
+## Deliverables
+
+Every agent saves a complete markdown document to `./outputs/`. You get a concise summary in the chat and the full analysis as a file you can open, share, or iterate on.
 
 ## Tips
 

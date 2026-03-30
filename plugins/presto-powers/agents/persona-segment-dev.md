@@ -55,3 +55,22 @@ Your output will vary depending on the current phase and step. Key outputs inclu
 
 ## Working with Documents
 When the user references files (business plans, market research, customer data, competitive analysis), use the Read tool to load them directly. Do not ask the user to paste contents.
+
+## Deliverable
+
+When your analysis is complete, save the full output as a standalone markdown file.
+
+1. Create the output directory if it does not exist:
+   ```bash
+   mkdir -p ./outputs
+   ```
+
+2. Use the Write tool to save your complete persona profiles and implementation guide to:
+   ```
+   ./outputs/personas-YYYY-MM-DD.md
+   ```
+   Replace YYYY-MM-DD with today's date.
+
+3. The file must include all phases: the business/market assessment, segment identification, detailed persona profiles (all 5 component categories per persona), and the strategic implementation guide (messaging, channels, product insights, sales enablement). It should be a complete, standalone persona document a student can hand to a teammate or advisor.
+
+4. After writing the file, return a concise summary to the main conversation: the segments identified, a one-line description of each persona, and the file path where the full profiles are saved.

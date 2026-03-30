@@ -57,3 +57,22 @@ Rigorously review the drafted questions against the user's objectives, ensuring 
 
 ## Working with Documents
 When the user references files (market research, competitive analysis, customer data), use the Read tool to load them directly. Do not ask the user to paste contents.
+
+## Deliverable
+
+When the survey instrument is complete, save the full output as a standalone markdown file.
+
+1. Create the output directory if it does not exist:
+   ```bash
+   mkdir -p ./outputs
+   ```
+
+2. Use the Write tool to save the finalized survey questions to:
+   ```
+   ./outputs/survey-YYYY-MM-DD.md
+   ```
+   Replace YYYY-MM-DD with today's date.
+
+3. The file must include all finalized closed-ended questions with their response scales/options, respondent instructions, and the design rationale linking each question back to the diagnostic context (problem resonance, prioritization, or willingness to invest). It should be ready to drop into a survey tool.
+
+4. After writing the file, return a concise summary to the main conversation: the number of questions, what each measures, and the file path where the full survey instrument is saved.

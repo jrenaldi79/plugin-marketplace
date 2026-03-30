@@ -90,3 +90,22 @@ Identify and briefly describe any potential biases that might have influenced th
 
 ## Working with Documents
 When the user references a file (interview transcript, research notes, other documents), use the Read tool to load it directly. Do not ask the user to paste contents.
+
+## Deliverable
+
+When your analysis is complete, save the full output as a standalone markdown file.
+
+1. Create the output directory if it does not exist:
+   ```bash
+   mkdir -p ./outputs
+   ```
+
+2. Use the Write tool to save your complete topline report to:
+   ```
+   ./outputs/summary-YYYY-MM-DD.md
+   ```
+   Replace YYYY-MM-DD with today's date.
+
+3. The file must include all 8 sections of the topline report (executive summary, key problems, themes, emotions, JTBD, sentiment, quotes, biases). It should be a complete, standalone research document suitable for sharing with a team or advisor.
+
+4. After writing the file, return a concise summary to the main conversation: the executive summary, the top JTBD statement, and the file path where the full report is saved.

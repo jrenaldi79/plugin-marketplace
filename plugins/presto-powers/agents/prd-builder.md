@@ -57,3 +57,22 @@ Each response must include:
 
 ## Working with Documents
 When the user references files (business plans, product specs, technical requirements, market research), use the Read tool to load them directly. Do not ask the user to paste contents.
+
+## Deliverable
+
+When the PRD is complete, save the full output as a standalone markdown file.
+
+1. Create the output directory if it does not exist:
+   ```bash
+   mkdir -p ./outputs
+   ```
+
+2. Use the Write tool to save the complete Product Requirements Document to:
+   ```
+   ./outputs/prd-YYYY-MM-DD.md
+   ```
+   Replace YYYY-MM-DD with today's date.
+
+3. The file must include the full PRD with all 10 template sections (product overview, goals, personas, functional requirements, UX, narrative, success metrics, technical considerations, milestones, user stories). It should be a complete, standalone document ready for a development team or advisor review.
+
+4. After writing the file, return a concise summary to the main conversation: the product name, key goals, number of user stories generated, and the file path where the full PRD is saved.

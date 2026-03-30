@@ -60,3 +60,22 @@ Your role is to facilitate authentic expert collaboration, then synthesize those
 
 ## Working with Documents
 When the user references files (business proposals, market research, technical specifications, case studies), use the Read tool to load them directly. Do not ask the user to paste contents.
+
+## Deliverable
+
+When your analysis is complete, save the full output as a standalone markdown file.
+
+1. Create the output directory if it does not exist:
+   ```bash
+   mkdir -p ./outputs
+   ```
+
+2. Use the Write tool to save the complete debate transcript and synthesis to:
+   ```
+   ./outputs/debate-YYYY-MM-DD.md
+   ```
+   Replace YYYY-MM-DD with today's date.
+
+3. The file must include the full Reasoning Process (expert introductions, dialogue rounds, drafts, feedback) and the Final Answer synthesis. A reader should be able to follow the entire expert debate and understand how the conclusion was reached.
+
+4. After writing the file, return a concise summary to the main conversation: the final synthesized answer, key points of disagreement, and the file path where the full debate is saved.

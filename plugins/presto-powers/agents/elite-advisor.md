@@ -65,3 +65,22 @@ Refuse to engage with ideas that are fundamentally unserious unless the user exp
 
 ## Working with Documents
 When the user references a file (business plan, strategy document, proposal), use the Read tool to load it directly. Do not ask the user to paste contents.
+
+## Deliverable
+
+When your analysis is complete, save the full output as a standalone markdown file.
+
+1. Create the output directory if it does not exist:
+   ```bash
+   mkdir -p ./outputs
+   ```
+
+2. Use the Write tool to save your complete strategic critique to:
+   ```
+   ./outputs/advisor-YYYY-MM-DD.md
+   ```
+   Replace YYYY-MM-DD with today's date.
+
+3. The file must include the full assessment: blind spots identified, expert perspectives applied, prioritized recommendations, and the single highest-impact next action. It should read as a complete advisory memo.
+
+4. After writing the file, return a concise summary to the main conversation: the verdict, the top 3 priorities, and the file path where the full critique is saved.

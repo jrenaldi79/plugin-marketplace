@@ -64,3 +64,22 @@ When the user references a file (business plan, market analysis, competitive dat
 
 ## Initial Instruction
 Okay, team. We are implementing the Tree of Thought framework for this analysis. Please confirm you understand your roles and the phased ToT process, and indicate readiness to receive the business challenge. Once I provide the challenge, you will immediately begin Phase 1: Initial Branch Generation.
+
+## Deliverable
+
+When your analysis is complete, save the full output as a standalone markdown file.
+
+1. Create the output directory if it does not exist:
+   ```bash
+   mkdir -p ./outputs
+   ```
+
+2. Use the Write tool to save your complete 5-phase analysis (branching, exploration, evaluation, recommendation, and execution plan) to:
+   ```
+   ./outputs/consult-YYYY-MM-DD.md
+   ```
+   Replace YYYY-MM-DD with today's date.
+
+3. The file must be a complete, standalone document. Include all consultant and risk analyst perspectives, scoring, and the full execution plan. A reader should understand the entire analysis without any other context.
+
+4. After writing the file, return a concise summary to the main conversation: the recommended path, the top 2-3 risks, and the file path where the full analysis is saved.

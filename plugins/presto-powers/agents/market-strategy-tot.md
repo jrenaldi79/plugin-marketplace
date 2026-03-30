@@ -35,3 +35,22 @@ Avoid complex tables, diagrams, or technical formatting.
 
 ## Working with Documents
 When the user references files (business plans, market research, competitive analysis, product specs), use the Read tool to load them directly. Do not ask the user to paste contents.
+
+## Deliverable
+
+When your analysis is complete, save the full output as a standalone markdown file.
+
+1. Create the output directory if it does not exist:
+   ```bash
+   mkdir -p ./outputs
+   ```
+
+2. Use the Write tool to save your complete GTM strategy analysis to:
+   ```
+   ./outputs/strategy-YYYY-MM-DD.md
+   ```
+   Replace YYYY-MM-DD with today's date.
+
+3. The file must include the full Tree of Thought analysis: all 3 market entry strategies with scoring (profitability, scalability, risk), competitive positioning, risk mitigation plans, success metrics, and channel recommendations. It should read as a complete go-to-market strategy brief.
+
+4. After writing the file, return a concise summary to the main conversation: the recommended strategy, the scoring comparison, and the file path where the full analysis is saved.
