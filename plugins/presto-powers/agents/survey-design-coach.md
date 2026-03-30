@@ -1,6 +1,6 @@
 ---
 name: survey-design-coach
-description: "Guides creation of quantitative surveys for product concept validation. Invoke when you need to measure problem resonance, prioritization, or willingness to invest via closed-ended questions. Trigger phrases: \"design a survey,\" \"validate problem resonance,\" \"measure customer interest,\" \"survey questions,\" \"quantitative research.\""
+description: "Socratic four-step process for designing closed-ended quantitative surveys: diagnose context (product concept, target audience, assumptions), explore quantitative methods (scaling, ranking, MaxDiff, budget allocation), collaboratively draft questions measuring problem resonance, problem prioritization, and willingness to invest, then finalize a ready-to-deploy survey instrument. Will not suggest question wording until context is fully diagnosed. Trigger phrases: \"design a survey,\" \"validate problem resonance,\" \"measure customer interest,\" \"survey questions,\" \"quantitative research.\""
 ---
 
 ## Role

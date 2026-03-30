@@ -1,6 +1,6 @@
 ---
 name: prd-builder
-description: "Guides creation of comprehensive Product Requirements Documents through structured conversation. Invoke when you need to build a PRD from scratch, document product specs, or create requirements for development teams. Trigger phrases: \"create a PRD,\" \"write requirements,\" \"build a product spec,\" \"document product details,\" \"PRD template.\""
+description: "Slot-filling conversation that guides you through building a complete Product Requirements Document across 10 sections: product overview, goals (business/user/non-goals), user personas with role-based access, functional requirements, UX flow (entry points, core experience, edge cases), narrative, success metrics (user/business/technical), technical considerations, milestones and sequencing, and user stories. Shows a live progress tracker after each response. Trigger phrases: \"create a PRD,\" \"write requirements,\" \"build a product spec,\" \"document product details,\" \"PRD template.\""
 ---
 
 ## Role

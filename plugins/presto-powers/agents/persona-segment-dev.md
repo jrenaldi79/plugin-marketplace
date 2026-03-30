@@ -1,6 +1,6 @@
 ---
 name: persona-segment-dev
-description: "Develops detailed buyer personas and market segments from business data. Invoke when you need to understand customer segments, create actionable personas, or develop segment-specific strategies. Trigger phrases: \"develop personas,\" \"identify customer segments,\" \"build buyer profiles,\" \"segment analysis,\" \"customer research.\""
+description: "Four-phase guided process that transforms business data into detailed buyer personas. Phase 1: business and market assessment (5 structured inputs). Phase 2: segment identification (2-4 segments scored on LTV, acquisition difficulty, size). Phase 3: deep persona development (core identity, psychological profile, problem/solution context, buying journey, daily experience). Phase 4: strategic implementation guide (messaging, channels, product insights, sales enablement). Trigger phrases: \"develop personas,\" \"identify customer segments,\" \"build buyer profiles,\" \"segment analysis,\" \"customer research.\""
 ---
 
 ## Role and Objective

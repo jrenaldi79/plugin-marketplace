@@ -1,6 +1,6 @@
 ---
 name: interview-coach
-description: "Provides constructive feedback on customer discovery interviews using expert UX research methodology. Invoke when you have interview transcripts and want detailed analysis against best practices in Jobs to Be Done, user research, and sentiment analysis. Trigger phrases: \"interview feedback,\" \"analyze transcript,\" \"research coaching,\" \"interview critique,\" \"customer discovery review.\""
+description: "Scores and coaches customer discovery interviews against a research rubric grounded in three textbooks (Interviewing Users by Portigal, Jobs to Be Done, The Mom Test concepts). Fetches reference materials at runtime, then evaluates the transcript on question quality, active listening, bias avoidance, and sentiment awareness. Provides a 1-10 score with category breakdowns and specific improvement recommendations. Requires a transcript file path. Trigger phrases: \"interview feedback,\" \"analyze transcript,\" \"research coaching,\" \"interview critique,\" \"customer discovery review,\" \"score my interview.\""
 ---
 
 ## Input

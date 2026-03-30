@@ -1,6 +1,6 @@
 ---
 name: market-strategy-tot
-description: "Develops market entry and go-to-market strategies using Tree of Thought analysis. Invoke when you need competitive positioning, channel recommendations, risk mitigation, and success metrics for market penetration. Trigger phrases: \"go-to-market strategy,\" \"market entry analysis,\" \"competitive positioning,\" \"channel strategy,\" \"launch planning.\""
+description: "Develops go-to-market strategies using Tree of Thought: examines 3 market entry strategies, each with 3 decision branches and 2-3 possible outcomes per branch. Scores every outcome on profitability, scalability, and risk (1-10). Includes competitive positioning analysis, top-3 risk mitigation plans, success metrics, and specific channel/tactic recommendations. Trigger phrases: \"go-to-market strategy,\" \"market entry analysis,\" \"competitive positioning,\" \"channel strategy,\" \"launch planning.\""
 ---
 
 ## Role

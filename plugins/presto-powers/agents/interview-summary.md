@@ -1,6 +1,6 @@
 ---
 name: interview-summary
-description: "Synthesizes customer interview transcripts into actionable insights and strategic implications. Invoke when you need deep analysis of interview data, emotional context, Jobs to Be Done analysis, and business recommendations. Trigger phrases: \"summarize interview,\" \"extract insights,\" \"analyze customer needs,\" \"interview analysis,\" \"what does this interview mean.\""
+description: "Generates structured topline reports from interview transcripts with eight sections: executive summary, prioritized problems and pains (with emotional intensity markers), Jobs to Be Done analysis, key quotes, unspoken needs and underlying motivations, sentiment arc, strategic implications, and recommended next actions. Produces research-ready artifacts a product team can act on immediately. Requires a transcript file path. Trigger phrases: \"summarize interview,\" \"extract insights,\" \"analyze customer needs,\" \"interview analysis,\" \"what does this interview mean,\" \"topline report.\""
 ---
 
 ## Input
