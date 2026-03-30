@@ -133,3 +133,12 @@ The SKILL.md file in `skills/using-product-kit/` controls how the main Claude ag
 - **NEVER rename the marketplace `name` field.** Cowork uses it as a lookup key in `cowork_settings.json` (e.g., `product-kit@plugin-marketplace`). Renaming it breaks the link and the plugin disappears on restart. Use `metadata.description` for the friendly name instead.
 - **Cowork plugins are session-immutable.** Plugins are cloned at session start and read-only during the session. Version bumps only take effect in new sessions — no amount of reinstalling within the same session will pick up changes.
 - **Plugin caching is aggressive.** If a new version isn't picked up, manually clear `~/.claude/plugins/cache/` and restart. There is no built-in cache-bust command yet.
+- **Cowork "Browse Plugins" UI does NOT persist third-party marketplaces.** Installing from the Cowork UI is session-only — the plugin disappears on restart. You MUST install via Claude Code CLI for persistence:
+  ```bash
+  claude plugin marketplace add https://github.com/jrenaldi79/plugin-marketplace
+  claude plugin install product-kit@plugin-marketplace
+  ```
+  This writes to `~/.claude/plugins/` and survives restarts. To update after a version bump:
+  ```bash
+  claude plugin update product-kit@plugin-marketplace
+  ```
