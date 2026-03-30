@@ -139,6 +139,10 @@ The sync pipeline has a 31-test TDD suite covering extraction, merge, diff detec
 
 - **Board of Innovation** — *50+ Business Model Examples*. The `/bizmodel` agent's company-anchored pattern library and "What if?" provocations.
 
+## License
+
+MIT — see [LICENSE](LICENSE).
+
 ## Author
 
 John Renaldi — [jrenaldi79](https://github.com/jrenaldi79) | [presto.consulting](https://presto.consulting)
