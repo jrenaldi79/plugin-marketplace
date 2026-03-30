@@ -7,13 +7,13 @@
 | Agent | Command | What it Does | Deliverable |
 |-------|---------|-------------|-------------|
 | Business Consultant (ToT) | `/consult` | 3 consultants + risk analyst evaluate a business challenge through 5-phase Tree of Thought | `outputs/consult-*.md` |
-| Elite Advisor | `/advisor` | Brutally honest strategic coaching — exposes blind spots, prioritizes actions | `outputs/advisor-*.md` |
+| Elite Advisor | `/advisor` | Dual-mode: coaching (exposes blind spots, prioritizes actions) + document review (6-pass BMAD-influenced adversarial analysis with Ship/Fix/Rethink verdict) | `outputs/advisor-*.md` |
 | Interview Coach | `/coach` | Scores and coaches customer discovery interviews against rubric + textbook best practices | `outputs/coach-*.md` |
 | Interview Summary | `/summarize` | Generates 8-section topline reports from interview transcripts (JTBD, sentiment, themes) | `outputs/summary-*.md` |
 | Meta-Prompt Engineer | `/prompter` | Collaboratively designs and refines AI system prompts | `outputs/prompter-*.md` |
 | Survey Design Coach | `/survey` | Socratic process for designing closed-ended survey questions | `outputs/survey-*.md` |
 | Persona Developer | `/personas` | 4-phase guided process to build detailed buyer personas | `outputs/personas-*.md` |
-| PRD Builder | `/prd` | Slot-filling conversation to produce a complete Product Requirements Document | `outputs/prd-*.md` |
+| PRD Builder | `/prd` | Context-harvesting PRD generator — scans ./outputs/ for prior deliverables, pre-fills automatically, covers 11 sections with narrative journeys and NFRs, self-validates | `outputs/prd-*.md` |
 | Expert Debate Facilitator | `/debate` | Simulates renowned experts debating a problem through iterative drafting | `outputs/debate-*.md` |
 | Market Strategy (ToT) | `/strategy` | Scores 3 market entry strategies on profitability, scalability, and risk | `outputs/strategy-*.md` |
 | YC Review | `/yc-review` | YC-style office hours — 6 forcing questions to pressure-test a product concept | `outputs/yc-review-*.md` |

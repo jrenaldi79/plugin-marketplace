@@ -16,7 +16,7 @@ This plugin provides 12 specialized AI sub-agents. Each agent runs in its own co
 | `/yc-review` | YC Review | Six forcing questions that pressure-test a product concept: demand reality, status quo analysis, desperate specificity, narrowest wedge, founder observation, and future-fit. Produces a verdict (strong/underspecified/rethink), strongest element, biggest gap, and concrete next steps. |
 | `/ceo-review` | CEO Review | Founder-mode plan review with four modes: Scope Expansion (dream big), Selective Expansion (cherry-pick), Hold Scope (maximum rigor), and Scope Reduction (strip to essentials). Enforces nine prime directives including zero silent failures and mandatory diagrams. |
 | `/consult` | Business Consultant (ToT) | Three expert consultants and a skeptical risk analyst evaluate a business challenge through five phases: branch generation (3 distinct approaches), exploration (desirability/viability/feasibility per approach), cross-branch evaluation, convergence on the optimal path, and deep-dive execution planning. |
-| `/advisor` | Elite Advisor | Brutally honest strategic coaching. Runs a structured refinement loop: extract context and goals, expose blind spots and faulty reasoning, emulate the top 0.01% domain expert (user picks who), then build a prioritized action plan. Always highlights the single most impactful next step. |
+| `/advisor` | Elite Advisor | Dual-mode agent: **Coaching mode** — brutally honest strategic coaching that extracts context, exposes blind spots, emulates the top 0.01% domain expert, and builds a prioritized action plan. **Document review mode** — point it at any file (especially a PRD) for a 6-pass BMAD-influenced adversarial analysis: adversarial findings, edge case hunting, internal consistency checks, executability tests, hard questions, and a Ship/Fix/Rethink verdict with ranked findings. |
 | `/strategy` | Market Strategy (ToT) | Develops go-to-market strategies: examines 3 market entry strategies, each with 3 decision branches and 2-3 outcomes per branch. Scores every outcome on profitability, scalability, and risk (1-10). Includes competitive positioning, risk mitigation, success metrics, and channel recommendations. |
 | `/debate` | Expert Debate | Simulates a panel of renowned experts debating a complex problem. Selects domain experts with distinct viewpoints, then facilitates iterative drafting rounds: initial perspectives, constructive challenges, assumption stress-testing, and convergent synthesis. Each expert speaks in their authentic voice. |
 
@@ -33,7 +33,7 @@ This plugin provides 12 specialized AI sub-agents. Each agent runs in its own co
 
 | Command | Agent | What It Does |
 |---------|-------|-------------|
-| `/prd` | PRD Builder | Slot-filling conversation across 10 sections: product overview, goals, user personas, functional requirements, UX flow, narrative, success metrics, technical considerations, milestones, and user stories. Shows a live progress tracker after each response. |
+| `/prd` | PRD Builder | Context-harvesting PRD generator. Scans `./outputs/` for prior agent deliverables (yc-review, consult, personas, strategy, etc.) and pre-fills sections automatically — only prompts for genuinely missing information. Covers 11 sections: problem & vision, goals, constraints/assumptions/out-of-scope, user personas, narrative user journeys, functional requirements, non-functional requirements, success metrics, technical considerations, milestones & sequencing, and user stories. Runs a self-validation pass before finalizing. |
 | `/prompter` | Meta-Prompt Engineer | Collaboratively designs AI system prompts: deconstruct the goal, identify components (identity, objective, ruleset, workflow), draft with deliberate persona and tool integration, then iteratively refine. Follows clarity over brevity, structure over prose, tool-agnostic design. |
 
 ## Recommended Workflow: Concept-to-Plan Pipeline
@@ -58,13 +58,15 @@ These agents are designed to chain together. For students refining product conce
 
 ### Phase 4: Refinement & Rigor — Is this tight enough to execute?
 
-**`/advisor`** — Brutally honest gut check on the full picture. Exposes the biggest remaining weakness and prescribes the single most impactful next step.
+**`/advisor`** — Brutally honest gut check on the full picture (coaching mode). Or point it at a specific document for a 6-pass adversarial review with a Ship/Fix/Rethink verdict (document review mode).
 
 **`/ceo-review`** — Final founder-mode scope and ambition review. Use Mode A (Scope Expansion) if the team is playing too small. Use Mode D (Scope Reduction) if the plan is overloaded with features. Use Mode C (Hold Scope) if it's right-sized and needs to be bulletproof.
 
 ### Phase 5: Documentation & Validation Design — Capture it
 
-**`/prd`** — Build the Product Requirements Document with everything learned across Phases 1-4.
+**`/prd`** — Build the Product Requirements Document. The agent automatically scans `./outputs/` for everything learned across Phases 1-4 and pre-fills sections — you only answer what it can't figure out on its own.
+
+**`/advisor`** (document review mode) — Point it at the PRD for a 6-pass adversarial review before shipping.
 
 **`/survey`** — Design a closed-ended validation survey to test remaining assumptions with real users in the next round of primary research.
 
@@ -86,7 +88,9 @@ A strong concept with clear demand might skip `/debate` and go straight from `/c
 
 **"What's my go-to-market?"** → `/strategy`
 
-**"Give me the honest truth about my plan"** → `/advisor`
+**"Give me the honest truth about my plan"** → `/advisor` (coaching mode)
+
+**"Review this PRD for gaps and problems"** → `/advisor` (document review mode)
 
 **"Is my scope right? Am I thinking big enough?"** → `/ceo-review`
 
