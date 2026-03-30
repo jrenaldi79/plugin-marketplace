@@ -2,6 +2,22 @@
 
 A plugin marketplace for Claude Code and Cowork with 15 specialized AI agents for product management, business analysis, concept validation, interview coaching, and strategic thinking. Every agent writes its full analysis to `./outputs/` as a standalone deliverable.
 
+## Flagship Agents
+
+**`/advisor`** and **`/debate`** are the highest-value agents in the kit. Use them early and often.
+
+**`/advisor`** is specifically prompted for anti-sycophancy. Most AI tools agree with whatever you say. This agent does the opposite: it pushes back on your reasoning, won't soften feedback to preserve rapport, and won't tell you your idea is strong unless it actually is. Two modes: coaching (exposes blind spots, forces you to defend your thinking) and document review (6-pass adversarial analysis with a Ship/Fix/Rethink verdict). Callable at any point in the pipeline.
+
+**`/debate`** assembles user-scoped expert panels. You choose the domain (business/venture, technical, specialty technical, financial, customer/market, or mixed), and the agent asks clarifying questions before selecting experts. Supports parallel panels: run a VC panel and a technical panel simultaneously, then get a cross-panel synthesis showing where they agree, disagree, and what each missed.
+
+## Key Techniques
+
+**Tree of Thought (ToT):** Several agents use Tree of Thought, a prompting technique where the AI generates multiple distinct reasoning paths in parallel, evaluates each one, cross-pollinates the strongest ideas, and converges on a synthesized answer. Instead of one linear response, you get the equivalent of multiple experts debating and refining. Agents using ToT: `/consult` (3 strategic approaches scored on desirability/viability/feasibility), `/strategy` (3 market entry strategies with branching outcomes scored on profitability/scalability/risk), `/debate` (expert panel with iterative challenge rounds).
+
+**Socratic Coaching:** `/bizmodel`, `/pricing`, `/survey`, and `/personas` use Socratic method — they coach through questioning rather than handing you answers. The founder discovers their own insights through the framework.
+
+**Anti-Sycophancy Prompting:** `/advisor` is explicitly prompted to counteract AI agreeableness. It will not soften feedback, perform enthusiasm it doesn't hold, or lead with praise as a cushion before criticism.
+
 ## Installation
 
 Add this marketplace in Claude Code or Cowork:

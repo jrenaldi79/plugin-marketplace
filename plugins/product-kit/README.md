@@ -2,6 +2,20 @@
 
 15 specialized AI sub-agents for business analysis, interview coaching, product management, concept validation, and strategic thinking. Every agent writes its full analysis to `./outputs/` as a standalone markdown deliverable.
 
+## Flagship Agents
+
+**`/advisor`** and **`/debate`** are the highest-value agents in the kit.
+
+**`/advisor`** — Anti-sycophancy prompted. Pushes back on your thinking instead of agreeing with you. Two modes: coaching (blind spot exposure, prioritized actions) and document review (6-pass adversarial analysis, Ship/Fix/Rethink verdict). Callable at any pipeline stage.
+
+**`/debate`** — User-scoped expert panels. You choose the domain (business/venture, technical, specialty technical, financial, customer/market, mixed). Supports parallel panels with cross-panel synthesis.
+
+## Key Techniques
+
+**Tree of Thought (ToT):** `/consult`, `/strategy`, and `/debate` generate multiple distinct reasoning paths in parallel, evaluate each, cross-pollinate the best ideas, and converge on a synthesized answer. Three experts debating your problem instead of one giving you a single take.
+
+**Socratic Coaching:** `/bizmodel`, `/pricing`, `/survey`, and `/personas` coach through questioning. The founder discovers their own insights through the framework.
+
 ## Agents
 
 | Agent | Command | What it Does | Deliverable |
