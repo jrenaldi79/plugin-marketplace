@@ -131,9 +131,13 @@ The sync pipeline has a 31-test TDD suite covering extraction, merge, diff detec
 
 - **Jonathan Ellis / [Sandalphon Capital](https://sandalphon.vc)** — The `/vc-review` agent's gated screening pipeline (Elevator Clarity, Problem Severity, TAM, Timing Catalyst, Delta 4, Problem Decomposition, Solution-Problem Fit, Competitive Positioning, Pre-Mortem) and BMAD-based adversarial stress-testing architecture are adapted from Jonathan's automated healthcare VC diligence system, generalized for cross-industry use.
 
-- **Madhavan Ramanujam & Georg Tacke** — *Monetizing Innovation* (Wiley, 2016). The `/pricing` agent's framework: four monetization failures (Feature Shock, Minivation, Hidden Gem, Undead) and the 9 Rules of Monetization (WTP validation, needs-based segmentation, Leader-Filler-Killer, Good-Better-Best, monetization model selection, pricing strategy, outside-in business case, value communication, price integrity).
+- **Alexander Osterwalder & Yves Pigneur** — *Business Model Generation* (Wiley, 2010). The `/bizmodel` agent's nine-block Business Model Canvas structure, misalignment diagnosis, and business model pattern language.
 
-- **Board of Innovation** — *50+ Business Model Examples*. The `/bizmodel` agent's company-anchored pattern library and "What if?" provocations are drawn from Board of Innovation's pattern catalog, used alongside the Business Model Canvas and Doblin Ten Types of Innovation.
+- **Larry Keeley, Ryan Pikkel, Brian Quinn & Helen Walters** — *Ten Types of Innovation* (Wiley, 2013). The `/bizmodel` agent's Doblin framework pushes founders past product-only thinking across all ten innovation types: Profit Model, Network, Structure, Process, Product Performance, Product System, Service, Channel, Brand, and Customer Engagement.
+
+- **Madhavan Ramanujam & Georg Tacke** — *Monetizing Innovation* (Wiley, 2016). The `/pricing` agent's framework: four monetization failures (Feature Shock, Minivation, Hidden Gem, Undead) and the 9 Rules of Monetization.
+
+- **Board of Innovation** — *50+ Business Model Examples*. The `/bizmodel` agent's company-anchored pattern library and "What if?" provocations.
 
 ## Author
 
