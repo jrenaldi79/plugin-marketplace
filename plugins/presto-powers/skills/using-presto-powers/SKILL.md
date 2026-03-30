@@ -5,7 +5,7 @@ description: "Guide for using Presto Powers AI agents. Use when the user asks ab
 
 # Using Presto Powers
 
-This plugin provides 13 specialized AI sub-agents. Each agent runs in its own context window, can be invoked via slash command or natural language, and saves its full analysis to `./outputs/` as a standalone markdown file.
+This plugin provides 14 specialized AI sub-agents. Each agent runs in its own context window, can be invoked via slash command or natural language, and saves its full analysis to `./outputs/` as a standalone markdown file.
 
 ## Available Agents
 
@@ -18,6 +18,7 @@ This plugin provides 13 specialized AI sub-agents. Each agent runs in its own co
 | `/consult` | Business Consultant (ToT) | Three expert consultants and a skeptical risk analyst evaluate a business challenge through five phases: branch generation (3 distinct approaches), exploration (desirability/viability/feasibility per approach), cross-branch evaluation, convergence on the optimal path, and deep-dive execution planning. |
 | `/advisor` | Elite Advisor | Dual-mode agent: **Coaching mode** — brutally honest strategic coaching that extracts context, exposes blind spots, emulates the top 0.01% domain expert, and builds a prioritized action plan. **Document review mode** — point it at any file (especially a PRD) for a 6-pass BMAD-influenced adversarial analysis: adversarial findings, edge case hunting, internal consistency checks, executability tests, hard questions, and a Ship/Fix/Rethink verdict with ranked findings. |
 | `/strategy` | Market Strategy (ToT) | Develops go-to-market strategies: examines 3 market entry strategies, each with 3 decision branches and 2-3 outcomes per branch. Scores every outcome on profitability, scalability, and risk (1-10). Includes competitive positioning, risk mitigation, success metrics, and channel recommendations. |
+| `/bizmodel` | Business Model Architect | Socratic business model coaching grounded in three frameworks: **Business Model Canvas** (9 building blocks — diagnoses misalignments and blind spots), **Ten Types of Innovation** (pushes founders past product-only thinking across the full value chain), and **50+ business model patterns** with Blue Ocean Four Actions Framework. Coaches through questioning, not dictating. Uses real company analogies constantly. Includes a model stress test (unit economics, scalability, defensibility, assumption stack). |
 | `/debate` | Expert Debate | Simulates a panel of renowned experts debating a complex problem. Selects domain experts with distinct viewpoints, then facilitates iterative drafting rounds: initial perspectives, constructive challenges, assumption stress-testing, and convergent synthesis. Each expert speaks in their authentic voice. |
 
 ### Research & Evidence Gathering
@@ -64,10 +65,11 @@ Based on what you've shared, here's the plan I'd recommend:
 2. /consult — Explore 3 strategic approaches with the research as context.
 3. /debate — Have domain experts stress-test the top approaches.
 4. /personas — Define your target users before GTM planning.
-5. /strategy — Build the go-to-market plan with personas defined.
-6. /advisor — Honest gut check on the full strategy before we document it.
-7. /prd — Capture everything into a PRD (it'll pull from all prior outputs).
-8. /advisor (review mode) — Adversarial review of the PRD before you ship it.
+5. /bizmodel — Work through the business model: who pays, how, and why it's defensible.
+6. /strategy — Build the go-to-market plan with personas and model defined.
+7. /advisor — Honest gut check on the full strategy before we document it.
+8. /prd — Capture everything into a PRD (it'll pull from all prior outputs).
+9. /advisor (review mode) — Adversarial review of the PRD before you ship it.
 
 Skipping: /yc-review (your deck already answers the forcing questions),
 /ceo-review (scope looks right-sized already).
@@ -88,6 +90,8 @@ Want to adjust anything, or should we start?
 **`/consult`** — Three consultants generate distinct strategic approaches scored on desirability, viability, and feasibility. Strongest when fed research evidence. Good for broadening the solution space before narrowing.
 
 **`/personas`** — Build detailed buyer personas grounded in the validated problem. Anchors GTM and product decisions in specific users, not abstract markets.
+
+**`/bizmodel`** — Socratic business model coaching. Maps the 9 Canvas blocks, diagnoses misalignments, pushes innovation across the full value chain (not just product), and introduces relevant model patterns. Pairs naturally with `/consult` (which explores strategic approaches) and `/strategy` (which plans GTM). Run `/bizmodel` when you need to figure out how the business actually works — who pays, how, and why the model is defensible.
 
 **`/strategy`** — Develops go-to-market plans. Score entry strategies on profitability, scalability, and risk. Best run after personas are defined.
 
@@ -119,9 +123,9 @@ Want to adjust anything, or should we start?
 
 ### Example Plans by Stage
 
-**"I just have an idea"** → `/research` → `/consult` → `/debate` → `/personas` → `/strategy` → `/advisor` → `/prd` → `/advisor` (review)
+**"I just have an idea"** → `/research` → `/consult` → `/debate` → `/personas` → `/bizmodel` → `/strategy` → `/advisor` → `/prd` → `/advisor` (review)
 
-**"I have a pitch deck and some interviews"** → `/research` (gaps only) → `/consult` → `/debate` → `/strategy` → `/prd` → `/advisor` (review)
+**"I have a pitch deck and some interviews"** → `/research` (gaps only) → `/consult` → `/debate` → `/bizmodel` → `/strategy` → `/prd` → `/advisor` (review)
 
 **"I need to pressure-test before Demo Day"** → `/advisor` (coaching) → `/debate` → `/yc-review`
 
@@ -140,6 +144,8 @@ Want to adjust anything, or should we start?
 **"I need to evaluate multiple strategic approaches"** → `/consult`
 
 **"I want expert perspectives on this problem"** → `/debate`
+
+**"How does this business actually make money?"** → `/bizmodel`
 
 **"What's my go-to-market?"** → `/strategy`
 
