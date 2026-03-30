@@ -125,9 +125,15 @@ The sync pipeline has a 31-test TDD suite covering extraction, merge, diff detec
 
 ## Credits
 
-- **[gstack](https://github.com/garrytan/gstack)** by [Garry Tan](https://github.com/garrytan) — The YC Review and CEO Review agents build on Garry's office-hours and plan-ceo-review frameworks. gstack is an open-source AI builder framework with 28+ specialized skills for startup founders and engineers. The framework content is used under gstack's license and synced automatically to stay current with upstream improvements.
+- **[gstack](https://github.com/garrytan/gstack)** by [Garry Tan](https://github.com/garrytan) (MIT) — `/yc-review` and `/ceo-review` build on Garry's office-hours and plan-ceo-review frameworks.
 
-- **[BMAD Method](https://github.com/bmadcode/BMAD-METHOD)** by [BMad](https://github.com/bmadcode) — The Critic's document review mode uses a 6-pass adversarial analysis pattern influenced by the BMAD Method's approach to systematic PRD and planning document review. BMAD (Breakthrough Method of Agile AI-Driven Development) provides structured frameworks for AI-assisted software development, including multi-persona orchestration and document validation workflows.
+- **[BMAD Method](https://github.com/bmad-code-org/BMAD-METHOD)** by [BMad](https://github.com/bmad-code-org) (MIT) — The Critic's 6-pass adversarial document review and the five stress-testing techniques in `/vc-review` (First Principles Decomposition, Reverse Brainstorming, Six Thinking Hats, Red Team vs Blue Team, Analogous Company Analysis, Debate Club Showdown) are influenced by BMAD's structured elicitation and analysis workflows.
+
+- **Jonathan Ellis / [Sandalphon Capital](https://sandalphon.vc)** — The `/vc-review` agent's gated screening pipeline (Elevator Clarity, Problem Severity, TAM, Timing Catalyst, Delta 4, Problem Decomposition, Solution-Problem Fit, Competitive Positioning, Pre-Mortem) and BMAD-based adversarial stress-testing architecture are adapted from Jonathan's automated healthcare VC diligence system, generalized for cross-industry use.
+
+- **Madhavan Ramanujam & Georg Tacke** — *Monetizing Innovation* (Wiley, 2016). The `/pricing` agent's framework: four monetization failures (Feature Shock, Minivation, Hidden Gem, Undead) and the 9 Rules of Monetization (WTP validation, needs-based segmentation, Leader-Filler-Killer, Good-Better-Best, monetization model selection, pricing strategy, outside-in business case, value communication, price integrity).
+
+- **Board of Innovation** — *50+ Business Model Examples*. The `/bizmodel` agent's company-anchored pattern library and "What if?" provocations are drawn from Board of Innovation's pattern catalog, used alongside the Business Model Canvas and Doblin Ten Types of Innovation.
 
 ## Author
 

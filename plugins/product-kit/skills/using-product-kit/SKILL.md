@@ -70,12 +70,12 @@ Based on what you've shared, here's the plan I'd recommend:
 5. /bizmodel — Work through the business model: who pays, how, and why it's defensible.
 6. /pricing — Validate pricing architecture: WTP, segmentation, configuration, and monetization model.
 7. /strategy — Build the go-to-market plan with personas and model defined.
-8. /critic — Honest gut check on the full strategy before we document it.
-9. /prd — Capture everything into a PRD (it'll pull from all prior outputs).
-9. /critic (review mode) — Adversarial review of the PRD before you ship it.
+8. /yc-review + /vc-review (in parallel) — Investor-perspective evaluation from two angles at once.
+9. /critic — Honest gut check on the full strategy before we document it.
+10. /prd — Capture everything into a PRD (it'll pull from all prior outputs).
+11. /critic (review mode) — Adversarial review of the PRD before you ship it.
 
-Skipping: /yc-review (your deck already answers the forcing questions),
-/ceo-review (scope looks right-sized already).
+Skipping: /ceo-review (scope looks right-sized already).
 
 Want to adjust anything, or should we start?
 ```
@@ -188,10 +188,3 @@ Every agent saves a complete markdown document to `./outputs/`. You get a concis
 - **Interview agents** (coach, summarize) need a transcript file path. Place the transcript in your working folder and reference it by path.
 - **Chain outputs forward.** Each agent's deliverable file can be fed into the next agent. Tell the next agent: "Read ./outputs/yc-review-2026-03-30.md and use it as context."
 - All agents can also be triggered by natural language — just describe what you need and Claude will route to the right agent.
-
-## Credits
-
-- **Garry Tan / Y Combinator** — [gstack](https://github.com/garrytan/gstack) office-hours framework, adapted for `/yc-review` and `/ceo-review`
-- **Jonathan Ellis / Sandalphon Capital** — VC diligence pipeline (gated screening frameworks + BMAD adversarial stress-testing techniques), generalized from healthcare for `/vc-review`
-- **BMAD Method** — Adversarial document analysis methodology, influences `/critic` 6-pass review and `/vc-review` stress-testing techniques
-- **Simon Ramanujam & Madhavan Tacke** — *Monetizing Innovation*, the framework behind `/pricing`
