@@ -7,6 +7,43 @@ description: "Guide for using Product Kit AI agents. Use when the user asks abou
 
 This plugin provides 16 specialized AI sub-agents. Each agent runs in its own context window, can be invoked via slash command or natural language, and saves its full analysis to `./outputs/` as a standalone markdown file.
 
+## Behavioral Rules (MANDATORY)
+
+These rules override all other guidance. Follow them every time, no exceptions.
+
+1. **NEVER launch agents without explicit user approval.** Always present a proposed plan first, explain why you chose those agents, suggest others the user may not have considered, and wait for the user to say "go" before launching anything. This is a hard gate — not a suggestion.
+2. **ALWAYS pass source file paths to subagents.** When launching an agent, include the absolute file paths to every uploaded document, pitch deck, transcript, or prior output the agent will need. Do NOT summarize files and pass the summary — pass the paths so the subagent can read the originals itself. Subagents have full file access; use it.
+3. **Read uploaded files before proposing a plan.** If the user attached files, read them in full first. Your plan should reflect what's actually in those documents — what's strong, what's missing, what needs deeper analysis.
+4. **Suggest agents the user didn't ask for.** If the user says "run a VC review," don't just launch `/vc-review`. Assess whether other agents would add value (e.g., `/yc-review` in parallel, `/research` to fill gaps first, `/critic` as a follow-up). Present the full recommendation and let the user decide.
+
+## Launching Agents
+
+When you launch a subagent (via the Agent tool or slash command), follow this protocol:
+
+1. **Include all source file paths.** List every file the agent should read — uploaded documents, pitch decks, transcripts, and relevant `./outputs/` files. Format them as absolute paths the agent can pass to the Read tool.
+2. **State the evaluation goal.** Tell the agent what the user is trying to accomplish, not just "evaluate this company."
+3. **Reference prior outputs.** If earlier agents have already run, tell the new agent which output files to read for context.
+
+**Example agent launch prompt:**
+
+```
+Evaluate [Company Name] using the VC Review framework.
+
+Read these source files before starting:
+- /path/to/uploaded/pitch-deck.pdf
+- /path/to/uploaded/investor-qa.md
+- /path/to/uploaded/financials.xlsx
+- ./outputs/research-2026-03-30.md (prior market research)
+
+The user wants to know if this venture holds up under structured investor scrutiny.
+Focus areas the user mentioned: [any specific concerns].
+```
+
+**What NOT to do:**
+- ❌ Summarize the pitch deck in 3 paragraphs and pass only the summary
+- ❌ Launch agents without telling them where the source files are
+- ❌ Assume the subagent already has context — it starts with a blank slate
+
 ## Available Agents
 
 ### Concept Validation & Strategy
@@ -49,21 +86,29 @@ This plugin provides 16 specialized AI sub-agents. Each agent runs in its own co
 
 These agents are designed to chain together, but not every concept needs every agent. The workflow adapts to where the founder is — a team with a pitch deck, 20 customer interviews, and a competitive analysis needs a very different plan than someone who walked in with a napkin sketch.
 
-### Step 0: Planning Conversation (ALWAYS START HERE)
+### Step 0: Planning Conversation (MANDATORY — DO NOT SKIP)
 
-Before running any agents, have a short planning conversation with the founder. Understand what they have, what they need, and what stage they're at.
+Before running any agents, have a planning conversation with the user. Do NOT launch agents until the user explicitly approves the plan.
 
-**Assess what exists:**
-- **Read any uploaded files first.** If the founder attached a pitch deck, one-pager, business plan, or market research, read them in full before asking questions. These are your primary context — most of your planning decisions come from what's in these documents.
-- Check `./outputs/` for prior agent deliverables from earlier sessions.
-- Based on what you've read, assess how developed their thinking is: just an idea vs. validated concept vs. ready to build. Note what's strong and what has gaps.
+**1. Read all uploaded files first.**
+If the user attached a pitch deck, one-pager, business plan, market research, or any other document, read every file in full using the Read tool before doing anything else. These are your primary context — most of your planning decisions come from what's in these documents. Note the absolute file paths; you'll need them when launching agents.
 
-**Propose a plan:** Based on the assessment, recommend which agents to run and in what order. Present it as a checklist the founder can approve, modify, or trim:
+**2. Check for prior outputs.**
+Scan `./outputs/` for deliverables from earlier sessions. Note what already exists.
+
+**3. Assess the situation.**
+Based on what you've read, assess: How developed is their thinking? Just an idea vs. validated concept vs. ready to build. What's strong? What has gaps? What specific questions would the agents help answer?
+
+**4. Propose a plan and wait for approval.**
+Recommend which agents to run and in what order. Explain WHY each agent is included — what gap it fills or what question it answers. Suggest agents the user may not have thought of. Present it as a checklist:
 
 ```
-Based on what you've shared, here's the plan I'd recommend:
+Here's what I found in your materials:
+- [Brief assessment of what's strong and what has gaps]
 
-1. /research — Your competitive landscape section is thin. I'll fill that in.
+Based on that, here's the plan I'd recommend:
+
+1. /research — Your competitive landscape section is thin. I'll fill that in first.
 2. /consult — Explore 3 strategic approaches with the research as context.
 3. /debate — Have domain experts stress-test the top approaches.
 4. /personas — Define your target users before GTM planning.
@@ -77,10 +122,15 @@ Based on what you've shared, here's the plan I'd recommend:
 
 Skipping: /ceo-review (scope looks right-sized already).
 
+You might also want to consider:
+- /survey — if you want to validate demand quantitatively before building
+
 Want to adjust anything, or should we start?
 ```
 
-**Once approved, create a task list** in Cowork to track progress through each step. Update it as each agent completes.
+**⛔ DO NOT proceed past this point until the user approves the plan.** If the user modifies the plan, confirm the revised version before launching.
+
+**5. Once approved, create a task list** in Cowork to track progress through each step. Update it as each agent completes.
 
 ### Core Pipeline (every step is optional — include based on what the founder needs)
 
@@ -187,4 +237,5 @@ Every agent saves a complete markdown document to `./outputs/`. You get a concis
 - **Multi-turn agents** (critic, consult, personas, prd, debate) maintain context across rounds. Push back, ask follow-ups, or redirect naturally.
 - **Interview agents** (coach, summarize) need a transcript file path. Place the transcript in your working folder and reference it by path.
 - **Chain outputs forward.** Each agent's deliverable file can be fed into the next agent. Tell the next agent: "Read ./outputs/yc-review-2026-03-30.md and use it as context."
+- **Pass file paths, not summaries.** When launching agents, always include the absolute paths to source documents. The subagent reads the originals — it does not need your summary.
 - All agents can also be triggered by natural language — just describe what you need and Claude will route to the right agent.
