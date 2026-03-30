@@ -1,0 +1,66 @@
+name: Sync gstack frameworks
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6am UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install test dependencies
+        run: pip install pytest
+
+      - name: Fetch raw gstack office-hours SKILL.md
+        run: |
+          curl -sL "https://raw.githubusercontent.com/garrytan/gstack/main/office-hours/SKILL.md" \
+            -o sync/fixtures/gstack-office-hours-raw.md
+
+      - name: Fetch raw gstack plan-ceo-review SKILL.md
+        run: |
+          curl -sL "https://raw.githubusercontent.com/garrytan/gstack/main/plan-ceo-review/SKILL.md" \
+            -o sync/fixtures/gstack-ceo-review-raw.md
+
+      - name: Run sync
+        id: sync
+        working-directory: sync/scripts
+        run: |
+          python run_sync.py
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Run tests if changes detected
+        if: steps.sync.outcome == 'success' || steps.sync.outcome == 'failure'
+        working-directory: sync/scripts
+        run: pytest test_sync.py -v
+
+      - name: Create PR if changes detected
+        if: steps.sync.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          BRANCH="sync/gstack-$(date +%Y%m%d)"
+          git checkout -b "$BRANCH"
+          git add sync/ plugins/
+          git commit -m "sync: update gstack frameworks $(date +%Y-%m-%d)"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "Sync gstack frameworks $(date +%Y-%m-%d)" \
+            --body "Automated sync of upstream gstack framework changes into Presto Powers agents." \
+            --base main \
+            --head "$BRANCH"
