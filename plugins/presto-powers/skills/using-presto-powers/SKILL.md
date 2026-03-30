@@ -5,7 +5,7 @@ description: "Guide for using Presto Powers AI agents. Use when the user asks ab
 
 # Using Presto Powers
 
-This plugin provides 12 specialized AI sub-agents. Each agent runs in its own context window, can be invoked via slash command or natural language, and saves its full analysis to `./outputs/` as a standalone markdown file.
+This plugin provides 13 specialized AI sub-agents. Each agent runs in its own context window, can be invoked via slash command or natural language, and saves its full analysis to `./outputs/` as a standalone markdown file.
 
 ## Available Agents
 
@@ -19,6 +19,12 @@ This plugin provides 12 specialized AI sub-agents. Each agent runs in its own co
 | `/advisor` | Elite Advisor | Dual-mode agent: **Coaching mode** — brutally honest strategic coaching that extracts context, exposes blind spots, emulates the top 0.01% domain expert, and builds a prioritized action plan. **Document review mode** — point it at any file (especially a PRD) for a 6-pass BMAD-influenced adversarial analysis: adversarial findings, edge case hunting, internal consistency checks, executability tests, hard questions, and a Ship/Fix/Rethink verdict with ranked findings. |
 | `/strategy` | Market Strategy (ToT) | Develops go-to-market strategies: examines 3 market entry strategies, each with 3 decision branches and 2-3 outcomes per branch. Scores every outcome on profitability, scalability, and risk (1-10). Includes competitive positioning, risk mitigation, success metrics, and channel recommendations. |
 | `/debate` | Expert Debate | Simulates a panel of renowned experts debating a complex problem. Selects domain experts with distinct viewpoints, then facilitates iterative drafting rounds: initial perspectives, constructive challenges, assumption stress-testing, and convergent synthesis. Each expert speaks in their authentic voice. |
+
+### Research & Evidence Gathering
+
+| Command | Agent | What It Does |
+|---------|-------|-------------|
+| `/research` | Market Researcher | Context-aware research agent with three modes: **Market Research** (TAM/SAM/SOM sizing, landscape mapping, trend analysis), **Competitive Intelligence** (feature/pricing teardowns, positioning gap analysis, funding/growth signals), and **Domain Research** (terminology, regulations, standards, stakeholder maps). Scans uploaded docs and `./outputs/` first, scores evidence density across five dimensions, then only researches what's genuinely missing. Uses Tavily for search and Firecrawl for deep extraction when available, falls back to native WebSearch/WebFetch otherwise. |
 
 ### Customer Research & Interviews
 
@@ -44,9 +50,15 @@ These agents are designed to chain together. For students refining product conce
 
 **`/yc-review`** — Start here. The six forcing questions establish whether the problem is real and the concept has legs. Demand reality and desperate specificity are the first filters. If the verdict is "needs fundamental rethinking," pivot before investing deeper work. If it's "promising but underspecified," the review tells you exactly what to go figure out.
 
+### Phase 1.5: Research & Evidence (Run if evidence is thin)
+
+**`/research`** — Scans everything you've uploaded and all prior outputs, scores your evidence density across five dimensions (market sizing, competitive landscape, customer evidence, domain knowledge, trends), then goes to the web to fill gaps. If you walked in with a pitch deck and interview data, it skips what's already strong. If you walked in with just an idea, it runs the full cycle. Adapts to where you are.
+
+Use this before `/consult` and `/strategy` so those agents have real data to work with instead of assumptions.
+
 ### Phase 2: Solution Exploration — What are the approaches?
 
-**`/consult`** — Three consultants generate distinct strategic approaches with desirability/viability/feasibility scoring. This broadens the solution space before you narrow.
+**`/consult`** — Three consultants generate distinct strategic approaches with desirability/viability/feasibility scoring. This broadens the solution space before you narrow. Strongest when fed research evidence.
 
 **`/debate`** — Take the top 1-2 approaches from `/consult` and have domain experts stress-test them from different angles. Catches blind spots the consultants might share.
 
@@ -76,11 +88,15 @@ These agents are designed to chain together. For students refining product conce
 
 ### Not Every Concept Needs Every Phase
 
-A strong concept with clear demand might skip `/debate` and go straight from `/consult` to `/personas`. A concept that fails `/yc-review` should loop back to problem discovery before touching any other agent. Use judgment — the pipeline is a guide, not a mandate.
+A strong concept with clear demand might skip `/debate` and go straight from `/consult` to `/personas`. A founder who walks in with a pitch deck, customer interviews, and competitive analysis can skip `/research` entirely — the agent will tell you when your evidence base is solid. A concept that fails `/yc-review` should loop back to problem discovery before touching any other agent. Use judgment — the pipeline is a guide, not a mandate.
 
 ## How to Choose (Quick Reference)
 
 **"I have an idea, is it any good?"** → `/yc-review`
+
+**"What does the competitive landscape look like?"** → `/research`
+
+**"How big is this market?"** → `/research`
 
 **"I need to evaluate multiple strategic approaches"** → `/consult`
 

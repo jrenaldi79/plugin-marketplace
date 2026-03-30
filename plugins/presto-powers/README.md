@@ -1,12 +1,13 @@
 # Presto Powers
 
-12 specialized AI sub-agents for business analysis, interview coaching, product management, concept validation, and strategic thinking. Every agent writes its full analysis to `./outputs/` as a standalone markdown deliverable.
+13 specialized AI sub-agents for business analysis, interview coaching, product management, concept validation, and strategic thinking. Every agent writes its full analysis to `./outputs/` as a standalone markdown deliverable.
 
 ## Agents
 
 | Agent | Command | What it Does | Deliverable |
 |-------|---------|-------------|-------------|
 | Business Consultant (ToT) | `/consult` | 3 consultants + risk analyst evaluate a business challenge through 5-phase Tree of Thought | `outputs/consult-*.md` |
+| Market Researcher | `/research` | Context-aware research with three modes (market sizing, competitive intelligence, domain research). Scans uploaded docs and ./outputs/ first, only researches what's missing. Uses Tavily + Firecrawl when available, falls back to native tools. | `outputs/research-*.md` |
 | Elite Advisor | `/advisor` | Dual-mode: coaching (exposes blind spots, prioritizes actions) + document review (6-pass BMAD-influenced adversarial analysis with Ship/Fix/Rethink verdict) | `outputs/advisor-*.md` |
 | Interview Coach | `/coach` | Scores and coaches customer discovery interviews against rubric + textbook best practices | `outputs/coach-*.md` |
 | Interview Summary | `/summarize` | Generates 8-section topline reports from interview transcripts (JTBD, sentiment, themes) | `outputs/summary-*.md` |
