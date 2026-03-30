@@ -1,11 +1,11 @@
 {
-  "name": "plugin-marketplace",
+  "name": "product-kit-marketplace",
   "owner": {
     "name": "John Renaldi",
     "email": "jrenaldi79@gmail.com"
   },
   "metadata": {
-    "description": "AI-powered plugins for product management, business analysis, and consulting workflows",
+    "description": "Product Kit Plugin Marketplace — AI-powered plugins for product management, business analysis, and consulting workflows",
     "version": "0.3.0"
   },
   "plugins": [
