@@ -44,51 +44,84 @@ This plugin provides 13 specialized AI sub-agents. Each agent runs in its own co
 
 ## Recommended Workflow: Concept-to-Plan Pipeline
 
-These agents are designed to chain together. For students refining product concepts and business models, the recommended flow moves from problem validation through solution exploration, market definition, and rigorous refinement before committing to documentation.
+These agents are designed to chain together, but not every concept needs every agent. The workflow adapts to where the founder is — a team with a pitch deck, 20 customer interviews, and a competitive analysis needs a very different plan than someone who walked in with a napkin sketch.
 
-### Phase 1: Problem Validation — Is this worth building?
+### Step 0: Planning Conversation (ALWAYS START HERE)
 
-**`/yc-review`** — Start here. The six forcing questions establish whether the problem is real and the concept has legs. Demand reality and desperate specificity are the first filters. If the verdict is "needs fundamental rethinking," pivot before investing deeper work. If it's "promising but underspecified," the review tells you exactly what to go figure out.
+Before running any agents, have a short planning conversation with the founder. Understand what they have, what they need, and what stage they're at.
 
-### Phase 1.5: Research & Evidence (Run if evidence is thin)
+**Assess what exists:**
+- Did they upload documents? (pitch deck, one-pager, business plan, market research)
+- Do they have customer interview transcripts?
+- Have they already run agents in a prior session? (check `./outputs/`)
+- How developed is their thinking? (just an idea vs. validated concept vs. ready to build)
 
-**`/research`** — Scans everything you've uploaded and all prior outputs, scores your evidence density across five dimensions (market sizing, competitive landscape, customer evidence, domain knowledge, trends), then goes to the web to fill gaps. If you walked in with a pitch deck and interview data, it skips what's already strong. If you walked in with just an idea, it runs the full cycle. Adapts to where you are.
+**Propose a plan:** Based on the assessment, recommend which agents to run and in what order. Present it as a checklist the founder can approve, modify, or trim:
 
-Use this before `/consult` and `/strategy` so those agents have real data to work with instead of assumptions.
+```
+Based on what you've shared, here's the plan I'd recommend:
 
-### Phase 2: Solution Exploration — What are the approaches?
+1. /research — Your competitive landscape section is thin. I'll fill that in.
+2. /consult — Explore 3 strategic approaches with the research as context.
+3. /personas — Define your target users before GTM planning.
+4. /strategy — Build the go-to-market plan with personas defined.
+5. /prd — Capture everything into a PRD (it'll pull from all prior outputs).
+6. /advisor (review mode) — Adversarial review of the PRD before you ship it.
 
-**`/consult`** — Three consultants generate distinct strategic approaches with desirability/viability/feasibility scoring. This broadens the solution space before you narrow. Strongest when fed research evidence.
+Skipping: /yc-review (your deck already answers the forcing questions),
+/debate (save for later if /consult surfaces disagreement),
+/ceo-review (scope looks right-sized already).
 
-**`/debate`** — Take the top 1-2 approaches from `/consult` and have domain experts stress-test them from different angles. Catches blind spots the consultants might share.
+Want to adjust anything, or should we start?
+```
 
-### Phase 3: Market & User Definition — Who exactly, and how do we reach them?
+**Once approved, create a task list** in Cowork to track progress through each step. Update it as each agent completes.
 
-**`/personas`** — Build detailed buyer personas grounded in the validated problem. This anchors the rest of the work in specific users, not abstract markets.
+### Available Phases (all optional, mix and match)
 
-**`/strategy`** — With personas defined, develop the go-to-market plan. Score entry strategies on profitability, scalability, and risk.
+#### Research & Evidence Gathering
 
-### Phase 4: Refinement & Rigor — Is this tight enough to execute?
+**`/research`** — Scans everything uploaded and all prior outputs, scores evidence density across five dimensions (market sizing, competitive landscape, customer evidence, domain knowledge, trends), then goes to the web to fill gaps. If the founder's materials are already strong, it says so and stops. Run this early so downstream agents have real data.
 
-**`/advisor`** — Brutally honest gut check on the full picture (coaching mode). Or point it at a specific document for a 6-pass adversarial review with a Ship/Fix/Rethink verdict (document review mode).
+**`/coach`** and **`/summarize`** — Use alongside the pipeline whenever customer interviews happen. `/coach` scores interviewing technique. `/summarize` turns transcripts into research-ready topline reports. These can run at any point — before research (to validate the problem) or after strategy (to validate GTM assumptions).
 
-**`/ceo-review`** — Final founder-mode scope and ambition review. Use Mode A (Scope Expansion) if the team is playing too small. Use Mode D (Scope Reduction) if the plan is overloaded with features. Use Mode C (Hold Scope) if it's right-sized and needs to be bulletproof.
+#### Exploration & Strategy
 
-### Phase 5: Documentation & Validation Design — Capture it
+**`/consult`** — Three consultants generate distinct strategic approaches scored on desirability, viability, and feasibility. Strongest when fed research evidence. Good for broadening the solution space before narrowing.
 
-**`/prd`** — Build the Product Requirements Document. The agent automatically scans `./outputs/` for everything learned across Phases 1-4 and pre-fills sections — you only answer what it can't figure out on its own.
+**`/personas`** — Build detailed buyer personas grounded in the validated problem. Anchors GTM and product decisions in specific users, not abstract markets.
 
-**`/advisor`** (document review mode) — Point it at the PRD for a 6-pass adversarial review before shipping.
+**`/strategy`** — Develops go-to-market plans. Score entry strategies on profitability, scalability, and risk. Best run after personas are defined.
 
-**`/survey`** — Design a closed-ended validation survey to test remaining assumptions with real users in the next round of primary research.
+**`/debate`** — Expert panel stress-tests approaches from different angles. Most useful when `/consult` surfaces 2-3 viable paths and you need to pick. Optional if the path is clear.
 
-### Interview Agents (Use Throughout)
+#### Pressure Testing & Refinement
 
-**`/coach`** and **`/summarize`** sit alongside this pipeline, not inside it. Use them whenever you do customer discovery interviews — which should happen between Phases 1 and 2 (to validate the problem exists) and again between Phases 3 and 4 (to validate the personas and GTM assumptions). `/coach` builds interviewing skill. `/summarize` turns raw transcripts into research-ready topline reports.
+**`/yc-review`** — Six forcing questions that pressure-test the concept: demand reality, status quo analysis, desperate specificity, narrowest wedge, founder observation, future-fit. Produces a verdict (strong/underspecified/rethink). Most valuable after the concept has shape — use it to find remaining gaps, not as a cold open.
 
-### Not Every Concept Needs Every Phase
+**`/advisor`** (coaching mode) — Brutally honest gut check. Exposes blind spots, emulates a top-tier domain expert, prescribes the single most impactful next step. Good at any stage, but especially after the strategy is in place.
 
-A strong concept with clear demand might skip `/debate` and go straight from `/consult` to `/personas`. A founder who walks in with a pitch deck, customer interviews, and competitive analysis can skip `/research` entirely — the agent will tell you when your evidence base is solid. A concept that fails `/yc-review` should loop back to problem discovery before touching any other agent. Use judgment — the pipeline is a guide, not a mandate.
+**`/ceo-review`** — Founder-mode scope calibration. Use when the plan feels too small (Mode A: Scope Expansion), too sprawling (Mode D: Scope Reduction), or needs to be bulletproof (Mode C: Hold Scope). Optional — most useful for plans that feel off-balance.
+
+#### Documentation & Validation
+
+**`/prd`** — Context-harvesting PRD generator. Scans `./outputs/` for everything from prior agents and pre-fills sections automatically. Only prompts for genuinely missing information. Run this after the thinking work is done.
+
+**`/advisor`** (document review mode) — Point it at the PRD for a 6-pass adversarial review: adversarial findings, edge case hunting, consistency checks, executability tests, hard questions, and a Ship/Fix/Rethink verdict. The final quality gate.
+
+**`/survey`** — Designs closed-ended validation surveys to test remaining assumptions with real users. Run after the PRD to design the next round of primary research.
+
+### Example Plans by Stage
+
+**"I just have an idea"** → `/research` → `/consult` → `/personas` → `/strategy` → `/prd`
+
+**"I have a pitch deck and some interviews"** → `/research` (gaps only) → `/strategy` → `/yc-review` → `/prd` → `/advisor` (review)
+
+**"I need to pressure-test before Demo Day"** → `/yc-review` → `/advisor` (coaching) → `/ceo-review`
+
+**"I have a PRD, is it any good?"** → `/advisor` (document review) → fix issues → `/advisor` (review again)
+
+**"I'm entering an unfamiliar market"** → `/research` (domain mode) → `/consult` → `/debate` → `/personas`
 
 ## How to Choose (Quick Reference)
 

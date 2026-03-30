@@ -62,6 +62,12 @@ This means you always get both: a quick answer in the chat, and a complete docum
 
 All agents can be invoked via slash commands or triggered through natural language. Multi-turn agents (most of them) support resume — you can push back, ask follow-ups, or continue where you left off.
 
+### Adaptive Workflow
+
+The agents chain together, but the workflow adapts to where you are. Start by describing your concept and what materials you have — Claude will assess your stage, propose which agents to run (and which to skip), and create a task list to track progress. Every step is optional. A founder with a pitch deck and interview data gets a different plan than someone with just an idea.
+
+See the `using-presto-powers` skill for full workflow documentation with example plans by stage.
+
 ### Interview agents
 
 The interview coach and summary agents require a transcript file. Place the transcript in your working folder and reference it by path:
