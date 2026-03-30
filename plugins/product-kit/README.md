@@ -4,9 +4,9 @@
 
 ## Flagship Agents
 
-**`/advisor`** and **`/debate`** are the highest-value agents in the kit.
+**`/critic`** and **`/debate`** are the highest-value agents in the kit.
 
-**`/advisor`** — Anti-sycophancy prompted. Pushes back on your thinking instead of agreeing with you. Two modes: coaching (blind spot exposure, prioritized actions) and document review (6-pass adversarial analysis, Ship/Fix/Rethink verdict). Callable at any pipeline stage.
+**`/critic`** — Anti-sycophancy prompted. Pushes back on your thinking instead of agreeing with you. Two modes: coaching (blind spot exposure, prioritized actions) and document review (6-pass adversarial analysis, Ship/Fix/Rethink verdict). Callable at any pipeline stage.
 
 **`/debate`** — User-scoped expert panels. You choose the domain (business/venture, technical, specialty technical, financial, customer/market, mixed). Supports parallel panels with cross-panel synthesis.
 
@@ -22,7 +22,7 @@
 |-------|---------|-------------|-------------|
 | Business Consultant (ToT) | `/consult` | 3 consultants + risk analyst evaluate a business challenge through 5-phase Tree of Thought | `outputs/consult-*.md` |
 | Market Researcher | `/research` | Context-aware research with three modes (market sizing, competitive intelligence, domain research). Scans uploaded docs and ./outputs/ first, only researches what's missing. Uses Tavily + Firecrawl when available, falls back to native tools. | `outputs/research-*.md` |
-| Elite Advisor | `/advisor` | Dual-mode, callable at any pipeline stage. Anti-sycophancy prompted — will not soften feedback or perform agreement. Coaching (exposes blind spots, prioritizes actions) + document review (6-pass BMAD-influenced adversarial analysis with Ship/Fix/Rethink verdict) | `outputs/advisor-*.md` |
+| Critic | `/critic` | Dual-mode, callable at any pipeline stage. Anti-sycophancy prompted — will not soften feedback or perform agreement. Coaching (exposes blind spots, prioritizes actions) + document review (6-pass BMAD-influenced adversarial analysis with Ship/Fix/Rethink verdict) | `outputs/critic-*.md` |
 | Interview Coach | `/coach` | Scores and coaches customer discovery interviews against rubric + textbook best practices | `outputs/coach-*.md` |
 | Interview Summary | `/summarize` | Generates 8-section topline reports from interview transcripts (JTBD, sentiment, themes) | `outputs/summary-*.md` |
 | Meta-Prompt Engineer | `/prompter` | Collaboratively designs and refines AI system prompts | `outputs/prompter-*.md` |
@@ -65,14 +65,14 @@ This plugin uses the `agents/` directory pattern from the Claude Code plugin spe
 
 **Context externalization:** Agents read files via the Read tool and fetch references via WebFetch — they never expect content to be injected into their launch prompt.
 
-**Resume support:** Multi-turn agents (elite advisor, PRD builder, persona developer, etc.) maintain full context across rounds. Ask follow-ups naturally.
+**Resume support:** Multi-turn agents (critic, PRD builder, persona developer, etc.) maintain full context across rounds. Ask follow-ups naturally.
 
 **Deliverable-first:** Every agent writes a complete markdown file to `./outputs/`. The student always has a tangible artifact to review, share, or iterate on.
 
 ## Credits
 
 - **[gstack](https://github.com/garrytan/gstack)** by [Garry Tan](https://github.com/garrytan) — YC Review and CEO Review agents build on gstack's office-hours and plan-ceo-review frameworks.
-- **[BMAD Method](https://github.com/bmadcode/BMAD-METHOD)** by [BMad](https://github.com/bmadcode) — Elite Advisor's 6-pass document review mode is influenced by the BMAD Method's adversarial PRD analysis pattern.
+- **[BMAD Method](https://github.com/bmadcode/BMAD-METHOD)** by [BMad](https://github.com/bmadcode) — Critic's 6-pass document review mode is influenced by the BMAD Method's adversarial PRD analysis pattern.
 
 ## Author
 

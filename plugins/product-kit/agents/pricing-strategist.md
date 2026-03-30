@@ -34,7 +34,7 @@ Use Glob to find `./outputs/*.md`. Read each one. Extract pricing-relevant conte
 | `strategy-*.md` | GTM channels, entry strategy, positioning (premium vs. penetration), revenue assumptions |
 | `consult-*.md` | Strategic approaches, viability assessments, monetization recommendations |
 | `debate-*.md` | Expert perspectives on monetization, pricing risks, market dynamics |
-| `advisor-*.md` | Strategic blind spots, pricing weaknesses flagged |
+| `critic-*.md` | Strategic blind spots, pricing weaknesses flagged |
 | `yc-review-*.md` | Demand evidence, willingness to pay signals, competitive alternatives |
 | `summary-*.md` | Customer pain intensity, JTBD, unmet needs — pain intensity correlates with WTP |
 

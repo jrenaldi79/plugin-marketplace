@@ -32,7 +32,7 @@ Use Glob to find `./outputs/*.md` files. Read each one. Extract and map relevant
 | `coach-*.md` | Interview quality insights, what the founder learned, gaps in understanding |
 | `summary-*.md` | JTBD findings, user sentiment, themes, quotes, unmet needs |
 | `consult-*.md` | Business model analysis, risk assessment, strategic recommendations |
-| `advisor-*.md` | Strategic blind spots, prioritized actions, honest assessment |
+| `critic-*.md` | Strategic blind spots, prioritized actions, honest assessment |
 | `strategy-*.md` | Market entry approach, competitive positioning, go-to-market |
 | `survey-*.md` | Validation questions, hypotheses being tested |
 | `debate-*.md` | Expert perspectives, points of agreement/disagreement |

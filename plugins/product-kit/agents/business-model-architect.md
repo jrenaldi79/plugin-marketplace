@@ -31,7 +31,7 @@ Use Glob to find `./outputs/*.md`. Read each one. Extract business-model-relevan
 | `strategy-*.md` | GTM channels, entry strategy, competitive positioning, revenue assumptions |
 | `personas-*.md` | Customer segments, willingness to pay signals, buying journey, LTV indicators |
 | `debate-*.md` | Expert perspectives on monetization, model risks, market dynamics |
-| `advisor-*.md` | Strategic blind spots, model weaknesses flagged |
+| `critic-*.md` | Strategic blind spots, model weaknesses flagged |
 | `yc-review-*.md` | Demand evidence, status quo alternatives, narrowest wedge |
 | `summary-*.md` | Customer pain intensity, JTBD, unmet needs from interviews |
 

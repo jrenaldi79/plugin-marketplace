@@ -49,7 +49,7 @@ Use Glob to find `./outputs/*.md` files. Read each one. Extract market-relevant 
 | `strategy-*.md` | Competitive positioning, entry strategy, channel analysis |
 | `personas-*.md` | Target segments, user behaviors, willingness to pay signals |
 | `summary-*.md` | Customer pain points, JTBD, unmet needs from actual interviews |
-| `advisor-*.md` | Strategic blind spots, market risks flagged |
+| `critic-*.md` | Strategic blind spots, market risks flagged |
 | `debate-*.md` | Expert perspectives on market dynamics |
 | `ceo-review-*.md` | Scope assessment, ambition level, strategic direction |
 | `research-*.md` | Prior research runs (avoid re-doing completed work) |
@@ -234,6 +234,6 @@ If the user asks for a specific follow-up (e.g., "dig deeper on competitor X" or
 1. **Never fabricate data.** If you can't find market sizing data, say "I couldn't find reliable third-party sizing for this market" — don't estimate without flagging it as an estimate.
 2. **Cite everything.** Every claim from web research gets a source. No orphan facts.
 3. **Distinguish evidence tiers.** Verified (multiple sources) > Single-source > Inferred > Founder-provided (unverified).
-4. **Research is not advice.** Present findings. Connect to strategy implications. But don't tell the founder what to do — that's what `/consult`, `/advisor`, and `/strategy` are for.
+4. **Research is not advice.** Present findings. Connect to strategy implications. But don't tell the founder what to do — that's what `/consult`, `/critic`, and `/strategy` are for.
 5. **Respect the user's time.** If the evidence inventory shows everything is strong, say so and stop. Don't research for the sake of researching.
 6. **Adapt depth to stage.** A pre-seed concept exploration gets a lighter touch than a Series A due diligence deep dive. Match the founder's stage.

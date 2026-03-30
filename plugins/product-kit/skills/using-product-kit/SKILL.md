@@ -16,7 +16,7 @@ This plugin provides 15 specialized AI sub-agents. Each agent runs in its own co
 | `/yc-review` | YC Review | Six forcing questions that pressure-test a product concept: demand reality, status quo analysis, desperate specificity, narrowest wedge, founder observation, and future-fit. Produces a verdict (strong/underspecified/rethink), strongest element, biggest gap, and concrete next steps. |
 | `/ceo-review` | CEO Review | Founder-mode plan review with four modes: Scope Expansion (dream big), Selective Expansion (cherry-pick), Hold Scope (maximum rigor), and Scope Reduction (strip to essentials). Enforces nine prime directives including zero silent failures and mandatory diagrams. |
 | `/consult` | Business Consultant (ToT) | Three expert consultants and a skeptical risk analyst evaluate a business challenge through five phases: branch generation (3 distinct approaches), exploration (desirability/viability/feasibility per approach), cross-branch evaluation, convergence on the optimal path, and deep-dive execution planning. |
-| `/advisor` | Elite Advisor | Dual-mode agent: **Coaching mode** — brutally honest strategic coaching that extracts context, exposes blind spots, emulates the top 0.01% domain expert, and builds a prioritized action plan. **Document review mode** — point it at any file (especially a PRD) for a 6-pass BMAD-influenced adversarial analysis: adversarial findings, edge case hunting, internal consistency checks, executability tests, hard questions, and a Ship/Fix/Rethink verdict with ranked findings. |
+| `/critic` | Critic | Dual-mode agent: **Coaching mode** — brutally honest strategic coaching that extracts context, exposes blind spots, emulates the top 0.01% domain expert, and builds a prioritized action plan. **Document review mode** — point it at any file (especially a PRD) for a 6-pass BMAD-influenced adversarial analysis: adversarial findings, edge case hunting, internal consistency checks, executability tests, hard questions, and a Ship/Fix/Rethink verdict with ranked findings. |
 | `/strategy` | Market Strategy (ToT) | Develops go-to-market strategies: examines 3 market entry strategies, each with 3 decision branches and 2-3 outcomes per branch. Scores every outcome on profitability, scalability, and risk (1-10). Includes competitive positioning, risk mitigation, success metrics, and channel recommendations. |
 | `/bizmodel` | Business Model Architect | Socratic business model coaching grounded in three frameworks: **Business Model Canvas** (9 building blocks — diagnoses misalignments and blind spots), **Ten Types of Innovation** (pushes founders past product-only thinking across the full value chain), and **50+ business model patterns** with Blue Ocean Four Actions Framework. Coaches through questioning, not dictating. Uses real company analogies constantly. Includes a model stress test (unit economics, scalability, defensibility, assumption stack). |
 | `/pricing` | Pricing Strategist | Socratic monetization coaching grounded in **Monetizing Innovation** (Ramanujam & Tacke). Diagnoses the four monetization failures (Feature Shocks, Minivations, Hidden Gems, Undeads), enforces the **9 Rules of Monetization** (WTP validation, needs-based segmentation, Leader-Filler-Killer configuration, monetization model selection, pricing strategy, outside-in business case, value communication, behavioral tactics, price integrity). Coaches through questioning — does not set prices for the founder. Cross-references `/bizmodel` Revenue Streams and `/personas` WTP signals. |
@@ -69,9 +69,9 @@ Based on what you've shared, here's the plan I'd recommend:
 5. /bizmodel — Work through the business model: who pays, how, and why it's defensible.
 6. /pricing — Validate pricing architecture: WTP, segmentation, configuration, and monetization model.
 7. /strategy — Build the go-to-market plan with personas and model defined.
-8. /advisor — Honest gut check on the full strategy before we document it.
+8. /critic — Honest gut check on the full strategy before we document it.
 9. /prd — Capture everything into a PRD (it'll pull from all prior outputs).
-9. /advisor (review mode) — Adversarial review of the PRD before you ship it.
+9. /critic (review mode) — Adversarial review of the PRD before you ship it.
 
 Skipping: /yc-review (your deck already answers the forcing questions),
 /ceo-review (scope looks right-sized already).
@@ -103,13 +103,13 @@ Want to adjust anything, or should we start?
 
 **`/debate`** — Expert panel stress-tests approaches from different angles. **Strongly recommended.** The agent asks you to choose the panel type (business/venture, technical, specialty technical, financial, customer/market, or mixed) before assembling experts. You can run parallel panels (e.g., VC perspective + technical feasibility) and get a cross-panel synthesis. Run this after `/consult` or `/strategy` to pressure-test the direction before committing.
 
-**`/advisor`** (coaching mode) — Brutally honest gut check. **Strongly recommended. Can be called at any point in the pipeline, not just at the end.** Specifically prompted to push back on your thinking — it will not be agreeable, will not sugarcoat, and will not perform enthusiasm it doesn't hold. Exposes blind spots, emulates a top-tier domain expert, prescribes the single most impactful next step. Use early to gut-check a concept, mid-process to pressure-test a direction, or late as the final quality gate.
+**`/critic`** (coaching mode) — Brutally honest gut check. **Strongly recommended. Can be called at any point in the pipeline, not just at the end.** Specifically prompted to push back on your thinking — it will not be agreeable, will not sugarcoat, and will not perform enthusiasm it doesn't hold. Exposes blind spots, emulates a top-tier domain expert, prescribes the single most impactful next step. Use early to gut-check a concept, mid-process to pressure-test a direction, or late as the final quality gate.
 
 #### Documentation
 
 **`/prd`** — Context-harvesting PRD generator. Scans `./outputs/` for everything from prior agents and pre-fills sections automatically. Only prompts for genuinely missing information. Run this after the thinking work is done.
 
-**`/advisor`** (document review mode) — Point it at the PRD for a 6-pass adversarial review: adversarial findings, edge case hunting, consistency checks, executability tests, hard questions, and a Ship/Fix/Rethink verdict. **The final quality gate.** Strongly recommended before shipping any PRD.
+**`/critic`** (document review mode) — Point it at the PRD for a 6-pass adversarial review: adversarial findings, edge case hunting, consistency checks, executability tests, hard questions, and a Ship/Fix/Rethink verdict. **The final quality gate.** Strongly recommended before shipping any PRD.
 
 #### Optional — Add When Relevant
 
@@ -127,13 +127,13 @@ Want to adjust anything, or should we start?
 
 ### Example Plans by Stage
 
-**"I just have an idea"** → `/research` → `/consult` → `/debate` → `/personas` → `/bizmodel` → `/pricing` → `/strategy` → `/advisor` → `/prd` → `/advisor` (review)
+**"I just have an idea"** → `/research` → `/consult` → `/debate` → `/personas` → `/bizmodel` → `/pricing` → `/strategy` → `/critic` → `/prd` → `/critic` (review)
 
-**"I have a pitch deck and some interviews"** → `/research` (gaps only) → `/consult` → `/debate` → `/bizmodel` → `/pricing` → `/strategy` → `/prd` → `/advisor` (review)
+**"I have a pitch deck and some interviews"** → `/research` (gaps only) → `/consult` → `/debate` → `/bizmodel` → `/pricing` → `/strategy` → `/prd` → `/critic` (review)
 
-**"I need to pressure-test before Demo Day"** → `/advisor` (coaching) → `/debate` → `/yc-review`
+**"I need to pressure-test before Demo Day"** → `/critic` (coaching) → `/debate` → `/yc-review`
 
-**"I have a PRD, is it any good?"** → `/advisor` (document review) → fix issues → `/advisor` (review again)
+**"I have a PRD, is it any good?"** → `/critic` (document review) → fix issues → `/critic` (review again)
 
 **"I'm entering an unfamiliar market"** → `/research` (domain mode) → `/consult` → `/debate` → `/personas` → `/strategy`
 
@@ -157,9 +157,9 @@ Want to adjust anything, or should we start?
 
 **"What's my go-to-market?"** → `/strategy`
 
-**"Give me the honest truth about my plan"** → `/advisor` (coaching mode)
+**"Give me the honest truth about my plan"** → `/critic` (coaching mode)
 
-**"Review this PRD for gaps and problems"** → `/advisor` (document review mode)
+**"Review this PRD for gaps and problems"** → `/critic` (document review mode)
 
 **"Is my scope right? Am I thinking big enough?"** → `/ceo-review`
 
@@ -181,7 +181,7 @@ Every agent saves a complete markdown document to `./outputs/`. You get a concis
 
 ## Tips
 
-- **Multi-turn agents** (advisor, consult, personas, prd, debate) maintain context across rounds. Push back, ask follow-ups, or redirect naturally.
+- **Multi-turn agents** (critic, consult, personas, prd, debate) maintain context across rounds. Push back, ask follow-ups, or redirect naturally.
 - **Interview agents** (coach, summarize) need a transcript file path. Place the transcript in your working folder and reference it by path.
 - **Chain outputs forward.** Each agent's deliverable file can be fed into the next agent. Tell the next agent: "Read ./outputs/yc-review-2026-03-30.md and use it as context."
 - All agents can also be triggered by natural language — just describe what you need and Claude will route to the right agent.

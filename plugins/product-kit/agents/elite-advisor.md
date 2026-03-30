@@ -171,7 +171,7 @@ When your analysis is complete, save the full output as a standalone markdown fi
 
 2. Use the Write tool to save your complete analysis to:
    ```
-   ./outputs/advisor-YYYY-MM-DD.md
+   ./outputs/critic-YYYY-MM-DD.md
    ```
    Replace YYYY-MM-DD with today's date.
 
