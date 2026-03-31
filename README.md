@@ -20,17 +20,93 @@ A plugin marketplace for Claude Code and Cowork with 16 specialized AI agents fo
 
 ## Installation
 
-Add this marketplace in Claude Code or Cowork:
+### Claude Code
+
+Add the marketplace and install the plugin:
 
 ```
 /plugin marketplace add jrenaldi79/plugin-marketplace
 ```
 
-Then browse available plugins:
+Then browse and install:
 
 ```
 /plugin
 ```
+
+### Cowork (Personal Accounts)
+
+There is a [known bug](https://github.com/anthropics/claude-code/issues/40600) where third-party GitHub marketplace plugins get wiped on restart for personal (non-org) Cowork accounts. The install script below works around this by writing directly to the local persistence path that survives restarts. It also sets up a scheduled task that checks for updates daily at 9am.
+
+**Prerequisites:** Git and Python 3.10+ must be installed and on your PATH.
+
+#### macOS / Linux
+
+Open Terminal and run:
+
+```
+git clone https://github.com/jrenaldi79/plugin-marketplace.git && python3 plugin-marketplace/scripts/install-product-kit.py
+```
+
+#### Windows
+
+Open PowerShell and run:
+
+```
+git clone https://github.com/jrenaldi79/plugin-marketplace.git
+python plugin-marketplace\scripts\install-product-kit.py
+```
+
+After the script finishes, restart Claude Desktop. The plugin and scheduled task will both appear.
+
+**Optional: Add the marketplace to the Browse UI.** The install script makes the plugin functional, but to see the marketplace in Customize > Browse, you also need to add it through the UI once: open Cowork, go to Customize > Browse Marketplace > Add Marketplace, and enter `jrenaldi79/plugin-marketplace`. This is a one-time step (the server remembers it).
+
+#### What the script does
+
+1. Finds your Cowork data directory (auto-discovers account/org paths)
+2. Clones the marketplace repo
+3. Extracts plugin files into the local cache
+4. Registers the plugin in the persistence files that survive restarts
+5. Creates a scheduled task (`update-product-kit-auto`) that runs daily at 9am to check for updates
+
+#### Other commands
+
+Check for updates without installing:
+
+```
+python3 plugin-marketplace/scripts/install-product-kit.py --check
+```
+
+Install without the scheduled task:
+
+```
+python3 plugin-marketplace/scripts/install-product-kit.py --no-schedule
+```
+
+### Troubleshooting
+
+**`&&` not recognized (Windows PowerShell)**
+Older versions of PowerShell don't support `&&`. Run the two commands separately:
+```
+git clone https://github.com/jrenaldi79/plugin-marketplace.git
+python plugin-marketplace\scripts\install-product-kit.py
+```
+
+**`python` not found or `Fatal Python error: Failed to import encodings module`**
+This usually means Python isn't installed, isn't on your PATH, or has a broken installation (common with Python 3.14 on Windows). Fix:
+1. Install Python 3.12 from [python.org/downloads](https://www.python.org/downloads/)
+2. During install, check **"Add python.exe to PATH"**
+3. Close and reopen PowerShell
+4. If an older broken Python is still taking priority, find the correct path with `Get-Command python -All` and run it directly, for example: `C:\Python312\python.exe plugin-marketplace\scripts\install-product-kit.py`
+
+**`git` not found**
+Install Git from [git-scm.com](https://git-scm.com/downloads). On macOS, you can also run `xcode-select --install`.
+
+**Plugin shows old version after update**
+Run the install script again. It will fetch the latest from GitHub and update the cache. Restart Claude Desktop after.
+
+**Scheduled task doesn't appear**
+The task only shows up after restarting Claude Desktop. On the first run you'll need to approve tool permissions manually, then future runs are automatic.
 
 ## Agents
 
