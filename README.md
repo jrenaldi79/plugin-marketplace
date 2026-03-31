@@ -69,6 +69,22 @@ After the script finishes, restart Claude Desktop. The plugin and scheduled task
 4. Registers the plugin in the persistence files that survive restarts
 5. Creates a scheduled task (`update-product-kit-auto`) that runs daily at 9am to check for updates
 
+#### Updating manually
+
+If the scheduled task hasn't run yet or you want to update immediately, pull the latest and re-run the script. The repo is already cloned from your first install.
+
+**macOS / Linux:**
+```
+cd plugin-marketplace && git pull && python3 scripts/install-product-kit.py
+```
+
+**Windows PowerShell:**
+```
+cd plugin-marketplace
+git pull
+python scripts\install-product-kit.py
+```
+
 #### Other commands
 
 Check for updates without installing:
