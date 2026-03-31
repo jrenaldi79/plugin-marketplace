@@ -62,8 +62,11 @@ def discover_cowork_paths(sessions_root: Path) -> dict:
         sys.exit(1)
 
     # Walk account/org pairs looking for cowork_plugins (or creating it)
+    # Account dirs are UUIDs — skip named dirs like "skills-plugin"
+    import re
+    uuid_pattern = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
     for account_dir in sessions_root.iterdir():
-        if not account_dir.is_dir() or account_dir.name.startswith("."):
+        if not account_dir.is_dir() or not uuid_pattern.match(account_dir.name):
             continue
         for org_dir in account_dir.iterdir():
             if not org_dir.is_dir() or org_dir.name.startswith("."):
@@ -407,6 +410,8 @@ def setup_scheduled_task(paths: dict, sessions_root: Path):
     # Add new entry
     data["scheduledTasks"].append({
         "id": SCHEDULED_TASK_ID,
+        "name": "Update Product Kit Plugin",
+        "description": "Auto-update product-kit plugin from GitHub marketplace (workaround for bug #40600)",
         "enabled": True,
         "filePath": str(skill_path),
         "createdAt": int(time.time() * 1000),
