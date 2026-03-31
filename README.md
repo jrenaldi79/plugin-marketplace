@@ -108,6 +108,13 @@ Run the install script again. It will fetch the latest from GitHub and update th
 **Restarting on Windows**
 Closing the Claude window with the X button does not quit the app. It keeps running in the system tray. To fully restart: right-click the Claude icon in the system tray (bottom-right of your taskbar, you may need to click the ^ arrow to find it) and select Quit, then reopen Claude.
 
+**"Virtual Machine Platform" error (Windows)**
+Cowork runs in a VM that requires virtualization support. If you see "Claude's workspace requires Virtual Machine Platform, but the virtualization service isn't responding," restart your computer (not just Claude). If the error persists after reboot, open PowerShell as Administrator and run:
+```
+Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -NoRestart
+```
+Then restart your computer again.
+
 **Scheduled task doesn't appear**
 The task only shows up after fully restarting Claude Desktop (see above for Windows). On the first run you'll need to approve tool permissions manually, then future runs are automatic. To ensure the task runs even when your computer is idle, open the task in Scheduled and turn on the "Keep awake" slider.
 
