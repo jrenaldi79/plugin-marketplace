@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.3.4] - 2026-03-30
+
+### Changed
+- Version bump to test update flow on new rpm system (install was 0.3.3)
+
 ## [0.3.3] - 2026-03-30
 
 ### Changed
