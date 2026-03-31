@@ -387,9 +387,9 @@ def setup_scheduled_task(paths: dict, sessions_root: Path):
     task_dir = scheduled_dir / SCHEDULED_TASK_ID
     task_dir.mkdir(parents=True, exist_ok=True)
 
-    # Write SKILL.md
+    # Write SKILL.md (always LF line endings — Cowork's YAML parser requires it)
     skill_path = task_dir / "SKILL.md"
-    skill_path.write_text(SKILL_MD.strip() + "\n")
+    skill_path.write_bytes((SKILL_MD.strip() + "\n").encode("utf-8"))
     print(f"  SKILL.md → {skill_path}")
 
     # Write scheduled-tasks.json entry
