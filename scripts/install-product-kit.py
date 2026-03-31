@@ -392,6 +392,7 @@ def setup_scheduled_task(paths: dict, sessions_root: Path):
         "filePath": str(skill_path),
         "createdAt": int(time.time() * 1000),
         "userSelectedFolders": [str(sessions_root)],
+        "cronExpression": "0 9 * * *",
         "disableJitter": False,
     })
 
