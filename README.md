@@ -105,8 +105,11 @@ Install Git from [git-scm.com](https://git-scm.com/downloads). On macOS, you can
 **Plugin shows old version after update**
 Run the install script again. It will fetch the latest from GitHub and update the cache. Restart Claude Desktop after.
 
+**Restarting on Windows**
+Closing the Claude window with the X button does not quit the app. It keeps running in the system tray. To fully restart: right-click the Claude icon in the system tray (bottom-right of your taskbar, you may need to click the ^ arrow to find it) and select Quit, then reopen Claude.
+
 **Scheduled task doesn't appear**
-The task only shows up after restarting Claude Desktop. On the first run you'll need to approve tool permissions manually, then future runs are automatic.
+The task only shows up after fully restarting Claude Desktop (see above for Windows). On the first run you'll need to approve tool permissions manually, then future runs are automatic.
 
 ## Agents
 
