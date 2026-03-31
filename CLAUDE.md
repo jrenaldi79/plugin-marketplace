@@ -19,6 +19,8 @@ plugin-marketplace/
 │       └── skills/
 │           └── using-product-kit/
 │               └── SKILL.md      # Orchestration skill — behavioral rules, workflow, agent catalog
+├── scripts/
+│   └── install-product-kit.py    # Cross-platform installer for Cowork (workaround for #40600)
 ├── README.md                     # Single source of truth for docs, credits, agent table
 ├── LICENSE                       # MIT
 └── sync/                         # Sync scripts (internal tooling)
@@ -66,11 +68,96 @@ Before pushing a new version:
 
 These are hard requirements from the Anthropic plugin spec. Violating them causes installation failures.
 
-- **Marketplace name must be kebab-case.** No spaces, no capitals. Current: `"product-kit-marketplace"`.
+- **Marketplace name must be kebab-case.** No spaces, no capitals. Current: `"plugin-marketplace"`.
 - **Plugin name must be kebab-case.** Current: `"product-kit"`.
 - **`source` field** must start with `./` (relative path to plugin directory).
 - **`owner.name`** is required in marketplace.json.
 - **Only `name` is required** in plugin.json — everything else is optional but recommended.
+
+---
+
+## Cowork Plugin Architecture (Reverse-Engineered)
+
+Cowork uses a **server-managed plugin system** as of the `remote_marketplace_migration_done_v1` flag in config.json.
+
+### How Marketplace Registration Works
+
+When a user adds a marketplace through the Cowork UI ("Browse Plugins" → "+" → paste GitHub URL):
+
+1. **Client** calls `POST https://claude.ai/api/organizations/{orgId}/marketplaces/create-account-marketplace`
+   - Body: `{"name": "<last-segment-of-repo>", "source": "github", "source_url": "<owner/repo>"}`
+   - Auth: session cookie from Electron's cookie jar
+2. **Server** clones the repo, validates the marketplace.json, registers it server-side
+3. **Client** polls `GET .../marketplaces/{id}/account-get` every 2s until `sync_status` is `"success"` (max 30s)
+4. **Server** pushes plugin files to the local `remote_cowork_plugins/` directory with a `manifest.json`
+
+### API Endpoints
+
+All endpoints are under `https://claude.ai/api/organizations/{orgId}/marketplaces/`:
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| POST | `create-account-marketplace` | Register a new marketplace |
+| GET | `{marketplaceId}/account-get` | Poll sync status |
+| POST | `{marketplaceId}/account-sync` | Trigger re-sync (used by "Check for updates") |
+| DELETE | `{marketplaceId}/account-delete` | Remove a marketplace |
+| GET | `list-org-marketplaces` | List all registered marketplaces |
+
+### Local File Layout (per conversation)
+
+```
+~/Library/Application Support/Claude/local-agent-mode-sessions/
+├── {session-id}/
+│   └── {conversation-id}/
+│       └── remote_cowork_plugins/          # Server-managed plugins (new system)
+│           ├── manifest.json               # Plugin registry with server-assigned IDs
+│           └── plugin_{serverAssignedId}/  # One dir per installed plugin
+│               ├── .claude-plugin/
+│               │   └── plugin.json
+│               ├── .mcpb-cache/            # Runtime cache (populated by Cowork)
+│               ├── agents/
+│               ├── commands/
+│               └── skills/
+├── skills-plugin/                          # Skills (separate from plugins)
+│   └── {conversation-id}/{session-id}/
+│       └── manifest.json
+└── config.json                             # App-level config
+    # Key flags:
+    #   remote_marketplace_migration_done_v1: true
+    #   remote_uploads_migration_done_v1_*: true
+```
+
+### Manifest Format (remote_cowork_plugins/manifest.json)
+
+```json
+{
+  "lastUpdated": 1773891780644,
+  "plugins": [
+    {
+      "id": "plugin_01XXXXXXXXXXXXXXXXXX",
+      "name": "product-kit",
+      "updatedAt": "2026-03-30T23:00:00.000Z",
+      "marketplaceId": "marketplace_01XXXXXXXXXXXXXXXXXX",
+      "marketplaceName": "jrenaldi79/plugin-marketplace",
+      "installedBy": "user"
+    }
+  ]
+}
+```
+
+Plugin IDs and marketplace IDs are assigned server-side and cannot be fabricated locally.
+
+### Programmatic Installation
+
+A bash script (`scripts/cowork-install.sh`) automates marketplace registration via the API.
+Requires a session cookie and org ID from Claude Desktop's DevTools.
+
+```bash
+./scripts/cowork-install.sh \
+  --session-key "sk-ant-..." \
+  --org-id "your-org-uuid" \
+  --repo "jrenaldi79/plugin-marketplace"
+```
 
 ---
 
@@ -130,15 +217,10 @@ The SKILL.md file in `skills/using-product-kit/` controls how the main Claude ag
 
 - **DC `read_file` returns metadata for .md files** — use `cat` via `start_process` as a workaround when Desktop Commander is in play.
 - **Cowork subagents start with blank context** — the SKILL.md Launching Agents section exists specifically to address this. Always pass file paths.
-- **NEVER rename the marketplace `name` field.** Cowork uses it as a lookup key in `cowork_settings.json` (e.g., `product-kit@plugin-marketplace`). Renaming it breaks the link and the plugin disappears on restart. Use `metadata.description` for the friendly name instead.
-- **Cowork plugins are session-immutable.** Plugins are cloned at session start and read-only during the session. Version bumps only take effect in new sessions — no amount of reinstalling within the same session will pick up changes.
-- **Plugin caching is aggressive.** If a new version isn't picked up, manually clear `~/.claude/plugins/cache/` and restart. There is no built-in cache-bust command yet.
-- **Cowork "Browse Plugins" UI does NOT persist third-party marketplaces.** Installing from the Cowork UI is session-only — the plugin disappears on restart. You MUST install via Claude Code CLI for persistence:
-  ```bash
-  claude plugin marketplace add https://github.com/jrenaldi79/plugin-marketplace
-  claude plugin install product-kit@plugin-marketplace
-  ```
-  This writes to `~/.claude/plugins/` and survives restarts. To update after a version bump:
-  ```bash
-  claude plugin update product-kit@plugin-marketplace
-  ```
+- **NEVER rename the marketplace `name` field.** Cowork uses it as a lookup key (e.g., `product-kit@plugin-marketplace`). Renaming breaks the link.
+- **Cowork plugins are session-immutable.** Plugins are cloned at session start and read-only during the session. Version bumps only take effect in new sessions.
+- **Plugin caching is aggressive.** If a new version isn't picked up, use "Check for updates" on the marketplace `...` menu in Cowork, then restart.
+- **Cowork uses server-managed plugin system.** Marketplaces are registered server-side via the `create-account-marketplace` API. Local-only injection (writing files to `cowork_plugins/` or `remote_cowork_plugins/`) is not sufficient for full functionality (update button, sync).
+- **The "Update" button is grayed out when current.** It only activates when the server detects a newer commit on the GitHub repo than the synced commit shown in the marketplace `...` menu.
+- **Legacy `cowork_plugins/` directory** may still exist from older sessions but is superseded by `remote_cowork_plugins/`. New sessions only use the remote system.
+
