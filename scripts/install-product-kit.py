@@ -61,7 +61,7 @@ def discover_cowork_paths(sessions_root: Path) -> dict:
         print("Is Claude Desktop installed and has Cowork been used at least once?")
         sys.exit(1)
 
-    # Walk account/org pairs looking for cowork_plugins
+    # Walk account/org pairs looking for cowork_plugins (or creating it)
     for account_dir in sessions_root.iterdir():
         if not account_dir.is_dir() or account_dir.name.startswith("."):
             continue
@@ -71,18 +71,37 @@ def discover_cowork_paths(sessions_root: Path) -> dict:
             cowork_plugins = org_dir / "cowork_plugins"
             scheduled_tasks = org_dir / "scheduled-tasks.json"
             cowork_settings = org_dir / "cowork_settings.json"
-            if cowork_plugins.exists():
-                results[str(org_dir)] = {
-                    "account_dir": account_dir,
-                    "org_dir": org_dir,
-                    "cowork_plugins": cowork_plugins,
-                    "scheduled_tasks": scheduled_tasks,
-                    "cowork_settings": cowork_settings,
-                }
+
+            # If cowork_plugins doesn't exist but the org dir looks valid
+            # (has other session files), create the directory structure
+            if not cowork_plugins.exists():
+                # Check for signs this is a real org dir (not a stale folder)
+                if any(org_dir.iterdir()):
+                    print(f"  Creating cowork_plugins in {org_dir.name[:8]}...")
+                    cowork_plugins.mkdir(parents=True, exist_ok=True)
+                    (cowork_plugins / "marketplaces").mkdir(exist_ok=True)
+                    (cowork_plugins / "cache").mkdir(exist_ok=True)
+                    (cowork_plugins / ".install-manifests").mkdir(exist_ok=True)
+                    # Create empty installed_plugins.json
+                    ip = cowork_plugins / "installed_plugins.json"
+                    ip.write_text(json.dumps({"version": 2, "plugins": {}}, indent=2))
+                    # Create empty known_marketplaces.json
+                    km = cowork_plugins / "known_marketplaces.json"
+                    km.write_text(json.dumps({}, indent=2))
+                else:
+                    continue
+
+            results[str(org_dir)] = {
+                "account_dir": account_dir,
+                "org_dir": org_dir,
+                "cowork_plugins": cowork_plugins,
+                "scheduled_tasks": scheduled_tasks,
+                "cowork_settings": cowork_settings,
+            }
 
     if not results:
-        print("ERROR: No cowork_plugins directory found.")
-        print("Have you used Cowork mode at least once and installed a plugin?")
+        print("ERROR: No account/org directories found in sessions.")
+        print("Is Claude Desktop installed and has Cowork been used at least once?")
         sys.exit(1)
 
     return results
