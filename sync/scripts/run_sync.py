@@ -18,7 +18,7 @@ from merge import merge_framework
 # Map: gstack skill name -> (raw fixture path, snapshot path, agent path)
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 SYNC_DIR = REPO_ROOT / "sync"
-AGENTS_DIR = REPO_ROOT / "plugins" / "presto-powers" / "agents"
+AGENTS_DIR = REPO_ROOT / "plugins" / "product-kit" / "agents"
 
 SKILLS = [
     {
