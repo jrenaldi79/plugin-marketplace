@@ -788,6 +788,9 @@ For each substantive tension point, use AskUserQuestion:
 
 > "Cross-model disagreement on [topic]. The review found [X] but the outside voice
 > argues [Y]. [One sentence on what context you might be missing.]"
+>
+> RECOMMENDATION: Choose [A or B] because [one-line reason explaining which argument
+> is more compelling and why]. Completeness: A=X/10, B=Y/10.
 
 Options:
 - A) Accept the outside voice's recommendation (I'll apply this change)
