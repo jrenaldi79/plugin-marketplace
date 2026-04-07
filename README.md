@@ -200,13 +200,15 @@ Reference textbooks are fetched automatically from GitHub at runtime.
 
 ## Architecture
 
-This plugin uses the `agents/` directory pattern from the Claude Code plugin spec. Each agent is a markdown file with YAML frontmatter and a system prompt body.
+This plugin uses the `agents/` directory pattern from the Claude Code plugin spec. Each agent is a markdown file with a system prompt body. In Cowork, agents are launched via the `claude` CLI with `--model sonnet` to bypass the forced Haiku subagent model, ensuring complex analysis runs on a capable model.
 
 ### Design Principles
 
-**Deliverable-first:** Every agent writes a complete markdown file to `./outputs/`. The student always has a tangible artifact to review, share, or iterate on. This solves the sub-agent context isolation problem — full analysis is always accessible, not hidden in a separate context window.
+**Deliverable-first:** Every agent writes a complete markdown file to `./outputs/`. You always have a tangible artifact to review, share, or iterate on. This solves the sub-agent context isolation problem — full analysis is always accessible, not hidden in a separate context window.
 
-**Context isolation:** Interview agents run as sub-agents to keep reference textbooks (50-100K tokens) out of your main session context. Only the final report returns.
+**DRY routing:** All 16 command files are thin stubs (~25 lines) that reference the central `SKILL.md` for routing logic. CLI flags, model selection, and launch patterns are defined once in SKILL.md and inherited by every command.
+
+**Heartbeat protocol:** Agents report progress via lightweight heartbeat files (`./outputs/.heartbeat-{agent}.json`), updated at phase transitions. A shared protocol doc (`docs/heartbeat-protocol.md`) is injected into every agent via `--append-system-prompt-file`, so the parent Claude can track progress without polling the result file.
 
 **Context externalization:** Agents read files via the Read tool and fetch references via WebFetch — they never expect content to be injected into their launch prompt.
 
@@ -240,6 +242,10 @@ The sync pipeline has a 31-test TDD suite covering extraction, merge, diff detec
 - **Madhavan Ramanujam & Georg Tacke** — *Monetizing Innovation* (Wiley, 2016). The `/pricing` agent's framework: four monetization failures (Feature Shock, Minivation, Hidden Gem, Undead) and the 9 Rules of Monetization.
 
 - **Board of Innovation** — *50+ Business Model Examples*. The `/bizmodel` agent's company-anchored pattern library and "What if?" provocations.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for the full release history.
 
 ## License
 

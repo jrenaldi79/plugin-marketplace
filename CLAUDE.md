@@ -10,6 +10,9 @@ This is the Product Kit plugin marketplace for Claude Code/Cowork. It contains A
 plugin-marketplace/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest (kebab-case name required)
+├── .github/
+│   └── workflows/
+│       └── sync-gstack.yml      # Nightly gstack framework sync (auto-PR on changes)
 ├── plugins/
 │   └── product-kit/
 │       ├── .claude-plugin/
@@ -23,9 +26,10 @@ plugin-marketplace/
 │               └── SKILL.md      # Orchestration skill — behavioral rules, workflow, agent catalog
 ├── scripts/
 │   └── install-product-kit.py    # Cross-platform installer for Cowork (workaround for #40600)
-├── README.md                     # Single source of truth for docs, credits, agent table
-├── LICENSE                       # MIT
-└── sync/                         # Sync scripts (internal tooling)
+├── sync/                         # gstack sync scripts and fixtures (internal tooling)
+├── CHANGELOG.md                  # Release history (single source of truth)
+├── README.md                     # Public-facing docs, credits, agent table
+└── LICENSE                       # MIT
 ```
 
 ## MANDATORY: Version Bumping on Release
@@ -57,13 +61,7 @@ Before pushing a new version:
 
 ### Version History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 0.3.7 | 2026-04-07 | Cowork CLI routing (bypass Haiku subagent lock), shared heartbeat protocol, `| tee` background pattern, DRY command stubs, `--append-system-prompt-file` / `--fallback-model` / `--max-budget-usd` / `--name` flags |
-| 0.3.1 | 2026-03-30 | Behavioral rules for plan approval gate + source file passing to subagents, CLAUDE.md, repo moved to ~/claude-code-projects |
-| 0.3.0 | 2026-03-30 | Added `/vc-review`, `/critic` rename, behavioral rules in SKILL.md, MIT license |
-| 0.2.0 | 2026-03-29 | Added `/bizmodel`, `/pricing`, `/debate` scoping, `/research` modes |
-| 0.1.0 | 2026-03-28 | Initial release — 13 agents |
+See [CHANGELOG.md](CHANGELOG.md) for the full release history. Current version: **0.4.0**.
 
 ---
 
@@ -192,7 +190,7 @@ Inside the Cowork sandbox, plugin files appear at three read-only mount points u
 
 For product-kit specifically, the active copy is at:
 ```
-/sessions/{slug}/mnt/.local-plugins/cache/plugin-marketplace/product-kit/0.3.7/
+/sessions/{slug}/mnt/.local-plugins/cache/plugin-marketplace/product-kit/0.4.0/
 ├── .claude-plugin/plugin.json
 ├── .mcpb-cache/           ← only rw directory
 ├── agents/                ← 16 agent .md files
@@ -230,7 +228,7 @@ To edit plugin files mid-session from the sandbox, you must use Desktop Commande
 
 - **CLI routing path derivation**: The SKILL.md tells the parent Claude to strip `/skills/using-product-kit` from the `<location>` tag to get the plugin root. That root is always the **cache** copy.
 - **Marketplace copy may lag**: If you patch the cache copy mid-session via Desktop Commander, the marketplace copy won't match. This is fine — the cache copy is what runs. The marketplace copy only matters for sync.
-- **Version pinning**: The cache path includes the version number (e.g., `0.3.7`). Previous versions may still exist (e.g., `0.3.6`) in the cache directory.
+- **Version pinning**: The cache path includes the version number (e.g., `0.4.0`). Previous versions may still exist (e.g., `0.3.7`) in the cache directory.
 - **Session immutability**: Both copies are snapshotted at session start. `git push` to the repo has zero effect on a running session. User must start a new session to pick up changes.
 
 ---
@@ -337,6 +335,7 @@ The SKILL.md file in `skills/using-product-kit/` controls how the main Claude ag
 | Agent catalog & descriptions | `README.md` (public-facing) and `SKILL.md` (orchestration) |
 | Credits & attributions | `README.md` only |
 | Version numbers | See Version Locations table above |
+| Release history | `CHANGELOG.md` (single source — do NOT duplicate in CLAUDE.md) |
 | License | `LICENSE` file + `README.md` License section |
 | Plugin metadata | `plugin.json` |
 | Cowork CLI routing logic | `SKILL.md` (Launching Agents section) |
