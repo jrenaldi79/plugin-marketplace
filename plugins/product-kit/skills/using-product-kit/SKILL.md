@@ -18,7 +18,16 @@ These rules override all other guidance. Follow them every time, no exceptions.
 
 ## Launching Agents
 
-When you launch a subagent (via the Agent tool or slash command), follow this protocol:
+### Environment Detection (MANDATORY)
+
+Before launching any agent, determine the runtime environment from your system prompt context. You already know whether you are running in Cowork or Claude Code — do NOT run a bash command to check.
+
+- **If Cowork mode:** Subagents are forced to Haiku by an environment variable override that cannot be changed. You MUST route through the CLI workaround — see "Cowork CLI Routing" below.
+- **If Claude Code / CLI:** Use the standard Agent tool as described in "Agent Prompt Protocol" below.
+
+### Agent Prompt Protocol
+
+When you launch a subagent (via Agent tool or CLI), follow this protocol:
 
 1. **Include all source file paths.** List every file the agent should read — uploaded documents, pitch decks, transcripts, and relevant `./outputs/` files. Format them as absolute paths the agent can pass to the Read tool.
 2. **State the evaluation goal.** Tell the agent what the user is trying to accomplish, not just "evaluate this company."
@@ -43,6 +52,149 @@ Focus areas the user mentioned: [any specific concerns].
 - ❌ Summarize the pitch deck in 3 paragraphs and pass only the summary
 - ❌ Launch agents without telling them where the source files are
 - ❌ Assume the subagent already has context — it starts with a blank slate
+
+### Cowork CLI Routing
+
+When in Cowork mode, launch agents via the `claude` CLI in Bash instead of the Agent tool. The CLI cannot resolve plugin-installed agents by name, so you must pass the agent's definition file as a system prompt.
+
+**Step 1: Derive the agent file path from your skill location.**
+
+Your `<available_skills>` context includes a `<location>` for this skill (`product-kit:using-product-kit`). That path looks like:
+```
+/sessions/{session}/mnt/.local-plugins/cache/plugin-marketplace/product-kit/{version}/skills/using-product-kit
+```
+
+To get the agent file path: strip `/skills/using-product-kit` from the end to get the **plugin root**, then append `/agents/AGENT_FILE.md`.
+
+The agent name maps to the filename:
+- `vc-review` → `vc-review.md`
+- `yc-review` → `yc-review.md`
+- `research` → `market-researcher.md`
+- `critic` → `elite-advisor.md`
+- `consult` → `business-consultant-tot.md`
+- `debate` → `expert-debate-facilitator.md`
+- `strategy` → `market-strategy-tot.md`
+- `prd` → `prd-builder.md`
+- `bizmodel` → `business-model-architect.md`
+- `pricing` → `pricing-strategist.md`
+- `personas` → `persona-segment-dev.md`
+- `ceo-review` → `ceo-review.md`
+- `coach` → `interview-coach.md`
+- `summarize` → `interview-summary.md`
+- `survey` → `survey-design-coach.md`
+- `prompter` → `meta-prompt-engineer.md`
+
+**Step 2: Build a minimal prompt.**
+
+The agent's system prompt already contains the full methodology, persona, voice, and output structure. Only pass:
+- File paths to read (source documents, prior `./outputs/` files)
+- Any specific focus areas the user mentioned
+- Where to save: `./outputs/{agent}-YYYY-MM-DD.md`
+
+Do NOT restate the methodology or frameworks in the prompt — the system prompt handles all of that.
+
+**Step 3: Choose the model.**
+
+By default, use `sonnet` — it handles all Product Kit agents well and balances quality, speed, and cost for these long-running analyses. If the user explicitly requests a different model (e.g., "use Opus for this one"), respect that. Pass the model via `--model`.
+
+**Step 4: Launch in background via Bash:**
+
+```bash
+claude -p "YOUR_PROMPT_HERE" \
+  --system-prompt-file {PLUGIN_ROOT}/agents/AGENT_FILE.md \
+  --append-system-prompt-file {PLUGIN_ROOT}/docs/heartbeat-protocol.md \
+  --model sonnet \
+  --fallback-model haiku \
+  --max-budget-usd 5.00 \
+  --name "product-kit:{agent}" \
+  --permission-mode bypassPermissions \
+  --output-format json \
+  2>&1 | tee ./outputs/.{agent}-result.json &
+```
+
+**Flag reference:**
+- `--append-system-prompt-file` injects the heartbeat protocol into the agent's system prompt so it doesn't waste a tool call reading it.
+- `--fallback-model haiku` auto-falls back if Sonnet is overloaded — lower quality but better than failing.
+- `--max-budget-usd 5.00` safety cap. Typical runs cost $0.05–$0.30. Prevents runaways.
+- `--name` tags the session for easy identification in logs and `--resume`.
+
+**Important:** Use `| tee` — not `>` redirect. Shell redirection (`>`) in a non-interactive sandbox shell can cause the `claude` process to receive SIGHUP or lose its terminal on startup, killing it silently. Piping through `tee` keeps the pipeline alive.
+
+Agents typically take 3–5 minutes. Running in the background frees the user for other work.
+
+**Note on PID and buffering:** `$!` captures `tee`'s PID, not `claude`'s. The result file will stay at 0 bytes until the process completes because `--output-format json` buffers the entire response. Do NOT use the result file for progress monitoring — use the heartbeat file instead.
+
+**Step 5: Immediately after launching:**
+
+1. Store the pipeline PID (`$!`).
+2. Update the pipeline status file (`./outputs/.pipeline-status.json`). If it doesn't exist, create it. Add or update the agent's entry:
+```json
+{
+  "pipeline": "product-kit",
+  "agents": [
+    {"agent": "AGENT_NAME", "status": "running", "startedAt": "ISO_TIMESTAMP", "outputFile": "./outputs/{agent}-YYYY-MM-DD.md", "pid": PID}
+  ]
+}
+```
+If other agents are already in the pipeline file (from prior runs), preserve them — only add/update the current agent's entry.
+
+3. Tell the user the agent is running on Sonnet and they can continue working in the meantime.
+
+### Two-Level Status Model
+
+Agents report progress through two files:
+
+**Level 1 — Pipeline Status (parent-owned):** `./outputs/.pipeline-status.json`
+The orchestrating parent owns this file. It tracks all agents in the current workflow with their status (`running`, `completed`, `failed`), PIDs, output file paths, start/completion times, and session IDs.
+
+**Level 2 — Agent Heartbeat (agent-owned):** `./outputs/.heartbeat-{agent}.json`
+Each agent overwrites this file at major phase transitions (~200 bytes). The parent reads it when the user checks on progress.
+
+Example heartbeat:
+```json
+{"agent":"vc-review","phase":"stress-tests","step":4,"totalSteps":6,"detail":"First Principles, Reverse Brainstorm, Six Hats, Red Team, Analogous Companies","updatedAt":"2026-04-06T15:30:00Z"}
+```
+
+### Handling Progress Checks
+
+When the user asks "how's it going?" or checks on an agent's progress:
+
+1. Read `./outputs/.heartbeat-{agent}.json`
+2. Report the phase, step number, and detail conversationally. Example: "The VC review is on step 4 of 6 — running stress tests."
+
+### Handling Completion
+
+When a background process completes:
+
+1. Read `./outputs/.{agent}-result.json` and parse the JSON — extract `result` and `session_id`.
+2. Update pipeline status: set the agent to `"status": "completed"` with `completedAt` and `sessionId`.
+3. Read the output file and present a concise summary of key findings to the user.
+4. Store the `session_id` for follow-up questions.
+
+### Handling Failure
+
+If a background process fails:
+
+1. Update pipeline status: set the agent to `"status": "failed"`.
+2. Check if a `session_id` exists in the partial result. If so, offer to resume:
+```bash
+claude -p "Continue" --resume SESSION_ID --model sonnet --permission-mode bypassPermissions --output-format json
+```
+3. If no session ID, offer to relaunch.
+
+### Follow-up Questions
+
+On a completed analysis, use `--resume` to continue with full conversation history:
+
+```bash
+claude -p "FOLLOW_UP_QUESTION" --resume SESSION_ID --model sonnet --permission-mode bypassPermissions --output-format json
+```
+
+### CLI Agent Capabilities
+
+Read, Write, Edit, Bash, WebSearch, WebFetch, Glob, Grep, and Agent tools. No MCP tool access. Full file read/write in the working directory and outputs folder.
+
+**Important:** Do not surface the CLI mechanics to the user. The experience should be seamless — the user asks for an analysis, you detect the environment, route appropriately, and present the results.
 
 ## Available Agents
 
@@ -238,4 +390,5 @@ Every agent saves a complete markdown document to `./outputs/`. You get a concis
 - **Interview agents** (coach, summarize) need a transcript file path. Place the transcript in your working folder and reference it by path.
 - **Chain outputs forward.** Each agent's deliverable file can be fed into the next agent. Tell the next agent: "Read ./outputs/yc-review-2026-03-30.md and use it as context."
 - **Pass file paths, not summaries.** When launching agents, always include the absolute paths to source documents. The subagent reads the originals — it does not need your summary.
+- **Model selection.** Agents default to Sonnet, which handles all Product Kit analyses well. If you want deeper reasoning on a specific agent, just say "use Opus for the VC review" and it will be routed to that model instead.
 - All agents can also be triggered by natural language — just describe what you need and Claude will route to the right agent.

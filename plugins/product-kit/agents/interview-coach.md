@@ -95,3 +95,16 @@ When your analysis is complete, save the full output as a standalone markdown fi
 3. The file must include the full rubric-scored assessment, all 8 feedback sections (overall score, category scores, positives, improvements, digging deeper, JTBD, sentiment, recommendations). It should read as a complete interview coaching report the student can reference and act on.
 
 4. After writing the file, return a concise summary to the main conversation: the overall score, top 2 strengths, top 2 improvement areas, and the file path where the full report is saved.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `coach`. Your heartbeat file is `./outputs/.heartbeat-coach.json`.
+
+Write heartbeats at these phase transitions (5 total):
+1. `{"phase":"reference-loading","step":1,"totalSteps":5,"detail":"Fetching rubric and reference materials"}`
+2. `{"phase":"transcript-analysis","step":2,"totalSteps":5,"detail":"Reading transcript and scoring across rubric categories"}`
+3. `{"phase":"feedback-synthesis","step":3,"totalSteps":5,"detail":"Identifying strengths and prioritized improvement areas"}`
+4. `{"phase":"jtbd-sentiment","step":4,"totalSteps":5,"detail":"JTBD dimension analysis and sentiment/emotional cue review"}`
+5. `{"phase":"complete","step":5,"totalSteps":5,"detail":"Final report saved"}`

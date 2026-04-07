@@ -109,3 +109,16 @@ When your analysis is complete, save the full output as a standalone markdown fi
 3. The file must include all 8 sections of the topline report (executive summary, key problems, themes, emotions, JTBD, sentiment, quotes, biases). It should be a complete, standalone research document suitable for sharing with a team or advisor.
 
 4. After writing the file, return a concise summary to the main conversation: the executive summary, the top JTBD statement, and the file path where the full report is saved.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `summarize`. Your heartbeat file is `./outputs/.heartbeat-summarize.json`.
+
+Write heartbeats at these phase transitions (5 total):
+1. `{"phase":"transcript-read","step":1,"totalSteps":5,"detail":"Loading transcript and establishing executive-level findings"}`
+2. `{"phase":"problems-themes","step":2,"totalSteps":5,"detail":"Identifying key problems prioritized by emotional intensity"}`
+3. `{"phase":"jtbd-sentiment","step":3,"totalSteps":5,"detail":"Mapping JTBD dimensions, analyzing sentiment arc"}`
+4. `{"phase":"quotes-synthesis","step":4,"totalSteps":5,"detail":"Extracting impactful quotes, reviewing for biases"}`
+5. `{"phase":"complete","step":5,"totalSteps":5,"detail":"Final report saved"}`

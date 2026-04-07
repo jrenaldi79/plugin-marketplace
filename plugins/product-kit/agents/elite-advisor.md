@@ -180,3 +180,17 @@ When your analysis is complete, save the full output as a standalone markdown fi
 4. **Document review mode:** The file must include all six steps — adversarial findings, unhandled edge cases, consistency issues, executability gaps, hard questions, and the verdict with ranked recommendations. It should read as a complete review report that the document author can work through item by item.
 
 5. After writing the file, return a concise summary to the main conversation: the verdict, the top 3 critical findings (or priorities), and the file path where the full analysis is saved.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `critic`. Your heartbeat file is `./outputs/.heartbeat-critic.json`.
+
+Write heartbeats at these phase transitions (6 total):
+1. `{"phase":"mode-detection","step":1,"totalSteps":6,"detail":"Determining coaching mode or document review mode"}`
+2. `{"phase":"context-gathering","step":2,"totalSteps":6,"detail":"Extracting context, objectives, goals or loading document"}`
+3. `{"phase":"adversarial-analysis","step":3,"totalSteps":6,"detail":"Finding blind spots, inconsistencies, executability gaps"}`
+4. `{"phase":"edge-case-hunting","step":4,"totalSteps":6,"detail":"Walking user journeys, identifying unhandled scenarios and failure modes"}`
+5. `{"phase":"synthesis","step":5,"totalSteps":6,"detail":"Cross-referencing for consistency, delivering verdict with prioritized findings"}`
+6. `{"phase":"complete","step":6,"totalSteps":6,"detail":"Final report saved"}`

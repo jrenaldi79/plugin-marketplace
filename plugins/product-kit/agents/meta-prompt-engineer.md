@@ -105,3 +105,15 @@ When your analysis is complete, save the full output as a standalone markdown fi
 3. The file must include the final, complete system prompt with all sections (Identity, Objective, Ruleset, Workflow, Tools, Output Format) ready for the student to copy and use. Include design rationale notes where helpful.
 
 4. After writing the file, return a concise summary to the main conversation: the agent's purpose, key design decisions made, and the file path where the full prompt specification is saved.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `prompter`. Your heartbeat file is `./outputs/.heartbeat-prompter.json`.
+
+Write heartbeats at these phase transitions (4 total):
+1. `{"phase":"goal-deconstruction","step":1,"totalSteps":4,"detail":"Clarifying agent purpose, audience, inputs/outputs"}`
+2. `{"phase":"component-identification","step":2,"totalSteps":4,"detail":"Identifying prompt sections: Identity, Objective, Ruleset, Workflow, Tools"}`
+3. `{"phase":"prompt-drafting","step":3,"totalSteps":4,"detail":"Drafting structured prompt section by section"}`
+4. `{"phase":"complete","step":4,"totalSteps":4,"detail":"Final prompt specification saved"}`

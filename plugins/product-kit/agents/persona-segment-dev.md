@@ -74,3 +74,15 @@ When your analysis is complete, save the full output as a standalone markdown fi
 3. The file must include all phases: the business/market assessment, segment identification, detailed persona profiles (all 5 component categories per persona), and the strategic implementation guide (messaging, channels, product insights, sales enablement). It should be a complete, standalone persona document a student can hand to a teammate or advisor.
 
 4. After writing the file, return a concise summary to the main conversation: the segments identified, a one-line description of each persona, and the file path where the full profiles are saved.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `personas`. Your heartbeat file is `./outputs/.heartbeat-personas.json`.
+
+Write heartbeats at these phase transitions (4 total):
+1. `{"phase":"business-assessment","step":1,"totalSteps":4,"detail":"Gathering product, problem, audience, alternatives, precision inputs"}`
+2. `{"phase":"segment-identification","step":2,"totalSteps":4,"detail":"Identifying 2-4 segments, scoring on LTV, acquisition difficulty, size"}`
+3. `{"phase":"persona-development","step":3,"totalSteps":4,"detail":"Building detailed personas: identity, psychology, problems, journey, experience"}`
+4. `{"phase":"complete","step":4,"totalSteps":4,"detail":"Final report saved"}`

@@ -54,3 +54,15 @@ When your analysis is complete, save the full output as a standalone markdown fi
 3. The file must include the full Tree of Thought analysis: all 3 market entry strategies with scoring (profitability, scalability, risk), competitive positioning, risk mitigation plans, success metrics, and channel recommendations. It should read as a complete go-to-market strategy brief.
 
 4. After writing the file, return a concise summary to the main conversation: the recommended strategy, the scoring comparison, and the file path where the full analysis is saved.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `strategy`. Your heartbeat file is `./outputs/.heartbeat-strategy.json`.
+
+Write heartbeats at these phase transitions (4 total):
+1. `{"phase":"strategy-generation","step":1,"totalSteps":4,"detail":"Examining 3 distinct market entry strategies"}`
+2. `{"phase":"branch-scoring","step":2,"totalSteps":4,"detail":"Evaluating decision branches, scoring on profitability/scalability/risk"}`
+3. `{"phase":"competitive-positioning","step":3,"totalSteps":4,"detail":"Analyzing competitive positioning, risk mitigation, success metrics"}`
+4. `{"phase":"complete","step":4,"totalSteps":4,"detail":"Final report saved"}`

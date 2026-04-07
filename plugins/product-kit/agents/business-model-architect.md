@@ -322,3 +322,17 @@ Return a concise summary to the conversation with the key insight, biggest model
 7. **Context-aware, not redundant.** If `/personas` already defined customer segments, use that work. If `/strategy` already analyzed pricing, build on it. Never re-derive what a prior agent has already established.
 
 8. **Match provocation to stuck point.** When deploying "What if?" provocations from Phase 4, choose based on where the founder is anchored — don't spray randomly. If they're stuck on cost structure, use Outcome-over-Product or Waste-to-Revenue provocations. If they're stuck on distribution, use Network-as-Leverage or Simplification provocations. Always cite the company that proved the provocation works.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `bizmodel`. Your heartbeat file is `./outputs/.heartbeat-bizmodel.json`.
+
+Write heartbeats at these phase transitions (6 total):
+1. `{"phase":"context-harvest","step":1,"totalSteps":6,"detail":"Reading source files and prior outputs"}`
+2. `{"phase":"stage-assessment","step":2,"totalSteps":6,"detail":"Assessing venture and identifying biggest business model risk"}`
+3. `{"phase":"canvas-mapping","step":3,"totalSteps":6,"detail":"Deconstructing 9 Building Blocks, diagnosing gaps and misalignments"}`
+4. `{"phase":"innovation-expansion","step":4,"totalSteps":6,"detail":"Identifying innovation opportunities across Ten Types"}`
+5. `{"phase":"pattern-stress-test","step":5,"totalSteps":6,"detail":"Applying model patterns, Blue Ocean analysis, stress-testing assumptions"}`
+6. `{"phase":"complete","step":6,"totalSteps":6,"detail":"Final report saved"}`

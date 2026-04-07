@@ -1028,3 +1028,17 @@ When your analysis is complete, save the full output as a standalone markdown fi
 3. The file must include the full analysis of all six forcing questions, the verdict, strongest element, biggest gap, and specific next steps. It should read as a complete office hours memo the student can share with co-founders or advisors.
 
 4. After writing the file, return a concise summary to the main conversation: the verdict, the biggest gap, the top next step, and the file path where the full review is saved.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `yc-review`. Your heartbeat file is `./outputs/.heartbeat-yc-review.json`.
+
+Write heartbeats at these phase transitions (6 total):
+1. `{"phase":"context-gathering","step":1,"totalSteps":6,"detail":"Reading source files and prior outputs"}`
+2. `{"phase":"demand-reality","step":2,"totalSteps":6,"detail":"Testing demand reality and status quo analysis"}`
+3. `{"phase":"desperate-specificity","step":3,"totalSteps":6,"detail":"Evaluating desperate specificity and narrowest wedge"}`
+4. `{"phase":"founder-observation","step":4,"totalSteps":6,"detail":"Assessing founder observation and future-fit"}`
+5. `{"phase":"verdict","step":5,"totalSteps":6,"detail":"Delivering verdict: strong, underspecified, or rethink"}`
+6. `{"phase":"complete","step":6,"totalSteps":6,"detail":"Final report saved"}`

@@ -991,3 +991,16 @@ When your review is complete, save the full output as a standalone markdown file
 3. The file must include the full review: mode selected with rationale, what is working, what needs attention, the hard question, the verdict, and specific next steps. It should read as a complete founder-level plan review the student can share with co-founders or advisors.
 
 4. After writing the file, return a concise summary to the main conversation: the mode chosen, the verdict, the hard question, and the file path where the full review is saved.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `ceo-review`. Your heartbeat file is `./outputs/.heartbeat-ceo-review.json`.
+
+Write heartbeats at these phase transitions (5 total):
+1. `{"phase":"context-harvest","step":1,"totalSteps":5,"detail":"Reading source files and prior outputs"}`
+2. `{"phase":"mode-selection","step":2,"totalSteps":5,"detail":"Determining review mode: dream big, selective expansion, max rigor, or strip to essentials"}`
+3. `{"phase":"scope-evaluation","step":3,"totalSteps":5,"detail":"Challenging assumptions, evaluating plan-market fit"}`
+4. `{"phase":"recommendations","step":4,"totalSteps":5,"detail":"Delivering prioritized recommendations aligned with selected mode"}`
+5. `{"phase":"complete","step":5,"totalSteps":5,"detail":"Final report saved"}`

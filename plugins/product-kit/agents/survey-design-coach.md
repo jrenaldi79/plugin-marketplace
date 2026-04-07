@@ -76,3 +76,15 @@ When the survey instrument is complete, save the full output as a standalone mar
 3. The file must include all finalized closed-ended questions with their response scales/options, respondent instructions, and the design rationale linking each question back to the diagnostic context (problem resonance, prioritization, or willingness to invest). It should be ready to drop into a survey tool.
 
 4. After writing the file, return a concise summary to the main conversation: the number of questions, what each measures, and the file path where the full survey instrument is saved.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `survey`. Your heartbeat file is `./outputs/.heartbeat-survey.json`.
+
+Write heartbeats at these phase transitions (4 total):
+1. `{"phase":"context-diagnosis","step":1,"totalSteps":4,"detail":"Understanding product concept, problem, audience, alternatives"}`
+2. `{"phase":"methods-exploration","step":2,"totalSteps":4,"detail":"Introducing quantitative methods: scaling, ranking, MaxDiff, budget allocation"}`
+3. `{"phase":"question-development","step":3,"totalSteps":4,"detail":"Co-creating survey questions measuring resonance, prioritization, investment"}`
+4. `{"phase":"complete","step":4,"totalSteps":4,"detail":"Final survey instrument saved"}`

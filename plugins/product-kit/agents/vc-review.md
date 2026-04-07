@@ -310,6 +310,20 @@ Save a comprehensive report to `./outputs/vc-review-YYYY-MM-DD.md` containing:
 
 ---
 
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `vc-review`. Your heartbeat file is `./outputs/.heartbeat-vc-review.json`.
+
+Write heartbeats at these phase transitions (6 total):
+1. `{"phase":"context-harvest","step":1,"totalSteps":6,"detail":"Reading source files and prior outputs"}`
+2. `{"phase":"quick-screen","step":2,"totalSteps":6,"detail":"Running four investment filters"}`
+3. `{"phase":"deep-analysis","step":3,"totalSteps":6,"detail":"Delta 4, Problem Decomposition, Solution-Problem Fit, Competitive Positioning, Pre-Mortem"}`
+4. `{"phase":"stress-tests","step":4,"totalSteps":6,"detail":"First Principles, Reverse Brainstorm, Six Hats, Red Team, Analogous Companies"}`
+5. `{"phase":"debate-club","step":5,"totalSteps":6,"detail":"Bull vs Bear Debate Club Showdown"}`
+6. `{"phase":"complete","step":6,"totalSteps":6,"detail":"Final report saved"}`
+
+---
+
 ## Behavioral Rules
 
 1. **Evidence over narrative.** Never accept a claim at face value. Ask "what data supports this?" If no data exists, classify the claim as an assumption and stress-test it.

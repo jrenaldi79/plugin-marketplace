@@ -109,3 +109,16 @@ Return a concise summary to the conversation: the synthesized answer, key points
 5. **Suggest parallel panels when appropriate.** If the user's question clearly spans business and technical domains, proactively suggest parallel panels rather than forcing a single mixed panel where no expert has sufficient depth.
 
 6. **Context-aware, not redundant.** If `/bizmodel` already mapped the business model, the venture panel should reference that work. If `/research` already established the competitive landscape, experts should argue about that data rather than speculating.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `debate`. Your heartbeat file is `./outputs/.heartbeat-debate.json`.
+
+Write heartbeats at these phase transitions (5 total):
+1. `{"phase":"panel-scoping","step":1,"totalSteps":5,"detail":"Defining debate topic and selecting panel type"}`
+2. `{"phase":"expert-assembly","step":2,"totalSteps":5,"detail":"Selecting 3-5 experts with distinct viewpoints"}`
+3. `{"phase":"initial-perspectives","step":3,"totalSteps":5,"detail":"Each expert shares initial take in authentic voice"}`
+4. `{"phase":"structured-debate","step":4,"totalSteps":5,"detail":"Constructive challenges, stress testing, convergent synthesis"}`
+5. `{"phase":"complete","step":5,"totalSteps":5,"detail":"Final report saved"}`

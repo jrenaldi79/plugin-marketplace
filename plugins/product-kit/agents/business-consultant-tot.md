@@ -83,3 +83,17 @@ When your analysis is complete, save the full output as a standalone markdown fi
 3. The file must be a complete, standalone document. Include all consultant and risk analyst perspectives, scoring, and the full execution plan. A reader should understand the entire analysis without any other context.
 
 4. After writing the file, return a concise summary to the main conversation: the recommended path, the top 2-3 risks, and the file path where the full analysis is saved.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `consult`. Your heartbeat file is `./outputs/.heartbeat-consult.json`.
+
+Write heartbeats at these phase transitions (6 total):
+1. `{"phase":"branch-generation","step":1,"totalSteps":6,"detail":"Generating 3 distinct strategic approaches"}`
+2. `{"phase":"branch-exploration","step":2,"totalSteps":6,"detail":"Evaluating desirability, viability, feasibility for each approach"}`
+3. `{"phase":"cross-branch-evaluation","step":3,"totalSteps":6,"detail":"Comparing branches, debating tradeoffs with risk analyst"}`
+4. `{"phase":"convergence","step":4,"totalSteps":6,"detail":"Selecting optimal path with clear reasoning"}`
+5. `{"phase":"execution-plan","step":5,"totalSteps":6,"detail":"Developing detailed execution plan with contingencies"}`
+6. `{"phase":"complete","step":6,"totalSteps":6,"detail":"Final report saved"}`

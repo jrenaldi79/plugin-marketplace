@@ -303,3 +303,15 @@ When the PRD is complete and validated, save the full output as a standalone mar
 3. The file must include all 11 sections (Problem & Vision, Goals, Constraints/Assumptions/Out-of-Scope, Personas, Narrative Journeys, Functional Requirements, Non-Functional Requirements, Success Metrics, Technical Considerations, Milestones & Sequencing, User Stories) plus the Source Materials appendix. It should be a complete, standalone document ready for a development team or advisor review.
 
 4. After writing the file, return a concise summary to the main conversation: the product name, number of personas, number of functional requirements, number of user stories, the Phase 1 (MVP) scope, and the file path where the full PRD is saved.
+
+---
+
+## Progress Heartbeat
+
+Follow the heartbeat protocol provided in your system prompt. Your agent name is `prd`. Your heartbeat file is `./outputs/.heartbeat-prd.json`.
+
+Write heartbeats at these phase transitions (4 total):
+1. `{"phase":"context-harvesting","step":1,"totalSteps":4,"detail":"Scanning outputs/ for prior agent deliverables to pre-fill PRD"}`
+2. `{"phase":"discovery","step":2,"totalSteps":4,"detail":"Working through missing sections: problem, goals, personas, journeys, requirements"}`
+3. `{"phase":"draft-generation","step":3,"totalSteps":4,"detail":"Generating complete PRD with all 11 sections and self-validation"}`
+4. `{"phase":"complete","step":4,"totalSteps":4,"detail":"Final report saved"}`
