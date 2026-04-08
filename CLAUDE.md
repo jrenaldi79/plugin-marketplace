@@ -361,3 +361,49 @@ The SKILL.md file in `skills/using-product-kit/` controls how the main Claude ag
 - **`--bare` flag breaks auth in Cowork** — skips keychain/OAuth, requires `ANTHROPIC_API_KEY` env var which isn't set. Don't use it.
 - **`--output-format json` buffers entirely** — result file stays 0 bytes until process completes. Use heartbeat files for progress monitoring.
 
+---
+
+## Debugging Subagent Sessions
+
+Cowork stores subagent session data on the Mac filesystem. Use these paths to inspect which model a subagent ran on, read its full conversation, or debug failures.
+
+### Where Subagent JSONLs Live
+
+```
+~/Library/Application Support/Claude/local-agent-mode-sessions/
+  {sessionId}/{conversationId}/
+    local_{conversationLocalId}/
+      .claude/projects/-sessions-{session-slug}/{sessionFileId}/
+        subagents/
+          agent-{agentId}.jsonl        ← full conversation transcript
+          agent-{agentId}.meta.json    ← agent type + description
+          agent-acompact-{id}.jsonl    ← compacted parent context (if conversation was long)
+```
+
+### How to Find the Right Directory
+
+1. The `{sessionId}` and `{conversationId}` are the same UUIDs as the Cowork session (visible in the cache path or the Desktop Commander).
+2. The `local_{conversationLocalId}` directories correspond to individual Cowork conversations. Sort by modification time to find the most recent.
+3. Inside each `local_*` dir, the `.claude/projects/` path contains a slug-named directory matching the Cowork session slug (e.g., `-sessions-intelligent-dazzling-pascal`).
+4. The `subagents/` folder contains one `.jsonl` + one `.meta.json` per subagent launched via the Agent tool.
+
+### What's in the Files
+
+- **`.meta.json`**: Small JSON with `agentType` (e.g., `"Explore"`, `"general-purpose"`) and `description`.
+- **`.jsonl`**: Full conversation log. Each line is a JSON object. To check the model, grep for `"model"`:
+  ```bash
+  grep -o '"model":"[^"]*"' agent-*.jsonl | head -1
+  ```
+- **`acompact-*.jsonl`**: Parent session compaction data (runs on the parent model, e.g., Opus). Not a subagent.
+
+### Quick Model Check Across All Subagents
+
+```bash
+cd "~/Library/Application Support/Claude/local-agent-mode-sessions/{sessionId}/{conversationId}/local_{id}/.claude/projects/-sessions-{slug}/{fileId}/subagents/"
+for f in agent-a*.jsonl; do
+  echo -n "$f: "; grep -o '"model":"[^"]*"' "$f" | head -1
+done
+```
+
+This confirms the Haiku subagent lock: every Agent-tool-launched subagent shows `claude-haiku-4-5-20251001`, while the parent session runs on the configured model (Opus/Sonnet).
+
