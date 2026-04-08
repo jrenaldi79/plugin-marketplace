@@ -61,7 +61,7 @@ Before pushing a new version:
 
 ### Version History
 
-See [CHANGELOG.md](CHANGELOG.md) for the full release history. Current version: **0.4.0**.
+See [CHANGELOG.md](CHANGELOG.md) for the full release history.
 
 ---
 
@@ -190,7 +190,7 @@ Inside the Cowork sandbox, plugin files appear at three read-only mount points u
 
 For product-kit specifically, the active copy is at:
 ```
-/sessions/{slug}/mnt/.local-plugins/cache/plugin-marketplace/product-kit/0.4.0/
+/sessions/{slug}/mnt/.local-plugins/cache/plugin-marketplace/product-kit/{version}/
 ├── .claude-plugin/plugin.json
 ├── .mcpb-cache/           ← only rw directory
 ├── agents/                ← 16 agent .md files
@@ -228,7 +228,7 @@ To edit plugin files mid-session from the sandbox, you must use Desktop Commande
 
 - **CLI routing path derivation**: The SKILL.md tells the parent Claude to strip `/skills/using-product-kit` from the `<location>` tag to get the plugin root. That root is always the **cache** copy.
 - **Marketplace copy may lag**: If you patch the cache copy mid-session via Desktop Commander, the marketplace copy won't match. This is fine — the cache copy is what runs. The marketplace copy only matters for sync.
-- **Version pinning**: The cache path includes the version number (e.g., `0.4.0`). Previous versions may still exist (e.g., `0.3.7`) in the cache directory.
+- **Version pinning**: The cache path includes the version number. Previous versions may still exist in the cache directory.
 - **Session immutability**: Both copies are snapshotted at session start. `git push` to the repo has zero effect on a running session. User must start a new session to pick up changes.
 
 ---
