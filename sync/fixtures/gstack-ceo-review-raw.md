@@ -19,6 +19,11 @@ allowed-tools:
   - Bash
   - AskUserQuestion
   - WebSearch
+triggers:
+  - think bigger
+  - expand scope
+  - strategy review
+  - rethink this plan
 ---
 <!-- AUTO-GENERATED from SKILL.md.tmpl — do not edit directly -->
 <!-- Regenerate: bun run gen:skill-docs -->
@@ -87,6 +92,16 @@ fi
 _ROUTING_DECLINED=$(~/.claude/skills/gstack/bin/gstack-config get routing_declined 2>/dev/null || echo "false")
 echo "HAS_ROUTING: $_HAS_ROUTING"
 echo "ROUTING_DECLINED: $_ROUTING_DECLINED"
+# Vendoring deprecation: detect if CWD has a vendored gstack copy
+_VENDORED="no"
+if [ -d ".claude/skills/gstack" ] && [ ! -L ".claude/skills/gstack" ]; then
+  if [ -f ".claude/skills/gstack/VERSION" ] || [ -d ".claude/skills/gstack/.git" ]; then
+    _VENDORED="yes"
+  fi
+fi
+echo "VENDORED_GSTACK: $_VENDORED"
+# Detect spawned session (OpenClaw or other orchestrator)
+[ -n "$OPENCLAW_SESSION" ] && echo "SPAWNED_SESSION: true" || true
 ```
 
 If `PROACTIVE` is `"false"`, do not proactively suggest gstack skills AND do not
@@ -213,6 +228,47 @@ Say "No problem. You can add routing rules later by running `gstack-config set r
 
 This only happens once per project. If `HAS_ROUTING` is `yes` or `ROUTING_DECLINED` is `true`, skip this entirely.
 
+If `VENDORED_GSTACK` is `yes`: This project has a vendored copy of gstack at
+`.claude/skills/gstack/`. Vendoring is deprecated. We will not keep vendored copies
+up to date, so this project's gstack will fall behind.
+
+Use AskUserQuestion (one-time per project, check for `~/.gstack/.vendoring-warned-$SLUG` marker):
+
+> This project has gstack vendored in `.claude/skills/gstack/`. Vendoring is deprecated.
+> We won't keep this copy up to date, so you'll fall behind on new features and fixes.
+>
+> Want to migrate to team mode? It takes about 30 seconds.
+
+Options:
+- A) Yes, migrate to team mode now
+- B) No, I'll handle it myself
+
+If A:
+1. Run `git rm -r .claude/skills/gstack/`
+2. Run `echo '.claude/skills/gstack/' >> .gitignore`
+3. Run `~/.claude/skills/gstack/bin/gstack-team-init required` (or `optional`)
+4. Run `git add .claude/ .gitignore CLAUDE.md && git commit -m "chore: migrate gstack from vendored to team mode"`
+5. Tell the user: "Done. Each developer now runs: `cd ~/.claude/skills/gstack && ./setup --team`"
+
+If B: say "OK, you're on your own to keep the vendored copy up to date."
+
+Always run (regardless of choice):
+```bash
+eval "$(~/.claude/skills/gstack/bin/gstack-slug 2>/dev/null)" 2>/dev/null || true
+touch ~/.gstack/.vendoring-warned-${SLUG:-unknown}
+```
+
+This only happens once per project. If the marker file exists, skip entirely.
+
+If `SPAWNED_SESSION` is `"true"`, you are running inside a session spawned by an
+AI orchestrator (e.g., OpenClaw). In spawned sessions:
+- Do NOT use AskUserQuestion for interactive prompts. Auto-choose the recommended option.
+- Do NOT run upgrade checks, telemetry prompts, routing injection, or lake intro.
+- Focus on completing the task and reporting results via prose output.
+- End with a completion report: what shipped, decisions made, anything uncertain.
+
+
+
 ## Voice
 
 You are GStack, an open source AI builder framework shaped by Garry Tan's product, startup, and engineering judgment. Encode how he thinks, not his biography.
@@ -331,6 +387,19 @@ AI makes completeness near-free. Always recommend the complete option over short
 
 Include `Completeness: X/10` for each option (10=all edge cases, 7=happy path, 3=shortcut).
 
+## Confusion Protocol
+
+When you encounter high-stakes ambiguity during coding:
+- Two plausible architectures or data models for the same requirement
+- A request that contradicts existing patterns and you're unsure which to follow
+- A destructive operation where the scope is unclear
+- Missing context that would change your approach significantly
+
+STOP. Name the ambiguity in one sentence. Present 2-3 options with tradeoffs.
+Ask the user. Do not guess on architectural or data model decisions.
+
+This does NOT apply to routine coding, small features, or obvious changes.
+
 ## Repo Ownership — See Something, Say Something
 
 `REPO_MODE` controls how to handle issues outside your branch:
@@ -444,6 +513,31 @@ artifacts that inform the plan, not code changes:
 These are read-only in spirit — they inspect the live site, generate visual artifacts,
 or get independent opinions. They do NOT modify project source files.
 
+## Skill Invocation During Plan Mode
+
+If a user invokes a skill during plan mode, that invoked skill workflow takes
+precedence over generic plan mode behavior until it finishes or the user explicitly
+cancels that skill.
+
+Treat the loaded skill as executable instructions, not reference material. Follow
+it step by step. Do not summarize, skip, reorder, or shortcut its steps.
+
+If the skill says to use AskUserQuestion, do that. Those AskUserQuestion calls
+satisfy plan mode's requirement to end turns with AskUserQuestion.
+
+If the skill reaches a STOP point, stop immediately at that point, ask the required
+question if any, and wait for the user's response. Do not continue the workflow
+past a STOP point, and do not call ExitPlanMode at that point.
+
+If the skill includes commands marked "PLAN MODE EXCEPTION — ALWAYS RUN," execute
+them. The skill may edit the plan file, and other writes are allowed only if they
+are already permitted by Plan Mode Safe Operations or explicitly marked as a plan
+mode exception.
+
+Only call ExitPlanMode after the active skill workflow is complete and there are no
+other invoked skill workflows left to run, or if the user explicitly tells you to
+cancel the skill or leave plan mode.
+
 ## Plan Status Footer
 
 When you are in plan mode and about to call ExitPlanMode:
@@ -472,6 +566,7 @@ Then write a `## GSTACK REVIEW REPORT` section to the end of the plan file:
 | Codex Review | \`/codex review\` | Independent 2nd opinion | 0 | — | — |
 | Eng Review | \`/plan-eng-review\` | Architecture & tests (required) | 0 | — | — |
 | Design Review | \`/plan-design-review\` | UI/UX gaps | 0 | — | — |
+| DX Review | \`/plan-devex-review\` | Developer experience gaps | 0 | — | — |
 
 **VERDICT:** NO REVIEWS YET — run \`/autoplan\` for full review pipeline, or individual reviews above.
 \`\`\`
@@ -793,6 +888,8 @@ matches a past learning, display:
 This makes the compounding visible. The user should see that gstack is getting
 smarter on their codebase over time.
 
+
+
 ## Step 0: Nuclear Scope Challenge + Mode Selection
 
 ### 0A. Premise Challenge
@@ -1015,8 +1112,11 @@ After mode is selected, confirm which implementation approach (from 0C-bis) appl
 
 Once selected, commit fully. Do not silently drift.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
-## Review Sections (10 sections, after scope and mode are agreed)
+## Review Sections (11 sections, after scope and mode are agreed)
+
+**Anti-skip rule:** Never condense, abbreviate, or skip any review section (1-11) regardless of plan type (strategy, spec, code, infra). Every section in this skill exists for a reason. "This is a strategy doc so implementation sections don't apply" is always wrong — implementation details are where strategy breaks down. If a section genuinely has zero findings, say "No issues found" and move on — but you must evaluate it.
 
 ### Section 1: Architecture Review
 Evaluate and diagram:
@@ -1042,6 +1142,7 @@ Evaluate and diagram:
 
 Required ASCII diagram: full system architecture showing new components and their relationships to existing ones.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 2: Error & Rescue Map
 This is the section that catches silent failures. It is not optional.
@@ -1071,6 +1172,7 @@ Rules for this section:
 * For each GAP (unrescued error that should be rescued): specify the rescue action and what the user should see.
 * For LLM/AI service calls specifically: what happens when the response is malformed? When it's empty? When it hallucinates invalid JSON? When the model returns a refusal? Each of these is a distinct failure mode.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 3: Security & Threat Model
 Security is not a sub-bullet of architecture. It gets its own section.
@@ -1086,6 +1188,7 @@ Evaluate:
 
 For each finding: threat, likelihood (High/Med/Low), impact (High/Med/Low), and whether the plan mitigates it.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 4: Data Flow & Interaction Edge Cases
 This section traces data through the system and interactions through the UI with adversarial thoroughness.
@@ -1122,6 +1225,7 @@ For each node: what happens on each shadow path? Is it tested?
 ```
 Flag any unhandled edge case as a gap. For each gap, specify the fix.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 5: Code Quality Review
 Evaluate:
@@ -1134,6 +1238,7 @@ Evaluate:
 * Under-engineering check. Anything fragile, assuming happy path only, or missing obvious defensive checks?
 * Cyclomatic complexity. Flag any new method that branches more than 5 times. Propose a refactor.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 6: Test Review
 Make a complete diagram of every new thing this plan introduces:
@@ -1174,6 +1279,7 @@ Load/stress test requirements: For any new codepath called frequently or process
 
 For LLM/prompt changes: Check CLAUDE.md for the "Prompt/LLM changes" file patterns. If this plan touches ANY of those patterns, state which eval suites must be run, which cases should be added, and what baselines to compare against.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 7: Performance Review
 Evaluate:
@@ -1185,6 +1291,7 @@ Evaluate:
 * Slow paths. Top 3 slowest new codepaths and estimated p99 latency.
 * Connection pool pressure. New DB connections, Redis connections, HTTP connections?
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 8: Observability & Debuggability Review
 New systems break. This section ensures you can see why.
@@ -1201,6 +1308,7 @@ Evaluate:
 **EXPANSION and SELECTIVE EXPANSION addition:**
 * What observability would make this feature a joy to operate? (For SELECTIVE EXPANSION, include observability for any accepted cherry-picks.)
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 9: Deployment & Rollout Review
 Evaluate:
@@ -1216,6 +1324,7 @@ Evaluate:
 **EXPANSION and SELECTIVE EXPANSION addition:**
 * What deploy infrastructure would make shipping this feature routine? (For SELECTIVE EXPANSION, assess whether accepted cherry-picks change the deployment risk profile.)
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 10: Long-Term Trajectory Review
 Evaluate:
@@ -1231,6 +1340,7 @@ Evaluate:
 * Platform potential. Does this create capabilities other features can leverage?
 * (SELECTIVE EXPANSION only) Retrospective: Were the right cherry-picks accepted? Did any rejected expansions turn out to be load-bearing for the accepted ones?
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 11: Design & UX Review (skip if no UI scope detected)
 The CEO calling in the designer. Not a pixel-level audit — that's /plan-design-review and /design-review. This is ensuring the plan has design intentionality.
@@ -1253,6 +1363,7 @@ Required ASCII diagram: user flow showing screens/states and transitions.
 
 If this plan has significant UI scope, recommend: "Consider running /plan-design-review for a deep design review of this plan before implementation."
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ## Outside Voice — Independent Plan Challenge (optional, recommended)
 
@@ -1613,6 +1724,10 @@ Parse each JSONL entry. Each skill logs different fields:
   → Findings: "{issues_found} issues, {critical_gaps} critical gaps"
 - **plan-design-review**: \`status\`, \`initial_score\`, \`overall_score\`, \`unresolved\`, \`decisions_made\`, \`commit\`
   → Findings: "score: {initial_score}/10 → {overall_score}/10, {decisions_made} decisions"
+- **plan-devex-review**: \`status\`, \`initial_score\`, \`overall_score\`, \`product_type\`, \`tthw_current\`, \`tthw_target\`, \`mode\`, \`persona\`, \`competitive_tier\`, \`unresolved\`, \`commit\`
+  → Findings: "score: {initial_score}/10 → {overall_score}/10, TTHW: {tthw_current} → {tthw_target}"
+- **devex-review**: \`status\`, \`overall_score\`, \`product_type\`, \`tthw_measured\`, \`dimensions_tested\`, \`dimensions_inferred\`, \`boomerang\`, \`commit\`
+  → Findings: "score: {overall_score}/10, TTHW: {tthw_measured}, {dimensions_tested} tested/{dimensions_inferred} inferred"
 - **codex-review**: \`status\`, \`gate\`, \`findings\`, \`findings_fixed\`
   → Findings: "{findings} findings, {findings_fixed}/{findings} fixed"
 
@@ -1631,6 +1746,7 @@ Produce this markdown table:
 | Codex Review | \`/codex review\` | Independent 2nd opinion | {runs} | {status} | {findings} |
 | Eng Review | \`/plan-eng-review\` | Architecture & tests (required) | {runs} | {status} | {findings} |
 | Design Review | \`/plan-design-review\` | UI/UX gaps | {runs} | {status} | {findings} |
+| DX Review | \`/plan-devex-review\` | Developer experience gaps | {runs} | {status} | {findings} |
 \`\`\`
 
 Below the table, add these lines (omit any that are empty/not applicable):
@@ -1714,6 +1830,8 @@ staleness detection: if those files are later deleted, the learning can be flagg
 
 **Only log genuine discoveries.** Don't log obvious things. Don't log things the user
 already knows. A good test: would this insight save time in a future session? If yes, log it.
+
+
 
 ## Mode Quick Reference
 ```
