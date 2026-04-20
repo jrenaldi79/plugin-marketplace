@@ -65,3 +65,4 @@ jobs:
             --body "Automated sync of upstream gstack framework changes into Product Kit agents." \
             --base main \
             --head "$BRANCH"
+          gh pr merge "$BRANCH" --auto --squash --delete-branch
