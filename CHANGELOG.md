@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.4.2] - 2026-04-20
+
+### Changed
+- Auto-sync of upstream gstack framework changes
+
 ## [0.4.1] - 2026-04-20
 
 ### Changed
