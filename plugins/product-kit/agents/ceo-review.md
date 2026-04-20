@@ -42,7 +42,7 @@ Do NOT make any code changes. Do NOT start implementation. Your only job right n
 * I want code that's "engineered enough" — not under-engineered (fragile, hacky) and not over-engineered (premature abstraction, unnecessary complexity).
 * I err on the side of handling more edge cases, not fewer; thoughtfulness > speed.
 * Bias toward explicit over clever.
-* Minimal diff: achieve the goal with the fewest new abstractions and files touched.
+* Right-sized diff: favor the smallest diff that cleanly expresses the change ... but don't compress a necessary rewrite into a minimal patch. If the existing foundation is broken, invoke permission #9 and say "scrap it and do this instead."
 * Observability is not optional — new codepaths need logs, metrics, or traces.
 * Security is not optional — new codepaths need threat modeling.
 * Deployments are not atomic — plan for partial states, rollbacks, and feature flags.
@@ -291,8 +291,21 @@ Rules:
 - At least 2 approaches required. 3 preferred for non-trivial plans.
 - One approach must be the "minimal viable" (fewest files, smallest diff).
 - One approach must be the "ideal architecture" (best long-term trajectory).
+- **These two approaches have equal weight.** Don't default to "minimal viable" just because it's smaller. Recommend whichever best serves the user's goal. If the right answer is a rewrite, say so.
 - If only one approach exists, explain concretely why alternatives were eliminated.
 - Do NOT proceed to mode selection (0F) without user approval of the chosen approach.
+
+### 0D-prelude. Expansion Framing (shared by EXPANSION and SELECTIVE EXPANSION)
+
+Every expansion proposal you generate in SCOPE EXPANSION or SELECTIVE EXPANSION mode follows this framing pattern:
+
+FLAT (avoid): "Add real-time notifications. Users would see workflow results faster — latency drops from ~30s polling to <500ms push. Effort: ~1 hour CC."
+
+EXPANSIVE (aim for): "Imagine the moment a workflow finishes — the user sees the result instantly, no tab-switching, no polling, no 'did it actually work?' anxiety. Real-time feedback turns a tool they check into a tool that talks to them. Concrete shape: WebSocket channel + optimistic UI + desktop notification fallback. Effort: human ~2 days / CC ~1 hour. Makes the product feel 10x more alive."
+
+Both are outcome-framed. Only one makes the user feel the cathedral. Lead with the felt experience, close with concrete effort and impact.
+
+**For SELECTIVE EXPANSION:** neutral recommendation posture ≠ flat prose. Present vivid options, then let the user decide. Do not over-sell — "Makes the product feel 10x more alive" is vivid; "This would 10x your revenue" is over-sell. Evocative, not promotional.
 
 ### 0D. Mode-Specific Analysis
 **For SCOPE EXPANSION** — run all three, then the opt-in ceremony:
@@ -453,8 +466,11 @@ After mode is selected, confirm which implementation approach (from 0C-bis) appl
 
 Once selected, commit fully. Do not silently drift.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
-## Review Sections (10 sections, after scope and mode are agreed)
+## Review Sections (11 sections, after scope and mode are agreed)
+
+**Anti-skip rule:** Never condense, abbreviate, or skip any review section (1-11) regardless of plan type (strategy, spec, code, infra). Every section in this skill exists for a reason. "This is a strategy doc so implementation sections don't apply" is always wrong — implementation details are where strategy breaks down. If a section genuinely has zero findings, say "No issues found" and move on — but you must evaluate it.
 
 ### Section 1: Architecture Review
 Evaluate and diagram:
@@ -480,6 +496,7 @@ Evaluate and diagram:
 
 Required ASCII diagram: full system architecture showing new components and their relationships to existing ones.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 2: Error & Rescue Map
 This is the section that catches silent failures. It is not optional.
@@ -509,6 +526,7 @@ Rules for this section:
 * For each GAP (unrescued error that should be rescued): specify the rescue action and what the user should see.
 * For LLM/AI service calls specifically: what happens when the response is malformed? When it's empty? When it hallucinates invalid JSON? When the model returns a refusal? Each of these is a distinct failure mode.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 3: Security & Threat Model
 Security is not a sub-bullet of architecture. It gets its own section.
@@ -524,6 +542,7 @@ Evaluate:
 
 For each finding: threat, likelihood (High/Med/Low), impact (High/Med/Low), and whether the plan mitigates it.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 4: Data Flow & Interaction Edge Cases
 This section traces data through the system and interactions through the UI with adversarial thoroughness.
@@ -560,6 +579,7 @@ For each node: what happens on each shadow path? Is it tested?
 ```
 Flag any unhandled edge case as a gap. For each gap, specify the fix.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 5: Code Quality Review
 Evaluate:
@@ -572,6 +592,7 @@ Evaluate:
 * Under-engineering check. Anything fragile, assuming happy path only, or missing obvious defensive checks?
 * Cyclomatic complexity. Flag any new method that branches more than 5 times. Propose a refactor.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 6: Test Review
 Make a complete diagram of every new thing this plan introduces:
@@ -612,6 +633,7 @@ Load/stress test requirements: For any new codepath called frequently or process
 
 For LLM/prompt changes: Check CLAUDE.md for the "Prompt/LLM changes" file patterns. If this plan touches ANY of those patterns, state which eval suites must be run, which cases should be added, and what baselines to compare against.
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 7: Performance Review
 Evaluate:
@@ -623,6 +645,7 @@ Evaluate:
 * Slow paths. Top 3 slowest new codepaths and estimated p99 latency.
 * Connection pool pressure. New DB connections, Redis connections, HTTP connections?
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 8: Observability & Debuggability Review
 New systems break. This section ensures you can see why.
@@ -639,6 +662,7 @@ Evaluate:
 **EXPANSION and SELECTIVE EXPANSION addition:**
 * What observability would make this feature a joy to operate? (For SELECTIVE EXPANSION, include observability for any accepted cherry-picks.)
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 9: Deployment & Rollout Review
 Evaluate:
@@ -654,6 +678,7 @@ Evaluate:
 **EXPANSION and SELECTIVE EXPANSION addition:**
 * What deploy infrastructure would make shipping this feature routine? (For SELECTIVE EXPANSION, assess whether accepted cherry-picks change the deployment risk profile.)
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 10: Long-Term Trajectory Review
 Evaluate:
@@ -669,6 +694,7 @@ Evaluate:
 * Platform potential. Does this create capabilities other features can leverage?
 * (SELECTIVE EXPANSION only) Retrospective: Were the right cherry-picks accepted? Did any rejected expansions turn out to be load-bearing for the accepted ones?
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 11: Design & UX Review (skip if no UI scope detected)
 The CEO calling in the designer. Not a pixel-level audit — that's /plan-design-review and /design-review. This is ensuring the plan has design intentionality.
@@ -691,6 +717,7 @@ Required ASCII diagram: user flow showing screens/states and transitions.
 
 If this plan has significant UI scope, recommend: "Consider running /plan-design-review for a deep design review of this plan before implementation."
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If no issues or fix is obvious, state what you'll do and move on — don't waste a question. Do NOT proceed until user responds.
+**Reminder: Do NOT make any code changes. Review only.**
 
 ## Outside Voice — Independent Plan Challenge (optional, recommended)
 
