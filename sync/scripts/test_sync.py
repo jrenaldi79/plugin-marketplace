@@ -9,6 +9,7 @@ from pathlib import Path
 
 from extract import extract_framework, _find_skill_start, _strip_bash_blocks
 from extract import _strip_gstack_lines, _strip_gstack_paragraphs
+from extract import _strip_gstack_sections
 from merge import merge_framework, MARKER_START, MARKER_END
 
 FIXTURES_DIR = Path(__file__).resolve().parent.parent / "fixtures"
@@ -109,6 +110,113 @@ class TestExtraction:
             raw = f.read_text()
             result = extract_framework(raw)
             assert len(result) > 0
+
+
+# ─── gstack Tooling Cleanup Tests ────────────────────────────────
+
+# Tokens that only make sense inside gstack. If upstream adds new tooling,
+# these tests fail and the sync PR is not opened until extract.py handles it.
+GSTACK_LEFTOVERS = [
+    r"(?i)codex",
+    r"\$D\b",
+    r"\$B\b",
+    r"(?i)gstack",
+    r"ETHOS\.md",
+    r"(?i)preamble",
+    r"/plan-eng-review",
+    r"/plan-design-review",
+    r"/design-review",
+    r"/design-consultation",
+    r"/office-hours",
+    r"/plan-ceo-review",
+    r"(?i)builder profile",
+    r"SESSION_TIER|TIER = ",
+    r"(?i)handoff note",
+    r"(?i)review readiness dashboard",
+    r"(?i)capture learnings|prior learnings",
+    r"CROSS_PROJECT",
+]
+
+
+class TestGstackCleanup:
+    """Extraction removes gstack-only tooling and keeps the framework."""
+
+    @pytest.mark.parametrize("raw_file", [OFFICE_HOURS_RAW, CEO_REVIEW_RAW], ids=["office-hours", "ceo-review"])
+    @pytest.mark.parametrize("pattern", GSTACK_LEFTOVERS)
+    def test_no_gstack_leftovers(self, raw_file, pattern):
+        result = extract_framework(raw_file.read_text())
+        found = [l for l in result.split("\n") if re.search(pattern, l)]
+        assert not found, f"{pattern!r} still present: {found[:3]}"
+
+    @pytest.mark.parametrize("raw_file", [OFFICE_HOURS_RAW, CEO_REVIEW_RAW], ids=["office-hours", "ceo-review"])
+    def test_code_fences_balanced(self, raw_file):
+        result = extract_framework(raw_file.read_text())
+        fences = [l for l in result.split("\n") if l.strip().startswith("```")]
+        assert len(fences) % 2 == 0
+
+    def test_office_hours_keeps_framework_sections(self):
+        result = extract_framework(OFFICE_HOURS_RAW.read_text())
+        for heading in [
+            "### The Six Forcing Questions",
+            "## Phase 2.75: Landscape Awareness",
+            "## Phase 3: Premise Challenge",
+            "## Phase 4: Alternatives Generation (MANDATORY)",
+            "## Phase 4.5: Founder Signal Synthesis",
+            "### Startup mode design doc template:",
+            "## Spec Review Loop",
+            "### Founder Resources",
+            "## Important Rules",
+        ]:
+            assert heading in result, heading
+
+    def test_ceo_review_keeps_framework_sections(self):
+        result = extract_framework(CEO_REVIEW_RAW.read_text())
+        for heading in [
+            "## PRE-REVIEW SYSTEM AUDIT (before Step 0)",
+            "### Retrospective Check",
+            "### Landscape Check",
+            "### 0E. Temporal Interrogation",
+            "### Section 11: Design & UX Review",
+            "### Completion Summary",
+            "### Unresolved Decisions",
+            "## Formatting Rules",
+            "## Mode Quick Reference",
+        ]:
+            assert heading in result, heading
+        # Audit content that sits under the dropped prerequisite-skill section in the raw file
+        assert "When reading TODOS.md, specifically:" in result
+
+    def test_skill_names_mapped_to_product_kit(self):
+        result = extract_framework(CEO_REVIEW_RAW.read_text())
+        assert "/yc-review" in result
+
+    def test_design_doc_saved_to_outputs(self):
+        result = extract_framework(OFFICE_HOURS_RAW.read_text())
+        assert "Write the design document to `./outputs/`" in result
+
+
+class TestSectionStripping:
+    """Unit tests for _strip_gstack_sections."""
+
+    def test_section_mode_drops_subsections(self):
+        content = "# T\n## Prior Learnings\ntext\n### Sub\nmore\n## Keep\nkept"
+        assert _strip_gstack_sections(content) == "# T\n## Keep\nkept"
+
+    def test_regex_end_keeps_matching_line(self):
+        content = "## Prerequisite Skill Offer\noffer\nWhen reading TODOS.md, specifically:\n* a"
+        assert _strip_gstack_sections(content) == "When reading TODOS.md, specifically:\n* a"
+
+    def test_ignores_headings_inside_fences(self):
+        content = "## Keep\n```markdown\n## Prior Learnings\n```\nafter"
+        assert _strip_gstack_sections(content) == content
+
+
+class TestFencePairing:
+    """_strip_bash_blocks pairs language-tagged fences correctly."""
+
+    def test_markdown_block_kept_and_paired(self):
+        content = "a\n```markdown\n# tpl\n```\nb\n```bash\nrm x\n```\nc"
+        assert _strip_bash_blocks(content) == "a\n```markdown\n# tpl\n```\nb\nc"
 
 
 # ─── Merge Tests ─────────────────────────────────────────────────

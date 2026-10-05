@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.5.1] - 2026-10-05
+
+### Fixed
+- `/yc-review` and `/ceo-review` no longer contain gstack-only instructions: the Codex second opinion and outside voice, the `$D` design and `$B` browse binaries, the `~/.gstack` learnings store, builder profile and session tiers, the review log and readiness dashboard, plan-file reports, and chaining to gstack skills that Product Kit does not have. References to `/office-hours` and `/plan-ceo-review` now point to `/yc-review` and `/ceo-review`, and the YC design doc is saved to `./outputs/`.
+- gstack extraction paired code fences incorrectly when a block had a language tag (e.g. ```` ```markdown ````), which left orphaned sentences and dropped the "Unresolved Decisions", "Formatting Rules", and "Mode Quick Reference" sections of `/ceo-review`.
+
+### Changed
+- `sync/scripts/extract.py` drops whole gstack-tooling sections before line filtering, and the sync tests now fail if gstack-only references reappear upstream (77 tests, up from 31).
+
 ## [0.5.0] - 2026-10-05
 
 ### Changed

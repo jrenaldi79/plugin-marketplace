@@ -218,11 +218,11 @@ The **YC Review** and **CEO Review** skills incorporate frameworks from [gstack]
 A nightly GitHub Action (`sync-gstack.yml`) automatically:
 
 1. Fetches the latest `office-hours` and `plan-ceo-review` SKILL.md files from `garrytan/gstack`
-2. Extracts clean framework content (strips bash preamble, telemetry, gstack-specific tooling)
+2. Extracts clean framework content: strips bash preamble and telemetry, drops sections that need gstack-only tooling (Codex, design/browse binaries, learnings, builder profile, review dashboard), and maps gstack skill names to Product Kit ones (`/office-hours` → `/yc-review`, `/plan-ceo-review` → `/ceo-review`)
 3. Compares against our stored snapshots
 4. If changes are detected, merges the new framework into our skill files (preserving our custom sections via `<!-- GSTACK-FRAMEWORK -->` markers) and opens a PR
 
-The sync pipeline has a 31-test TDD suite covering extraction, merge, diff detection, and end-to-end simulation.
+The sync pipeline has a 77-test suite covering extraction, gstack-leftover checks, merge, diff detection, and end-to-end simulation.
 
 ## Credits
 

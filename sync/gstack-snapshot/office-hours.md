@@ -13,59 +13,8 @@ Understand the project and the area the user wants to change.
 1. Read `CLAUDE.md`, `TODOS.md` (if they exist).
 2. Run `git log --oneline -30` and `git diff origin/main --stat 2>/dev/null` to understand recent context.
 3. Use Grep/Glob to map the codebase areas most relevant to the user's request.
-4. **List existing design docs for this project:**
+4. **List existing design docs:** check `./outputs/` for prior `/yc-review` and `/ceo-review` output.
    If design docs exist, list them: "Prior designs for this project: [titles + dates]"
-
-## Prior Learnings
-
-Search for relevant learnings from previous sessions:
-
-If `CROSS_PROJECT` is `unset` (first time): Use AskUserQuestion:
-
-> gstack can search learnings from your other projects on this machine to find
-> patterns that might apply here. This stays local (no data leaves your machine).
-> Recommended for solo developers. Skip if you work on multiple client codebases
-> where cross-contamination would be a concern.
-
-Options:
-- A) Enable cross-project learnings (recommended)
-- B) Keep learnings project-scoped only
-
-Then re-run the search with the appropriate flag.
-
-If learnings are found, incorporate them into your analysis. When a review finding
-matches a past learning, display:
-
-**"Prior learning applied: [key] (confidence N/10, from [date])"**
-
-This makes the compounding visible. The user should see that gstack is getting
-smarter on their codebase over time.
-
-5. **Ask: what's your goal with this?** This is a real question, not a formality. The answer determines everything about how the session runs.
-
-   Via AskUserQuestion, ask:
-
-   > Before we dig in — what's your goal with this?
-   >
-   > - **Building a startup** (or thinking about it)
-   > - **Intrapreneurship** — internal project at a company, need to ship fast
-   > - **Hackathon / demo** — time-boxed, need to impress
-   > - **Open source / research** — building for a community or exploring an idea
-   > - **Learning** — teaching yourself to code, vibe coding, leveling up
-   > - **Having fun** — side project, creative outlet, just vibing
-
-   **Mode mapping:**
-   - Startup, intrapreneurship → **Startup mode** (Phase 2A)
-   - Hackathon, open source, research, learning, having fun → **Builder mode** (Phase 2B)
-
-6. **Assess product stage** (only for startup/intrapreneurship modes):
-   - Pre-product (idea stage, no users yet)
-   - Has users (people using it, not yet paying)
-   - Has paying customers
-
-Output: "Here's what I understand about this project and the area you want to change: ..."
-
----
 
 ## Phase 2A: Startup Mode — YC Product Diagnostic
 
@@ -277,25 +226,9 @@ Ask these **ONE AT A TIME** via AskUserQuestion. The goal is to brainstorm and s
 
 ---
 
-## Phase 2.5: Related Design Discovery
-
-After the user states the problem (first question in Phase 2A or 2B), search existing design docs for keyword overlap.
-
-Extract 3-5 significant keywords from the user's problem statement and grep across design docs:
-
-If matches found, read the matching design docs and surface them:
-- "FYI: Related design found — '{title}' by {user} on {date} (branch: {branch}). Key overlap: {1-line summary of relevant section}."
-- Ask via AskUserQuestion: "Should we build on this prior design or start fresh?"
-
-If no matches found, proceed silently.
-
----
-
 ## Phase 2.75: Landscape Awareness
 
-Read ETHOS.md for the full Search Before Building framework (three layers, eureka moments). The preamble's Search Before Building section has the ETHOS.md path.
-
-After understanding the problem through questioning, search for what the world thinks. This is NOT competitive research (that's /design-consultation's job). This is understanding conventional wisdom so you can evaluate where it's wrong.
+After understanding the problem through questioning, search for what the world thinks. This is NOT competitive research. This is understanding conventional wisdom so you can evaluate where it's wrong.
 
 **Privacy gate:** Before searching, use AskUserQuestion: "I'd like to search for what the world thinks about this space to inform our discussion. This sends generalized category terms (not your specific idea) to a search provider. OK to proceed?"
 Options: A) Yes, search away  B) Skip — keep this session private
@@ -320,7 +253,7 @@ Read the top 2-3 results. Run the three-layer synthesis:
 - **[Layer 2]** What are the search results and current discourse saying?
 - **[Layer 3]** Given what WE learned in Phase 2A/2B — is there a reason the conventional approach is wrong?
 
-**Eureka check:** If Layer 3 reasoning reveals a genuine insight, name it: "EUREKA: Everyone does X because they assume [assumption]. But [evidence from our conversation] suggests that's wrong here. This means [implication]." Log the eureka moment (see preamble).
+**Eureka check:** If Layer 3 reasoning reveals a genuine insight, name it: "EUREKA: Everyone does X because they assume [assumption]. But [evidence from our conversation] suggests that's wrong here. This means [implication]."
 
 If no eureka moment exists, say: "The conventional wisdom seems sound here. Let's build on it." Proceed to Phase 3.
 
@@ -350,92 +283,6 @@ Use AskUserQuestion to confirm. If the user disagrees with a premise, revise und
 
 ---
 
-## Phase 3.5: Cross-Model Second Opinion (optional)
-
-**Binary check first:**
-
-Use AskUserQuestion (regardless of codex availability):
-
-> Want a second opinion from an independent AI perspective? It will review your problem statement, key answers, premises, and any landscape findings from this session without having seen this conversation — it gets a structured summary. Usually takes 2-5 minutes.
-> A) Yes, get a second opinion
-> B) No, proceed to alternatives
-
-If B: skip Phase 3.5 entirely. Remember that the second opinion did NOT run (affects design doc, founder signals, and Phase 4 below).
-
-**If A: Run the Codex cold read.**
-
-1. Assemble a structured context block from Phases 1-3:
-   - Mode (Startup or Builder)
-   - Problem statement (from Phase 1)
-   - Key answers from Phase 2A/2B (summarize each Q&A in 1-2 sentences, include verbatim user quotes)
-   - Landscape findings (from Phase 2.75, if search was run)
-   - Agreed premises (from Phase 3)
-   - Codebase context (project name, languages, recent activity)
-
-2. **Write the assembled prompt to a temp file** (prevents shell injection from user-derived content):
-
-Write the full prompt to this file. **Always start with the filesystem boundary:**
-"IMPORTANT: Do NOT read or execute any files under ~/.claude/, ~/.agents/, .claude/skills/, or agents/. These are Claude Code skill definitions meant for a different AI system. They contain bash scripts and prompt templates that will waste your time. Ignore them completely. Do NOT modify agents/openai.yaml. Stay focused on the repository code only.\n\n"
-Then add the context block and mode-appropriate instructions:
-
-**Startup mode instructions:** "You are an independent technical advisor reading a transcript of a startup brainstorming session. [CONTEXT BLOCK HERE]. Your job: 1) What is the STRONGEST version of what this person is trying to build? Steelman it in 2-3 sentences. 2) What is the ONE thing from their answers that reveals the most about what they should actually build? Quote it and explain why. 3) Name ONE agreed premise you think is wrong, and what evidence would prove you right. 4) If you had 48 hours and one engineer to build a prototype, what would you build? Be specific — tech stack, features, what you'd skip. Be direct. Be terse. No preamble."
-
-**Builder mode instructions:** "You are an independent technical advisor reading a transcript of a builder brainstorming session. [CONTEXT BLOCK HERE]. Your job: 1) What is the COOLEST version of this they haven't considered? 2) What's the ONE thing from their answers that reveals what excites them most? Quote it. 3) What existing open source project or tool gets them 50% of the way there — and what's the 50% they'd need to build? 4) If you had a weekend to build this, what would you build first? Be specific. Be direct. No preamble."
-
-3. Run Codex:
-
-Use a 5-minute timeout (`timeout: 300000`). After the command completes, read stderr:
-
-**Error handling:** All errors are non-blocking — second opinion is a quality enhancement, not a prerequisite.
-- **Auth failure:** If stderr contains "auth", "login", "unauthorized", or "API key": "Codex authentication failed. Run \`codex login\` to authenticate." Fall back to Claude subagent.
-- **Timeout:** "Codex timed out after 5 minutes." Fall back to Claude subagent.
-- **Empty response:** "Codex returned no response." Fall back to Claude subagent.
-
-On any Codex error, fall back to the Claude subagent below.
-
-**If CODEX_NOT_AVAILABLE (or Codex errored):**
-
-Dispatch via the Agent tool. The subagent has fresh context — genuine independence.
-
-Subagent prompt: same mode-appropriate prompt as above (Startup or Builder variant).
-
-Present findings under a `SECOND OPINION (Claude subagent):` header.
-
-If the subagent fails or times out: "Second opinion unavailable. Continuing to Phase 4."
-
-4. **Presentation:**
-
-If Codex ran:
-```
-SECOND OPINION (Codex):
-════════════════════════════════════════════════════════════
-<full codex output, verbatim — do not truncate or summarize>
-════════════════════════════════════════════════════════════
-```
-
-If Claude subagent ran:
-```
-SECOND OPINION (Claude subagent):
-════════════════════════════════════════════════════════════
-<full subagent output, verbatim — do not truncate or summarize>
-════════════════════════════════════════════════════════════
-```
-
-5. **Cross-model synthesis:** After presenting the second opinion output, provide 3-5 bullet synthesis:
-   - Where Claude agrees with the second opinion
-   - Where Claude disagrees and why
-   - Whether the challenged premise changes Claude's recommendation
-
-6. **Premise revision check:** If Codex challenged an agreed premise, use AskUserQuestion:
-
-> Codex challenged premise #{N}: "{premise text}". Their argument: "{reasoning}".
-> A) Revise this premise based on Codex's input
-> B) Keep the original premise — proceed to alternatives
-
-If A: revise the premise and note the revision. If B: proceed (and note that the user defended this premise with reasoning — this is a founder signal if they articulate WHY they disagree, not just dismiss).
-
----
-
 ## Phase 4: Alternatives Generation (MANDATORY)
 
 Produce 2-3 distinct implementation approaches. This is NOT optional.
@@ -462,131 +309,10 @@ Rules:
 - One must be the **"minimal viable"** (fewest files, smallest diff, ships fastest).
 - One must be the **"ideal architecture"** (best long-term trajectory, most elegant).
 - One can be **creative/lateral** (unexpected approach, different framing of the problem).
-- If the second opinion (Codex or Claude subagent) proposed a prototype in Phase 3.5, consider using it as a starting point for the creative/lateral approach.
 
 **RECOMMENDATION:** Choose [X] because [one-line reason].
 
 Present via AskUserQuestion. Do NOT proceed without user approval of the approach.
-
----
-
-## Visual Design Exploration
-
-**If `DESIGN_NOT_AVAILABLE`:** Fall back to the HTML wireframe approach below
-(the existing DESIGN_SKETCH section). Visual mockups require the design binary.
-
-**If `DESIGN_READY`:** Generate visual mockup explorations for the user.
-
-Generating visual mockups of the proposed design... (say "skip" if you don't need visuals)
-
-**Step 1: Set up the design directory**
-
-**Step 2: Construct the design brief**
-
-Read DESIGN.md if it exists — use it to constrain the visual style. If no DESIGN.md,
-explore wide across diverse directions.
-
-**Step 3: Generate 3 variants**
-
-This generates 3 style variations of the same brief (~40 seconds total).
-
-**Step 4: Show variants inline, then open comparison board**
-
-Show each variant to the user inline first (read the PNGs with Read tool), then
-create and serve the comparison board:
-
-This opens the board in the user's default browser and blocks until feedback is
-received. Read stdout for the structured JSON result. No polling needed.
-
-If `$D serve` is not available or fails, fall back to AskUserQuestion:
-"I've opened the design board. Which variant do you prefer? Any feedback?"
-
-**Step 5: Handle feedback**
-
-If the JSON contains `"regenerated": true`:
-1. Read `regenerateAction` (or `remixSpec` for remix requests)
-2. Generate new variants with `$D iterate` or `$D variants` using updated brief
-3. Create new board with `$D compare`
-4. POST the new HTML to the running server via `curl -X POST http://localhost:PORT/api/reload -H 'Content-Type: application/json' -d '{"html":"$_DESIGN_DIR/design-board.html"}'`
-   (parse the port from stderr: look for `SERVE_STARTED: port=XXXXX`)
-5. Board auto-refreshes in the same tab
-
-If `"regenerated": false`: proceed with the approved variant.
-
-**Step 6: Save approved choice**
-
-Reference the saved mockup in the design doc or plan.
-
-## Visual Sketch (UI ideas only)
-
-If the chosen approach involves user-facing UI (screens, pages, forms, dashboards,
-or interactive elements), generate a rough wireframe to help the user visualize it.
-If the idea is backend-only, infrastructure, or has no UI component — skip this
-section silently.
-
-**Step 1: Gather design context**
-
-1. Check if `DESIGN.md` exists in the repo root. If it does, read it for design
-   system constraints (colors, typography, spacing, component patterns). Use these
-   constraints in the wireframe.
-2. Apply core design principles:
-   - **Information hierarchy** — what does the user see first, second, third?
-   - **Interaction states** — loading, empty, error, success, partial
-   - **Edge case paranoia** — what if the name is 47 chars? Zero results? Network fails?
-   - **Subtraction default** — "as little design as possible" (Rams). Every element earns its pixels.
-   - **Design for trust** — every interface element builds or erodes user trust.
-
-**Step 2: Generate wireframe HTML**
-
-Generate a single-page HTML file with these constraints:
-- **Intentionally rough aesthetic** — use system fonts, thin gray borders, no color,
-  hand-drawn-style elements. This is a sketch, not a polished mockup.
-- Self-contained — no external dependencies, no CDN links, inline CSS only
-- Show the core interaction flow (1-3 screens/states max)
-- Include realistic placeholder content (not "Lorem ipsum" — use content that
-  matches the actual use case)
-- Add HTML comments explaining design decisions
-
-Write to a temp file:
-
-**Step 3: Render and capture**
-
-If `$B` is not available (browse binary not set up), skip the render step. Tell the
-user: "Visual sketch requires the browse binary. Run the setup script to enable it."
-
-**Step 4: Present and iterate**
-
-Show the screenshot to the user. Ask: "Does this feel right? Want to iterate on the layout?"
-
-If they want changes, regenerate the HTML with their feedback and re-render.
-If they approve or say "good enough," proceed.
-
-**Step 5: Include in design doc**
-
-Reference the wireframe screenshot in the design doc's "Recommended Approach" section.
-The screenshot file at `/tmp/gstack-sketch.png` can be referenced by downstream skills
-(`/plan-design-review`, `/design-review`) to see what was originally envisioned.
-
-**Step 6: Outside design voices** (optional)
-
-After the wireframe is approved, offer outside design perspectives:
-
-If Codex is available, use AskUserQuestion:
-> "Want outside design perspectives on the chosen approach? Codex proposes a visual thesis, content plan, and interaction ideas. A Claude subagent proposes an alternative aesthetic direction."
->
-> A) Yes — get outside design voices
-> B) No — proceed without
-
-If user chooses A, launch both voices simultaneously:
-
-1. **Codex** (via Bash, `model_reasoning_effort="medium"`):
-Use a 5-minute timeout (`timeout: 300000`). After completion: `cat "$TMPERR_SKETCH" && rm -f "$TMPERR_SKETCH"`
-
-2. **Claude subagent** (via Agent tool):
-"For this product approach, what design direction would you recommend? What aesthetic, typography, and interaction patterns fit? What would make this approach feel inevitable to the user? Be specific — font names, hex colors, spacing values."
-
-Present Codex output under `CODEX SAYS (design sketch):` and subagent output under `CLAUDE SUBAGENT (design direction):`.
-Error handling: all non-blocking. On failure, skip and continue.
 
 ---
 
@@ -602,47 +328,20 @@ Track which of these signals appeared during the session:
 - Has **domain expertise** — knows this space from the inside
 - Showed **taste** — cared about getting the details right
 - Showed **agency** — actually building, not just planning
-- **Defended premise with reasoning** against cross-model challenge (kept original premise when Codex disagreed AND articulated specific reasoning for why — dismissal without reasoning does not count)
-
-Count the signals. You'll use this count in Phase 6 to determine which tier of closing message to use.
-
-### Builder Profile Append
-
-After counting signals, append a session entry to the builder profile. This is the single
-source of truth for all closing state (tier, resource dedup, journey tracking).
-
-Append one JSON line with these fields (substitute actual values from this session):
-- `date`: current ISO 8601 timestamp
-- `mode`: "startup" or "builder" (from Phase 1 mode selection)
-- `project_slug`: the SLUG value from the preamble
-- `signal_count`: number of signals counted above
-- `signals`: array of signal names observed (e.g., `["named_users", "pushback", "taste"]`)
-- `design_doc`: path to the design doc that will be written in Phase 5 (construct it now)
-- `assignment`: the assignment you will give in the design doc's "The Assignment" section
-- `resources_shown`: empty array `[]` for now (populated after resource selection in Phase 6)
-- `topics`: array of 2-3 topic keywords that describe what this session was about
-
-This entry is append-only. The `resources_shown` field will be updated via a second append
-after resource selection in Phase 6 Beat 3.5.
-
----
 
 ## Phase 5: Design Doc
 
-Write the design document to the project directory.
-
-**Design lineage:** Before writing, check for existing design docs on this branch:
-If `$PRIOR` exists, the new doc gets a `Supersedes:` field referencing it. This creates a revision chain — you can trace how a design evolved across office hours sessions.
+Write the design document to `./outputs/` (see Deliverable below).
 
 After writing the design doc, tell the user:
-**"Design doc saved to: {full path}. Other skills (/plan-ceo-review, /plan-eng-review) will find it automatically."**
+**"Design doc saved to: {full path}. /ceo-review and /prd will find it in ./outputs/."**
 
 ### Startup mode design doc template:
 
 ```markdown
 # Design: {title}
 
-Generated by /office-hours on {date}
+Generated by /yc-review on {date}
 Branch: {branch}
 Repo: {owner/repo}
 Status: DRAFT
@@ -666,9 +365,6 @@ Supersedes: {prior filename — omit this line if first design on this branch}
 
 ## Premises
 {from Phase 3}
-
-## Cross-Model Perspective
-{If second opinion ran in Phase 3.5 (Codex or Claude subagent): independent cold read — steelman, key insight, challenged premise, prototype suggestion. Verbatim or close paraphrase. If second opinion did NOT run (skipped or unavailable): omit this section entirely — do not include it.}
 
 ## Approaches Considered
 ### Approach A: {name}
@@ -705,7 +401,7 @@ Supersedes: {prior filename — omit this line if first design on this branch}
 ```markdown
 # Design: {title}
 
-Generated by /office-hours on {date}
+Generated by /yc-review on {date}
 Branch: {branch}
 Repo: {owner/repo}
 Status: DRAFT
@@ -723,9 +419,6 @@ Supersedes: {prior filename — omit this line if first design on this branch}
 
 ## Premises
 {from Phase 3}
-
-## Cross-Model Perspective
-{If second opinion ran in Phase 3.5 (Codex or Claude subagent): independent cold read — coolest version, key insight, existing tools, prototype suggestion. Verbatim or close paraphrase. If second opinion did NOT run (skipped or unavailable): omit this section entirely — do not include it.}
 
 ## Approaches Considered
 ### Approach A: {name}
@@ -810,9 +503,6 @@ After the loop completes (PASS, max iterations, or convergence guard):
 2. If issues remain after max iterations or convergence, add a "## Reviewer Concerns"
    section to the document listing each unresolved issue. Downstream skills will see this.
 
-3. Append metrics:
-Replace ITERATIONS, FOUND, FIXED, REMAINING, SCORE with actual values from the review.
-
 ---
 
 Present the reviewed design doc to the user via AskUserQuestion:
@@ -824,161 +514,14 @@ Present the reviewed design doc to the user via AskUserQuestion:
 
 ## Phase 6: Handoff — The Relationship Closing
 
-Once the design doc is APPROVED, deliver the closing sequence. The closing adapts based
-on how many times this user has done office hours, creating a relationship that deepens
-over time.
+Once the design doc is APPROVED, close the session by sharing founder resources.
 
-### Step 1: Read Builder Profile
+### Founder Resources
 
-Read the full profile output. You will use these values throughout the closing.
-
-### Step 2: Follow the Tier Path
-
-Follow ONE tier path below based on `SESSION_TIER`. Do not mix tiers.
-
----
-
-### If TIER = introduction (first session)
-
-This is the full introduction. The user has never done office hours before.
-
-**Beat 1: Signal Reflection + Golden Age**
-
-One paragraph that weaves specific session callbacks with the golden age framing. Reference actual things the user said, quote their words back to them.
-
-**Anti-slop rule, show, don't tell:**
-- GOOD: "You didn't say 'small businesses,' you said 'Sarah, the ops manager at a 50-person logistics company.' That specificity is rare."
-- BAD: "You showed great specificity in identifying your target user."
-- GOOD: "You pushed back when I challenged premise #2. Most people just agree."
-- BAD: "You demonstrated conviction and independent thinking."
-
-Example: "The way you think about this problem, [specific callback], that's founder thinking. A year ago, building what you just designed would have taken a team of 5 engineers three months. Today you can build it this weekend with Claude Code. The engineering barrier is gone. What remains is taste, and you just demonstrated that."
-
-**Beat 2: "One more thing."**
-
-Output a separator and "One more thing." This resets attention and signals the genre shift.
-
----
-
-One more thing.
-
-**Beat 3: Garry's Personal Plea**
-
-Use the founder signal count from Phase 4.5 to select the right sub-tier.
-
-- **Top tier** (3+ signals AND named a specific user, revenue, or demand evidence):
-
-> A personal note from me, Garry Tan, the creator of GStack: what you just experienced is about 10% of the value you'd get working with a YC partner at Y Combinator. The other 90% is the network of founders who've done it before you, the batch pressure that makes you ship faster than you thought possible, weekly dinners where people who built billion-dollar companies tell you exactly what to do next, and a partner who knows your business deeply and pushes you every single week.
->
-> GStack thinks you are among the top people who could do this.
-
-Then use AskUserQuestion: "Would you consider applying to Y Combinator?"
-- If yes: run `open https://ycombinator.com/apply?ref=gstack` and say: "Bring this design doc to your YC interview. It's better than most pitch decks."
-- If no: respond warmly: "Totally fair. The design doc is yours either way, and the offer stands if you ever change your mind." No pressure, no guilt, no re-ask.
-
-- **Middle tier** (1-2 signals, or builder whose project solves a real problem):
-
-> A personal note from me, Garry Tan, the creator of GStack: what you just experienced, the premise challenges, the forced alternatives, the narrowest-wedge thinking, is about 10% of what working with a YC partner is like. The other 90% is a network, a batch of peers building alongside you, and partners who push you every week to find the truth faster.
->
-> You're building something real. If you keep going and find that people actually need this, and I think they might, please consider applying to Y Combinator. Thank you for using GStack.
->
-> **ycombinator.com/apply?ref=gstack**
-
-- **Base tier** (everyone else):
-
-> A personal note from me, Garry Tan, the creator of GStack: the skills you're demonstrating right now, taste, ambition, agency, the willingness to sit with hard questions about what you're building, those are exactly the traits we look for in YC founders. You may not be thinking about starting a company today, and that's fine. But founders are everywhere, and this is the golden age. A single person with AI can now build what used to take a team of 20.
->
-> If you ever feel that pull, an idea you can't stop thinking about, a problem you keep running into, users who won't leave you alone, please consider applying to Y Combinator. Thank you for using GStack. I mean it.
->
-> **ycombinator.com/apply?ref=gstack**
-
-Then proceed to Founder Resources below.
-
----
-
-### If TIER = welcome_back (sessions 2-3)
-
-Lead with recognition. The magical moment is immediate.
-
-Read LAST_ASSIGNMENT and CROSS_PROJECT from the profile output.
-
-If CROSS_PROJECT is false (same project as last time):
-"Welcome back. Last time you were working on [LAST_ASSIGNMENT from profile]. How's it going?"
-
-If CROSS_PROJECT is true (different project):
-"Welcome back. Last time we talked about [LAST_PROJECT from profile]. Still on that, or onto something new?"
-
-Then: "No pitch this time. You already know about YC. Let's talk about your work."
-
-**Tone examples (prevent generic AI voice):**
-- GOOD: "Welcome back. Last time you were designing that task manager for ops teams. Still on that?"
-- BAD: "Welcome back to your second office hours session. I'd like to check in on your progress."
-- GOOD: "No pitch this time. You already know about YC. Let's talk about your work."
-- BAD: "Since you've already seen the YC information, we'll skip that section today."
-
-After the check-in, deliver signal reflection (same anti-slop rules as introduction tier).
-
-Then: Design doc trajectory. Read DESIGN_TITLES from the profile.
-"Your first design was [first title]. Now you're on [latest title]."
-
-Then proceed to Founder Resources below.
-
----
-
-### If TIER = regular (sessions 4-7)
-
-Lead with recognition and session count.
-
-"Welcome back. This is session [SESSION_COUNT]. Last time: [LAST_ASSIGNMENT]. How'd it go?"
-
-**Tone examples:**
-- GOOD: "You've been at this for 5 sessions now. Your designs keep getting sharper. Let me show you what I've noticed."
-- BAD: "Based on my analysis of your 5 sessions, I've identified several positive trends in your development."
-
-After the check-in, deliver arc-level signal reflection. Reference patterns ACROSS sessions, not just this one.
-Example: "In session 1, you described users as 'small businesses.' By now you're saying 'Sarah at Acme Corp.' That specificity shift is a signal."
-
-Design trajectory with interpretation:
-"Your first design was broad. Your latest narrows to a specific wedge, that's the PMF pattern."
-
-**Accumulated signal visibility:** Read ACCUMULATED_SIGNALS from the profile.
-"Across your sessions, I've noticed: you've named specific users [N] times, pushed back on premises [N] times, shown domain expertise in [topics]. These patterns mean something."
-
-**Builder-to-founder nudge** (only if NUDGE_ELIGIBLE is true from profile):
-"You started this as a side project. But you've named specific users, pushed back when challenged, and your designs keep getting sharper each time. I don't think this is a side project anymore. Have you thought about whether this could be a company?"
-This must feel earned, not broadcast. If the evidence doesn't support it, skip entirely.
-
-with a narrative arc (not a data table). The arc tells the STORY of their journey in
-second person, referencing specific things they said across sessions. Then open it:
-
-Then proceed to Founder Resources below.
-
----
-
-### If TIER = inner_circle (sessions 8+)
-
-"You've done [SESSION_COUNT] sessions. You've iterated [DESIGN_COUNT] designs. Most people who show this pattern end up shipping."
-
-The data speaks. No pitch needed.
-
-Full accumulated signal summary from the profile.
-
-Then proceed to Founder Resources below.
-
----
-
-### Founder Resources (all tiers)
-
-Share 2-3 resources from the pool below. For repeat users, resources compound by matching
-to accumulated session context, not just this session's category.
-
-**Dedup check:** Read `RESOURCES_SHOWN` from the builder profile output above.
-If `RESOURCES_SHOWN_COUNT` is 34 or more, skip this section entirely (all resources exhausted).
-Otherwise, avoid selecting any URL that appears in the RESOURCES_SHOWN list.
+Share 2-3 resources from the pool below.
 
 **Selection rules:**
 - Pick 2-3 resources. Mix categories — never 3 of the same type.
-- Never pick a resource whose URL appears in the dedup log above.
 - Match to session context (what came up matters more than random variety):
   - Hesitant about leaving their job → "My $200M Startup Mistake" or "Should You Quit Your Job At A Unicorn?"
   - Building an AI product → "The New Way To Build A Startup" or "Vertical AI Agents Could Be 10X Bigger Than SaaS"
@@ -989,7 +532,6 @@ Otherwise, avoid selecting any URL that appears in the RESOURCES_SHOWN list.
   - Overthinking, not shipping → "Why Startup Founders Should Launch Companies Sooner Than They Think"
   - Looking for a co-founder → "How To Find A Co-Founder"
   - First-time founder, needs full picture → "Unconventional Advice for Founders" (the magnum opus)
-- If all resources in a matching context have been shown before, pick from a different category the user hasn't seen yet.
 
 **Format each resource as:**
 
@@ -1043,14 +585,7 @@ PAUL GRAHAM ESSAYS:
 33. "You Weren't Meant to Have a Boss" — If working inside a big organization has always felt slightly wrong, this explains why. Small groups on self-chosen problems is the natural state for builders. https://paulgraham.com/boss.html
 34. "Relentlessly Resourceful" — PG's two-word description of the ideal founder. Not "brilliant." Not "visionary." Just someone who keeps figuring things out. If that's you, you're already qualified. https://paulgraham.com/relres.html
 
-**After presenting resources — log to builder profile and offer to open:**
-
-1. Log the selected resource URLs to the builder profile (single source of truth).
-Append a resource-tracking entry:
-
-2. Log the selection to analytics:
-
-3. Use AskUserQuestion to offer opening the resources:
+Use AskUserQuestion to offer opening the resources:
 
 Present the selected resources and ask: "Want me to open any of these in your browser?"
 
@@ -1063,38 +598,7 @@ Options:
 
 If A: run `open URL1 && open URL2 && open URL3` (opens each in default browser).
 If B/C/D: run `open` on the selected URL only.
-If E: proceed to next-skill recommendations.
-
-### Next-skill recommendations
-
-After the plea, suggest the next step:
-
-- **`/plan-ceo-review`** for ambitious features (EXPANSION mode) — rethink the problem, find the 10-star product
-- **`/plan-eng-review`** for well-scoped implementation planning — lock in architecture, tests, edge cases
-- **`/plan-design-review`** for visual/UX design review
-
----
-
-## Capture Learnings
-
-If you discovered a non-obvious pattern, pitfall, or architectural insight during
-this session, log it for future sessions:
-
-**Types:** `pattern` (reusable approach), `pitfall` (what NOT to do), `preference`
-(user stated), `architecture` (structural decision), `tool` (library/framework insight),
-`operational` (project environment/CLI/workflow knowledge).
-
-**Sources:** `observed` (you found this in the code), `user-stated` (user told you),
-`inferred` (AI deduction), `cross-model` (both Claude and Codex agree).
-
-**Confidence:** 1-10. Be honest. An observed pattern you verified in the code is 8-9.
-An inference you're not sure about is 4-5. A user preference they explicitly stated is 10.
-
-**files:** Include the specific file paths this learning references. This enables
-staleness detection: if those files are later deleted, the learning can be flagged.
-
-**Only log genuine discoveries.** Don't log obvious things. Don't log things the user
-already knows. A good test: would this insight save time in a future session? If yes, log it.
+If E: continue.
 
 ## Important Rules
 

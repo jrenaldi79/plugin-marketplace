@@ -78,14 +78,14 @@ def run_sync() -> int:
         # Merge into agent file
         agent_file = skill["agent"]
         if not agent_file.exists():
-            print(f"  WARNING: Agent file not found: {agent_file}")
+            print(f"  WARNING: Skill file not found: {agent_file}")
             continue
 
         agent_content = agent_file.read_text()
         try:
             updated = merge_framework(agent_content, extracted)
             agent_file.write_text(updated)
-            print(f"  Updated agent: {agent_file}")
+            print(f"  Updated skill: {agent_file}")
         except ValueError as e:
             print(f"  ERROR merging {name}: {e}")
             return 2

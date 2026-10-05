@@ -91,97 +91,7 @@ git log --since=30.days --name-only --format="" | sort | uniq -c | sort -rn | he
 Then read CLAUDE.md, TODOS.md, and any existing architecture docs.
 
 **Design doc check:**
-If a design doc exists (from `/office-hours`), read it. Use it as the source of truth for the problem statement, constraints, and chosen approach. If it has a `Supersedes:` field, note that this is a revised design.
-
-If a handoff note is found: read it. This contains system audit findings and discussion
-from a prior CEO review session that paused so the user could run `/office-hours`. Use it
-as additional context alongside the design doc. The handoff note helps you avoid re-asking
-questions the user already answered. Do NOT skip any steps — run the full review, but use
-the handoff note to inform your analysis and avoid redundant questions.
-
-Tell the user: "Found a handoff note from your prior CEO review session. I'll use that
-context to pick up where we left off."
-
-## Prerequisite Skill Offer
-
-When the design doc check above prints "No design doc found," offer the prerequisite
-skill before proceeding.
-
-Say to the user via AskUserQuestion:
-
-> "No design doc found for this branch. `/office-hours` produces a structured problem
-> statement, premise challenge, and explored alternatives — it gives this review much
-> sharper input to work with. Takes about 10 minutes. The design doc is per-feature,
-> not per-product — it captures the thinking behind this specific change."
-
-Options:
-- A) Run /office-hours now (we'll pick up the review right after)
-- B) Skip — proceed with standard review
-
-If they skip: "No worries — standard review. If you ever want sharper input, try
-/office-hours first next time." Then proceed normally. Do not re-offer later in the session.
-
-If they choose A:
-
-Say: "Running /office-hours inline. Once the design doc is ready, I'll pick up
-the review right where we left off."
-
-**If unreadable:** Skip with "Could not load /office-hours — skipping." and continue.
-
-Follow its instructions from top to bottom, **skipping these sections** (already handled by the parent skill):
-- Preamble (run first)
-- AskUserQuestion Format
-- Completeness Principle — Boil the Lake
-- Search Before Building
-- Contributor Mode
-- Completion Status Protocol
-- Telemetry (run last)
-- Step 0: Detect platform and base branch
-- Review Readiness Dashboard
-- Plan File Review Report
-- Prerequisite Skill Offer
-- Plan Status Footer
-
-Execute every other section at full depth. When the loaded skill's instructions are complete, continue with the next step below.
-
-After /office-hours completes, re-run the design doc check:
-
-If a design doc is now found, read it and continue the review.
-If none was produced (user may have cancelled), proceed with standard review.
-
-**Mid-session detection:** During Step 0A (Premise Challenge), if the user can't
-articulate the problem, keeps changing the problem statement, answers with "I'm not
-sure," or is clearly exploring rather than reviewing — offer `/office-hours`:
-
-> "It sounds like you're still figuring out what to build — that's totally fine, but
-> that's what /office-hours is designed for. Want to run /office-hours right now?
-> We'll pick up right where we left off."
-
-Options: A) Yes, run /office-hours now. B) No, keep going.
-If they keep going, proceed normally — no guilt, no re-asking.
-
-If they choose A:
-
-**If unreadable:** Skip with "Could not load /office-hours — skipping." and continue.
-
-Follow its instructions from top to bottom, **skipping these sections** (already handled by the parent skill):
-- Preamble (run first)
-- AskUserQuestion Format
-- Completeness Principle — Boil the Lake
-- Search Before Building
-- Contributor Mode
-- Completion Status Protocol
-- Telemetry (run last)
-- Step 0: Detect platform and base branch
-- Review Readiness Dashboard
-- Plan File Review Report
-- Prerequisite Skill Offer
-- Plan Status Footer
-
-Execute every other section at full depth. When the loaded skill's instructions are complete, continue with the next step below.
-
-Note current Step 0A progress so you don't re-ask questions already answered.
-After completion, re-run the design doc check and resume the review.
+If a design doc exists (from `/yc-review`), read it. Use it as the source of truth for the problem statement, constraints, and chosen approach. If it has a `Supersedes:` field, note that this is a revised design.
 
 When reading TODOS.md, specifically:
 * Note any TODOs this plan touches, blocks, or unlocks
@@ -207,7 +117,7 @@ Report findings before proceeding to Step 0.
 
 ### Landscape Check
 
-Read ETHOS.md for the Search Before Building framework (the preamble's Search Before Building section has the path). Before challenging scope, understand the landscape. WebSearch for:
+Before challenging scope, understand the landscape. WebSearch for:
 - "[product category] landscape {current year}"
 - "[key feature] alternatives"
 - "why [incumbent/conventional approach] [succeeds/fails]"
@@ -219,32 +129,7 @@ Run the three-layer synthesis:
 - **[Layer 2]** What are the search results saying?
 - **[Layer 3]** First-principles reasoning — where might the conventional wisdom be wrong?
 
-Feed into the Premise Challenge (0A) and Dream State Mapping (0C). If you find a eureka moment, surface it during the Expansion opt-in ceremony as a differentiation opportunity. Log it (see preamble).
-
-## Prior Learnings
-
-Search for relevant learnings from previous sessions:
-
-If `CROSS_PROJECT` is `unset` (first time): Use AskUserQuestion:
-
-> gstack can search learnings from your other projects on this machine to find
-> patterns that might apply here. This stays local (no data leaves your machine).
-> Recommended for solo developers. Skip if you work on multiple client codebases
-> where cross-contamination would be a concern.
-
-Options:
-- A) Enable cross-project learnings (recommended)
-- B) Keep learnings project-scoped only
-
-Then re-run the search with the appropriate flag.
-
-If learnings are found, incorporate them into your analysis. When a review finding
-matches a past learning, display:
-
-**"Prior learning applied: [key] (confidence N/10, from [date])"**
-
-This makes the compounding visible. The user should see that gstack is getting
-smarter on their codebase over time.
+Feed into the Premise Challenge (0A) and Dream State Mapping (0C). If you find a eureka moment, surface it during the Expansion opt-in ceremony as a differentiation opportunity.
 
 ## Step 0: Nuclear Scope Challenge + Mode Selection
 
@@ -295,7 +180,7 @@ Rules:
 - If only one approach exists, explain concretely why alternatives were eliminated.
 - Do NOT proceed to mode selection (0F) without user approval of the chosen approach.
 
-Present these approach options via AskUserQuestion using the preamble's AskUserQuestion Format section: include RECOMMENDATION and `Completeness: N/10` on every option. These approaches differ in coverage (minimal viable vs ideal architecture), so completeness scoring applies directly.
+Present these approach options via AskUserQuestion: include RECOMMENDATION and `Completeness: N/10` on every option. These approaches differ in coverage (minimal viable vs ideal architecture), so completeness scoring applies directly.
 
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. Do NOT proceed to Step 0D or 0F until the user responds to 0C-bis. A "clearly winning approach" is still an approach decision and still needs explicit user approval before it lands in the plan.
 **Reminder: Do NOT make any code changes. Review only.**
@@ -336,104 +221,6 @@ Both are outcome-framed. Only one makes the user feel the cathedral. Lead with t
 1. Ruthless cut: What is the absolute minimum that ships value to a user? Everything else is deferred. No exceptions.
 2. What can be a follow-up PR? Separate "must ship together" from "nice to ship together."
 
-### 0D-POST. Persist CEO Plan (EXPANSION and SELECTIVE EXPANSION only)
-
-After the opt-in/cherry-pick ceremony, write the plan to disk so the vision and decisions survive beyond this conversation. Only run this step for EXPANSION and SELECTIVE EXPANSION modes.
-
-Before writing, check for existing CEO plans in the ceo-plans/ directory. If any are >30 days old or their branch has been merged/deleted, offer to archive them:
-
-```markdown
----
-status: ACTIVE
----
-# CEO Plan: {Feature Name}
-Generated by /plan-ceo-review on {date}
-Branch: {branch} | Mode: {EXPANSION / SELECTIVE EXPANSION}
-Repo: {owner/repo}
-
-## Vision
-
-### 10x Check
-{10x vision description}
-
-### Platonic Ideal
-{platonic ideal description — EXPANSION mode only}
-
-## Scope Decisions
-
-| # | Proposal | Effort | Decision | Reasoning |
-|---|----------|--------|----------|-----------|
-| 1 | {proposal} | S/M/L | ACCEPTED / DEFERRED / SKIPPED | {why} |
-
-## Accepted Scope (added to this plan)
-- {bullet list of what's now in scope}
-
-## Deferred to TODOS.md
-- {items with context}
-```
-
-Derive the feature slug from the plan being reviewed (e.g., "user-dashboard", "auth-refactor"). Use the date in YYYY-MM-DD format.
-
-After writing the CEO plan, run the spec review loop on it:
-
-## Spec Review Loop
-
-Before presenting the document to the user for approval, run an adversarial review.
-
-**Step 1: Dispatch reviewer subagent**
-
-Use the Agent tool to dispatch an independent reviewer. The reviewer has fresh context
-and cannot see the brainstorming conversation — only the document. This ensures genuine
-adversarial independence.
-
-Prompt the subagent with:
-- The file path of the document just written
-- "Read this document and review it on 5 dimensions. For each dimension, note PASS or
-  list specific issues with suggested fixes. At the end, output a quality score (1-10)
-  across all dimensions."
-
-**Dimensions:**
-1. **Completeness** — Are all requirements addressed? Missing edge cases?
-2. **Consistency** — Do parts of the document agree with each other? Contradictions?
-3. **Clarity** — Could an engineer implement this without asking questions? Ambiguous language?
-4. **Scope** — Does the document creep beyond the original problem? YAGNI violations?
-5. **Feasibility** — Can this actually be built with the stated approach? Hidden complexity?
-
-The subagent should return:
-- A quality score (1-10)
-- PASS if no issues, or a numbered list of issues with dimension, description, and fix
-
-**Step 2: Fix and re-dispatch**
-
-If the reviewer returns issues:
-1. Fix each issue in the document on disk (use Edit tool)
-2. Re-dispatch the reviewer subagent with the updated document
-3. Maximum 3 iterations total
-
-**Convergence guard:** If the reviewer returns the same issues on consecutive iterations
-(the fix didn't resolve them or the reviewer disagrees with the fix), stop the loop
-and persist those issues as "Reviewer Concerns" in the document rather than looping
-further.
-
-If the subagent fails, times out, or is unavailable — skip the review loop entirely.
-Tell the user: "Spec review unavailable — presenting unreviewed doc." The document is
-already written to disk; the review is a quality bonus, not a gate.
-
-**Step 3: Report and persist metrics**
-
-After the loop completes (PASS, max iterations, or convergence guard):
-
-1. Tell the user the result — summary by default:
-   "Your doc survived N rounds of adversarial review. M issues caught and fixed.
-   Quality score: X/10."
-   If they ask "what did the reviewer find?", show the full reviewer output.
-
-2. If issues remain after max iterations or convergence, add a "## Reviewer Concerns"
-   section to the document listing each unresolved issue. Downstream skills will see this.
-
-3. Append metrics:
-Replace ITERATIONS, FOUND, FIXED, REMAINING, SCORE with actual values from the review.
-
 ### 0E. Temporal Interrogation (EXPANSION, SELECTIVE EXPANSION, and HOLD modes)
 Think ahead to implementation: What decisions will need to be made during implementation that should be resolved NOW in the plan?
 ```
@@ -442,7 +229,7 @@ Think ahead to implementation: What decisions will need to be made during implem
   HOUR 4-5 (integration):  What will surprise them?
   HOUR 6+ (polish/tests):  What will they wish they'd planned for?
 ```
-NOTE: These represent human-team implementation hours. With CC + gstack,
+NOTE: These represent human-team implementation hours. With Claude Code,
 6 hours of human implementation compresses to ~30-60 minutes. The decisions
 are identical — the implementation speed is 10-20x faster. Always present
 both scales when discussing effort.
@@ -471,7 +258,7 @@ After mode is selected, confirm which implementation approach (from 0C-bis) appl
 
 Once selected, commit fully. Do not silently drift.
 
-Present these mode options via AskUserQuestion using the preamble's AskUserQuestion Format section: include RECOMMENDATION. These options differ in kind (review posture), not coverage — do NOT emit `Completeness: N/10` per option. Include the one-line note from step 4 of the preamble format rule instead: `Note: options differ in kind, not coverage — no completeness score.`
+Present these mode options via AskUserQuestion: include RECOMMENDATION. These options differ in kind (review posture), not coverage — do NOT emit `Completeness: N/10` per option. Instead, include this one-line note: `Note: options differ in kind, not coverage — no completeness score.`
 
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If this section turned up zero findings, state "No issues, moving on" and proceed. If the section has findings, you MUST call AskUserQuestion as a tool_use — a finding with an "obvious fix" is still a finding and still needs user approval before any change lands in the plan. Do NOT proceed until the user responds.
 **Reminder: Do NOT make any code changes. Review only.**
@@ -705,7 +492,7 @@ Evaluate:
 **Reminder: Do NOT make any code changes. Review only.**
 
 ### Section 11: Design & UX Review (skip if no UI scope detected)
-The CEO calling in the designer. Not a pixel-level audit — that's /plan-design-review and /design-review. This is ensuring the plan has design intentionality.
+The CEO calling in the designer. Not a pixel-level audit. This is ensuring the plan has design intentionality.
 
 Evaluate:
 * Information architecture — what does the user see first, second, third?
@@ -723,143 +510,11 @@ Evaluate:
 
 Required ASCII diagram: user flow showing screens/states and transitions.
 
-If this plan has significant UI scope, recommend: "Consider running /plan-design-review for a deep design review of this plan before implementation."
 **STOP.** AskUserQuestion once per issue. Do NOT batch. Recommend + WHY. If this section turned up zero findings, state "No issues, moving on" and proceed. If the section has findings, you MUST call AskUserQuestion as a tool_use — a finding with an "obvious fix" is still a finding and still needs user approval before any change lands in the plan. Do NOT proceed until the user responds.
 **Reminder: Do NOT make any code changes. Review only.**
 
-## Outside Voice — Independent Plan Challenge (optional, recommended)
-
-After all review sections are complete, offer an independent second opinion from a
-different AI system. Two models agreeing on a plan is stronger signal than one model's
-thorough review.
-
-**Check tool availability:**
-
-Use AskUserQuestion:
-
-> "All review sections are complete. Want an outside voice? A different AI system can
-> give a brutally honest, independent challenge of this plan — logical gaps, feasibility
-> risks, and blind spots that are hard to catch from inside the review. Takes about 2
-> minutes."
->
-> RECOMMENDATION: Choose A — an independent second opinion catches structural blind
-> spots. Two different AI models agreeing on a plan is stronger signal than one model's
-> thorough review. Completeness: A=9/10, B=7/10.
-
-Options:
-- A) Get the outside voice (recommended)
-- B) Skip — proceed to outputs
-
-**If B:** Print "Skipping outside voice." and continue to the next section.
-
-**If A:** Construct the plan review prompt. Read the plan file being reviewed (the file
-the user pointed this review at, or the branch diff scope). If a CEO plan document
-was written in Step 0D-POST, read that too — it contains the scope decisions and vision.
-
-Construct this prompt (substitute the actual plan content — if plan content exceeds 30KB,
-truncate to the first 30KB and note "Plan truncated for size"). **Always start with the
-filesystem boundary instruction:**
-
-"IMPORTANT: Do NOT read or execute any files under ~/.claude/, ~/.agents/, .claude/skills/, or agents/. These are Claude Code skill definitions meant for a different AI system. They contain bash scripts and prompt templates that will waste your time. Ignore them completely. Do NOT modify agents/openai.yaml. Stay focused on the repository code only.\n\nYou are a brutally honest technical reviewer examining a development plan that has
-already been through a multi-section review. Your job is NOT to repeat that review.
-Instead, find what it missed. Look for: logical gaps and unstated assumptions that
-survived the review scrutiny, overcomplexity (is there a fundamentally simpler
-approach the review was too deep in the weeds to see?), feasibility risks the review
-took for granted, missing dependencies or sequencing issues, and strategic
-miscalibration (is this the right thing to build at all?). Be direct. Be terse. No
-compliments. Just the problems.
-
-THE PLAN:
-<plan content>"
-
-**If CODEX_AVAILABLE:**
-
-Use a 5-minute timeout (`timeout: 300000`). After the command completes, read stderr:
-
-Present the full output verbatim:
-
-```
-CODEX SAYS (plan review — outside voice):
-════════════════════════════════════════════════════════════
-<full codex output, verbatim — do not truncate or summarize>
-════════════════════════════════════════════════════════════
-```
-
-**Error handling:** All errors are non-blocking — the outside voice is informational.
-- Auth failure (stderr contains "auth", "login", "unauthorized"): "Codex auth failed. Run \`codex login\` to authenticate."
-- Timeout: "Codex timed out after 5 minutes."
-- Empty response: "Codex returned no response."
-
-On any Codex error, fall back to the Claude adversarial subagent.
-
-**If CODEX_NOT_AVAILABLE (or Codex errored):**
-
-Dispatch via the Agent tool. The subagent has fresh context — genuine independence.
-
-Subagent prompt: same plan review prompt as above.
-
-Present findings under an `OUTSIDE VOICE (Claude subagent):` header.
-
-If the subagent fails or times out: "Outside voice unavailable. Continuing to outputs."
-
-**Cross-model tension:**
-
-After presenting the outside voice findings, note any points where the outside voice
-disagrees with the review findings from earlier sections. Flag these as:
-
-```
-CROSS-MODEL TENSION:
-  [Topic]: Review said X. Outside voice says Y. [Present both perspectives neutrally.
-  State what context you might be missing that would change the answer.]
-```
-
-**User Sovereignty:** Do NOT auto-incorporate outside voice recommendations into the plan.
-Present each tension point to the user. The user decides. Cross-model agreement is a
-strong signal — present it as such — but it is NOT permission to act. You may state
-which argument you find more compelling, but you MUST NOT apply the change without
-explicit user approval.
-
-For each substantive tension point, use AskUserQuestion:
-
-> "Cross-model disagreement on [topic]. The review found [X] but the outside voice
-> argues [Y]. [One sentence on what context you might be missing.]"
->
-> RECOMMENDATION: Choose [A or B] because [one-line reason explaining which argument
-> is more compelling and why]. Completeness: A=X/10, B=Y/10.
-
-Options:
-- A) Accept the outside voice's recommendation (I'll apply this change)
-- B) Keep the current approach (reject the outside voice)
-- C) Investigate further before deciding
-- D) Add to TODOS.md for later
-
-Wait for the user's response. Do NOT default to accepting because you agree with the
-outside voice. If the user chooses B, the current approach stands — do not re-argue.
-
-If no tension points exist, note: "No cross-model tension — both reviewers agree."
-
-**Persist the result:**
-
-Substitute: STATUS = "clean" if no findings, "issues_found" if findings exist.
-SOURCE = "codex" if Codex ran, "claude" if subagent ran.
-
-**Cleanup:** Run `rm -f "$TMPERR_PV"` after processing (if Codex was used).
-
----
-
-### Outside Voice Integration Rule
-
-Outside voice findings are INFORMATIONAL until the user explicitly approves each one.
-Do NOT incorporate outside voice recommendations into the plan without presenting each
-finding via AskUserQuestion and getting explicit approval. This applies even when you
-agree with the outside voice. Cross-model consensus is a strong signal — present it as
-such — but the user makes the decision.
-
-## Post-Implementation Design Audit (if UI scope detected)
-After implementation, run `/design-review` on the live site to catch visual issues that can only be evaluated with rendered output.
-
 ## CRITICAL RULE — How to ask questions
-Follow the AskUserQuestion format from the Preamble above. Additional rules for plan reviews:
+Rules for asking questions during plan reviews:
 * **One issue = one AskUserQuestion call.** Never combine multiple issues into one question.
 * Describe the problem concretely, with file and line references.
 * Present 2-3 options, including "do nothing" where reasonable.
@@ -898,7 +553,7 @@ For each TODO, describe:
 * **Pros:** What you gain by doing this work.
 * **Cons:** Cost, complexity, or risks of doing it.
 * **Context:** Enough detail that someone picking this up in 3 months understands the motivation, the current state, and where to start.
-* **Effort estimate:** S/M/L/XL (human team) → with CC+gstack: S→S, M→S, L→M, XL→L
+* **Effort estimate:** S/M/L/XL (human team) → with Claude Code: S→S, M→S, L→M, XL→L
 * **Priority:** P1/P2/P3
 * **Depends on / blocked by:** Any prerequisites or ordering constraints.
 
@@ -948,26 +603,24 @@ List every ASCII diagram in files this plan touches. Still accurate?
   | Failure modes        | ___ total, ___ CRITICAL GAPS                |
   | TODOS.md updates     | ___ items proposed                          |
   | Scope proposals      | ___ proposed, ___ accepted (EXP + SEL)      |
-  | CEO plan             | written / skipped (HOLD/REDUCTION)           |
-  | Outside voice        | ran (codex/claude) / skipped                 |
-  | Lake Score           | X/Y recommendations chose complete option   |
   | Diagrams produced    | ___ (list types)                            |
   | Stale diagrams found | ___                                         |
   | Unresolved decisions | ___ (listed below)                          |
   +====================================================================+
-+====================================================================+
-|                    REVIEW READINESS DASHBOARD                       |
-+====================================================================+
-| Review          | Runs | Last Run            | Status    | Required |
-|-----------------|------|---------------------|-----------|----------|
-| Eng Review      |  1   | 2026-03-16 15:00    | CLEAR     | YES      |
-| CEO Review      |  0   | —                   | —         | no       |
-| Design Review   |  0   | —                   | —         | no       |
-| Adversarial     |  0   | —                   | —         | no       |
-| Outside Voice   |  0   | —                   | —         | no       |
-+--------------------------------------------------------------------+
-| VERDICT: CLEARED — Eng Review passed                                |
-+====================================================================+
+```
+
+### Unresolved Decisions
+If any AskUserQuestion goes unanswered, note it here. Never silently default.
+
+## Formatting Rules
+* NUMBER issues (1, 2, 3...) and LETTERS for options (A, B, C...).
+* Label with NUMBER + LETTER (e.g., "3A", "3B").
+* One sentence max per option.
+* After each section, pause and wait for feedback.
+* Use **CRITICAL GAP** / **WARNING** / **OK** for scannability.
+
+## Mode Quick Reference
+```
   ┌────────────────────────────────────────────────────────────────────────────────┐
   │                            MODE COMPARISON                                     │
   ├─────────────┬──────────────┬──────────────┬──────────────┬────────────────────┤
@@ -997,12 +650,12 @@ List every ASCII diagram in files this plan touches. Still accurate?
   │             │              │  risk check  │              │                    │
   │ Error map   │ Full + chaos │ Full + chaos │ Full         │ Critical paths     │
   │             │  scenarios   │ for accepted │              │  only              │
-  │ CEO plan    │ Written      │ Written      │ Skipped      │ Skipped            │
   │ Phase 2/3   │ Map accepted │ Map accepted │ Note it      │ Skip               │
   │ planning    │              │ cherry-picks │              │                    │
   │ Design      │ "Inevitable" │ If UI scope  │ If UI scope  │ Skip               │
   │ (Sec 11)    │  UI review   │  detected    │  detected    │                    │
   └─────────────┴──────────────┴──────────────┴──────────────┴────────────────────┘
+```
 <!-- GSTACK-FRAMEWORK-END -->
 
 ## Working with Documents
