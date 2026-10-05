@@ -18,20 +18,20 @@ from merge import merge_framework
 # Map: gstack skill name -> (raw fixture path, snapshot path, agent path)
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 SYNC_DIR = REPO_ROOT / "sync"
-AGENTS_DIR = REPO_ROOT / "plugins" / "product-kit" / "agents"
+SKILLS_DIR = REPO_ROOT / "plugins" / "product-kit" / "skills"
 
 SKILLS = [
     {
         "name": "office-hours",
         "raw_file": SYNC_DIR / "fixtures" / "gstack-office-hours-raw.md",
         "snapshot": SYNC_DIR / "gstack-snapshot" / "office-hours.md",
-        "agent": AGENTS_DIR / "yc-review.md",
+        "agent": SKILLS_DIR / "yc-review" / "SKILL.md",
     },
     {
         "name": "plan-ceo-review",
         "raw_file": SYNC_DIR / "fixtures" / "gstack-ceo-review-raw.md",
         "snapshot": SYNC_DIR / "gstack-snapshot" / "plan-ceo-review.md",
-        "agent": AGENTS_DIR / "ceo-review.md",
+        "agent": SKILLS_DIR / "ceo-review" / "SKILL.md",
     },
 ]
 

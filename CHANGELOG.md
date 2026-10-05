@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.5.0] - 2026-10-05
+
+### Changed
+- All 16 agents converted to skills at `skills/<command>/SKILL.md`. Each skill keeps its slash command name (`/critic`, `/debate`, `/research`, ...) and runs in the main conversation, so conversational skills (yc-review, critic, bizmodel, pricing, personas, survey, prd, debate, prompter) can ask the user their questions directly instead of running in a background process that could not reach the user.
+- Skill descriptions rewritten to say when each skill should be used.
+- `using-product-kit` reduced to the catalog, workflow, and planning rules.
+- `/yc-review` and `/vc-review` are now recommended back to back instead of in parallel.
+- `marketplace.json` uses top-level `version` and `description` plus `$schema`, matching the Northwestern MPD mirror.
+- gstack sync now merges into `skills/yc-review/SKILL.md` and `skills/ceo-review/SKILL.md`.
+
+### Removed
+- `agents/` and `commands/` directories (the command stubs referenced `subagent_type` names that did not match the agent files, so the Claude Code path was broken).
+- Cowork CLI routing (`claude -p` background launch, pipeline status file, `--resume` handling) and the heartbeat protocol (`docs/heartbeat-protocol.md` and per-agent heartbeat sections).
+- Tracked `__pycache__` files and `.DS_Store`.
+
 ## [0.4.4] - 2026-04-24
 
 ### Changed

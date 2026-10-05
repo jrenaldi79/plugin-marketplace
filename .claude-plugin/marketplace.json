@@ -1,19 +1,18 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "plugin-marketplace",
+  "version": "0.5.0",
+  "description": "Product Kit Plugin Marketplace — AI-powered plugins for product management, business analysis, and consulting workflows",
   "owner": {
     "name": "John Renaldi",
     "email": "jrenaldi79@gmail.com"
   },
-  "metadata": {
-    "description": "Product Kit Plugin Marketplace — AI-powered plugins for product management, business analysis, and consulting workflows",
-    "version": "0.4.4"
-  },
   "plugins": [
     {
       "name": "product-kit",
-      "description": "16 specialized AI sub-agents for product management, business analysis, concept validation, interview coaching, pricing strategy, and strategic thinking",
+      "description": "16 skills for product management, business analysis, concept validation, interview coaching, pricing strategy, and strategic thinking",
       "source": "./plugins/product-kit",
-      "version": "0.4.4"
+      "version": "0.5.0"
     }
   ]
 }

@@ -1,6 +1,6 @@
 # Product Kit Plugin Marketplace — CLAUDE.md
 
-This is the Product Kit plugin marketplace for Claude Code/Cowork. It contains AI sub-agents for product management, business analysis, concept validation, interview coaching, pricing strategy, and strategic thinking.
+This is the Product Kit plugin marketplace for Claude Code/Cowork. It contains skills for product management, business analysis, concept validation, interview coaching, pricing strategy, and strategic thinking.
 
 ---
 
@@ -17,18 +17,16 @@ plugin-marketplace/
 │   └── product-kit/
 │       ├── .claude-plugin/
 │       │   └── plugin.json       # Plugin manifest (version, keywords, metadata)
-│       ├── agents/               # Agent prompt files (one .md per agent)
-│       ├── commands/             # Command routing stubs (thin launchers → SKILL.md)
-│       ├── docs/
-│       │   └── heartbeat-protocol.md  # Shared heartbeat protocol (injected via --append-system-prompt-file)
 │       └── skills/
+│           ├── <command>/
+│           │   └── SKILL.md      # One skill per capability; folder name = slash command (e.g. critic → /critic)
 │           └── using-product-kit/
-│               └── SKILL.md      # Orchestration skill — behavioral rules, workflow, agent catalog
+│               └── SKILL.md      # Catalog skill — behavioral rules, workflow, skill catalog
 ├── scripts/
 │   └── install-product-kit.py    # Cross-platform installer for Cowork (workaround for #40600)
 ├── sync/                         # gstack sync scripts and fixtures (internal tooling)
 ├── CHANGELOG.md                  # Release history (single source of truth)
-├── README.md                     # Public-facing docs, credits, agent table
+├── README.md                     # Public-facing docs, credits, skill tables
 └── LICENSE                       # MIT
 ```
 
@@ -40,7 +38,7 @@ plugin-marketplace/
 
 | File | Field | Example |
 |------|-------|---------|
-| `.claude-plugin/marketplace.json` | `metadata.version` AND `plugins[0].version` | `"0.3.0"` |
+| `.claude-plugin/marketplace.json` | top-level `version` AND `plugins[0].version` | `"0.3.0"` |
 | `plugins/product-kit/.claude-plugin/plugin.json` | `version` | `"0.3.0"` |
 | `README.md` | Badge or header (if present) | `v0.3.0` |
 
@@ -48,13 +46,13 @@ plugin-marketplace/
 
 Before pushing a new version:
 
-1. **Bump version** in all three files listed above. Use semver: patch for fixes, minor for new agents/features, major for breaking changes.
-2. **Update agent count** in these locations if agents were added/removed:
-   - `marketplace.json` → `plugins[0].description` ("16 specialized AI sub-agents...")
+1. **Bump version** in all three files listed above. Use semver: patch for fixes, minor for new skills/features, major for breaking changes.
+2. **Update skill count** in these locations if skills were added/removed:
+   - `marketplace.json` → `plugins[0].description` ("16 skills for...")
    - `plugin.json` → `description`
-   - `README.md` → intro paragraph and agent table
-   - `SKILL.md` → intro paragraph and Available Agents tables
-3. **Update keywords** in `plugin.json` if a new agent was added (add its kebab-case name).
+   - `README.md` → intro paragraph and skill tables
+   - `skills/using-product-kit/SKILL.md` → intro paragraph and Available Skills tables
+3. **Update keywords** in `plugin.json` if a new skill was added (add its kebab-case name).
 4. **Commit with a clear message** — include the version number in the commit message.
 5. **Push to main** — the marketplace resolves from the main branch.
 6. **Test installation** — open a fresh Cowork session and install the plugin to verify it loads.
@@ -116,8 +114,6 @@ All endpoints are under `https://claude.ai/api/organizations/{orgId}/marketplace
 │               ├── .claude-plugin/
 │               │   └── plugin.json
 │               ├── .mcpb-cache/            # Runtime cache (populated by Cowork)
-│               ├── agents/
-│               ├── commands/
 │               └── skills/
 ├── skills-plugin/                          # Skills (separate from plugins)
 │   └── {conversation-id}/{session-id}/
@@ -172,10 +168,7 @@ Files are wherever you cloned the repo. No indirection.
 
 ```
 ~/claude-code-projects/plugin-marketplace/plugins/product-kit/
-├── agents/
-├── commands/
-├── docs/
-└── skills/using-product-kit/SKILL.md
+└── skills/
 ```
 
 ### Cowork — Sandbox-Side Paths (what the running Claude sees)
@@ -193,19 +186,13 @@ For product-kit specifically, the active copy is at:
 /sessions/{slug}/mnt/.local-plugins/cache/plugin-marketplace/product-kit/{version}/
 ├── .claude-plugin/plugin.json
 ├── .mcpb-cache/           ← only rw directory
-├── agents/                ← 16 agent .md files
-├── commands/              ← 16 command .md stubs
-├── docs/heartbeat-protocol.md
-└── skills/using-product-kit/SKILL.md
+└── skills/                ← 16 skill folders + using-product-kit/
 ```
 
 The marketplace copy (repo mirror) is at:
 ```
 /sessions/{slug}/mnt/.local-plugins/marketplaces/plugin-marketplace/plugins/product-kit/
-├── agents/
-├── commands/
-├── skills/
-└── (no docs/ — may lag behind cache if session was patched mid-flight)
+└── skills/                ← may lag behind cache if session was patched mid-flight
 ```
 
 ### Cowork — Mac-Side Paths (what Desktop Commander sees)
@@ -226,105 +213,54 @@ To edit plugin files mid-session from the sandbox, you must use Desktop Commande
 
 ### Key Implications
 
-- **CLI routing path derivation**: The SKILL.md tells the parent Claude to strip `/skills/using-product-kit` from the `<location>` tag to get the plugin root. That root is always the **cache** copy.
 - **Marketplace copy may lag**: If you patch the cache copy mid-session via Desktop Commander, the marketplace copy won't match. This is fine — the cache copy is what runs. The marketplace copy only matters for sync.
 - **Version pinning**: The cache path includes the version number. Previous versions may still exist in the cache directory.
 - **Session immutability**: Both copies are snapshotted at session start. `git push` to the repo has zero effect on a running session. User must start a new session to pick up changes.
 
 ---
 
-## Cowork CLI Agent Routing
+## Why Skills, Not Agents
 
-Cowork forces all subagents to Haiku via `CLAUDE_CODE_SUBAGENT_MODEL=claude-haiku-4-5-20251001`. This makes the standard Agent tool unsuitable for complex analysis agents. The workaround is to launch agents via the `claude` CLI with explicit model selection.
+Through v0.4.x every capability was an agent (`agents/*.md`) launched through a command stub. In Cowork the Agent tool forced subagents onto Haiku, so the plugin launched each agent as a background `claude -p` process with heartbeat files for progress. That design had two problems: background processes and subagents cannot talk to the user, so the conversational agents (YC review, Socratic coaching, personas, PRD discovery) could not ask their questions; and the Claude Code path referenced `subagent_type` names that did not match the agent files.
 
-### How It Works
-
-When a user runs a Product Kit command (e.g., `/vc-review`) in Cowork, the parent Claude:
-
-1. Reads the `using-product-kit` SKILL.md (single source of truth for routing logic)
-2. Derives the plugin root path from the skill's `<location>` in `<available_skills>`
-3. Launches the agent as a background CLI process with `| tee`
-4. Tracks progress via heartbeat files, reports completion when done
-
-### Launch Command Template
-
-```bash
-claude -p "YOUR_PROMPT_HERE" \
-  --system-prompt-file {PLUGIN_ROOT}/agents/{AGENT}.md \
-  --append-system-prompt-file {PLUGIN_ROOT}/docs/heartbeat-protocol.md \
-  --model sonnet \
-  --fallback-model haiku \
-  --max-budget-usd 5.00 \
-  --name "product-kit:{agent}" \
-  --permission-mode bypassPermissions \
-  --output-format json \
-  2>&1 | tee ./outputs/.{agent}-result.json &
-```
-
-### Critical Implementation Details
-
-- **`| tee` not `>`**: Shell redirection (`>`) in a non-interactive sandbox causes `claude` to receive SIGHUP or lose its terminal on startup, killing it silently. `| tee` keeps the pipeline alive.
-- **`$!` captures tee's PID, not claude's**: The backgrounded unit is the full pipeline; `$!` returns the last process (tee). This is fine for monitoring but be aware.
-- **`--output-format json` buffers entirely**: The result file stays at 0 bytes until the process completes. Use the heartbeat file for progress monitoring, never the result file.
-- **`--append-system-prompt-file`**: Injects the shared heartbeat protocol into the agent's system prompt without wasting a Read tool call inside the agent.
-- **`--fallback-model haiku`**: Auto-falls back if Sonnet is rate-limited or overloaded.
-- **`--max-budget-usd 5.00`**: Safety cap to prevent runaway costs (typical runs cost $0.05–$0.30).
-- **`--name "product-kit:{agent}"`**: Tags sessions for identification in logs and `--resume`.
-- **`--bare` does NOT work**: Breaks auth by skipping keychain/OAuth. Requires `ANTHROPIC_API_KEY` which isn't set in Cowork.
-
-### Two-Level Status Model
-
-- **Level 1 — Pipeline status** (`./outputs/.pipeline-status.json`): Parent-owned. Tracks which agents are running/completed/failed with PIDs and timestamps.
-- **Level 2 — Agent heartbeat** (`./outputs/.heartbeat-{agent}.json`): Agent-owned. Updated at phase transitions (~200 bytes). Contains `phase`, `step`, `totalSteps`, `detail`, `agentName`, `timestamp`.
-
-### DRY Architecture
-
-- **SKILL.md** is the single source of truth for all CLI routing logic.
-- **Command files** are thin ~25-line stubs that reference SKILL.md for routing instructions.
-- **`docs/heartbeat-protocol.md`** is the shared heartbeat protocol, injected into all agents via `--append-system-prompt-file`.
-- **Agent files** contain a minimal heartbeat section listing their phase transitions (the protocol itself comes from the shared doc).
-
-### Environment Detection
-
-The parent Claude already knows if it's running in Cowork or Claude Code from its system prompt context. No bash call to check `$CLAUDE_CODE_IS_COWORK` is needed.
+Since v0.5.0 every capability is a skill that runs in the main conversation, on the conversation's model, with direct access to the user. Do not reintroduce `agents/`, command stubs, or CLI launch wrappers without a concrete reason.
 
 ---
 
-## Agent Development Rules
+## Skill Development Rules
 
-### Adding a New Agent
+### Adding a New Skill
 
-1. Create `plugins/product-kit/agents/<agent-name>.md` — the full agent prompt.
-2. Create `plugins/product-kit/commands/<agent-name>.md` — a thin command stub (~25 lines) with frontmatter and a reference to SKILL.md:
+1. Create `plugins/product-kit/skills/<command>/SKILL.md`. The folder name is the slash command, so keep it short (`/critic`, not `/elite-advisor`). Frontmatter:
    ```yaml
    ---
-   name: <agent-name>
-   description: "One-line description for the command menu."
+   name: <command>
+   description: "What it does, then when to use it: the requests and phrases that should trigger it."
    ---
    ```
-   The stub should specify agent name, agent file, and output file, then say "Follow the Launching Agents section in the `using-product-kit` SKILL.md." Do NOT inline routing logic — SKILL.md is the single source of truth.
-3. Update SKILL.md — add the agent to the correct table in Available Agents, update the count, add to relevant workflow sections and quick reference.
-4. Update README.md — add to the agent table, update the count, update credits if new frameworks are referenced.
-5. Bump the version (see Release Checklist above).
+2. Update `skills/using-product-kit/SKILL.md` — add the skill to the correct Available Skills table, update the count, add it to relevant workflow sections and the quick reference.
+3. Update README.md — add to the skill table, update the count, update credits if new frameworks are referenced.
+4. Bump the version (see Release Checklist above).
 
-### Agent Prompt Quality Standards
+### Skill Prompt Quality Standards
 
-- Every agent must have: Role, Voice, Phase structure, and behavioral rules.
-- Agents that accept uploaded files must include a Phase 0 Context Harvest that reads `./outputs/` AND any uploaded documents.
-- Multi-turn agents must maintain conversation context and push back on vague inputs.
-- Every agent must have a `## Progress Heartbeat` section listing its phase transitions (step numbers and phase names). The shared heartbeat protocol is injected at runtime via `--append-system-prompt-file`.
+- Every skill must have: Role, Voice, Phase structure, and behavioral rules.
+- Skills that accept uploaded files must include a Phase 0 Context Harvest that reads `./outputs/` AND any uploaded documents.
+- Conversational skills must ask their questions and wait for answers, and push back on vague inputs.
+- Every skill writes its full deliverable to `./outputs/<command>-YYYY-MM-DD.md` and gives the user a concise summary in chat.
 - No corporate tone. Direct, specific, evidence-based language.
+- `yc-review` and `ceo-review` contain gstack framework content between `<!-- GSTACK-FRAMEWORK-START -->` / `<!-- GSTACK-FRAMEWORK-END -->` markers. The nightly sync overwrites that block — edit only outside the markers.
 
-### SKILL.md is the Orchestration Brain
+### using-product-kit is the Orchestration Brain
 
-The SKILL.md file in `skills/using-product-kit/` controls how the main Claude agent orchestrates Product Kit. It has mandatory behavioral rules at the top:
+`skills/using-product-kit/SKILL.md` controls how Claude plans multi-skill workflows. It has mandatory behavioral rules at the top:
 
-1. Never launch agents without explicit user approval of a plan.
-2. Always pass source file paths to subagents (not summaries).
-3. Read uploaded files before proposing a plan.
-4. Suggest agents the user didn't ask for.
+1. Never start a multi-step workflow without explicit user approval of a plan.
+2. Read uploaded files before proposing a plan.
+3. Work from the original files, not summaries.
+4. Suggest skills the user didn't ask for.
 
-**If orchestration behavior is wrong, fix SKILL.md first.**
+**If orchestration behavior is wrong, fix `using-product-kit/SKILL.md` first.**
 
 ---
 
@@ -332,78 +268,25 @@ The SKILL.md file in `skills/using-product-kit/` controls how the main Claude ag
 
 | Content | Canonical Location |
 |---------|-------------------|
-| Agent catalog & descriptions | `README.md` (public-facing) and `SKILL.md` (orchestration) |
+| Skill catalog & descriptions | `README.md` (public-facing) and `skills/using-product-kit/SKILL.md` (orchestration) |
 | Credits & attributions | `README.md` only |
 | Version numbers | See Version Locations table above |
 | Release history | `CHANGELOG.md` (single source — do NOT duplicate in CLAUDE.md) |
 | License | `LICENSE` file + `README.md` License section |
 | Plugin metadata | `plugin.json` |
-| Cowork CLI routing logic | `SKILL.md` (Launching Agents section) |
-| Heartbeat protocol | `docs/heartbeat-protocol.md` |
 | Marketplace metadata | `marketplace.json` |
 
-**Do NOT create duplicate README files in subdirectories.** One README at the root. One SKILL.md for orchestration. That's it.
+**Do NOT create duplicate README files in subdirectories.** One README at the root. One SKILL.md per skill, plus `using-product-kit` for orchestration. That's it.
 
 ---
 
 ## Known Issues & Workarounds
 
 - **DC `read_file` returns metadata for .md files** — use `cat` via `start_process` as a workaround when Desktop Commander is in play.
-- **Cowork subagents start with blank context** — the SKILL.md Launching Agents section exists specifically to address this. Always pass file paths.
 - **NEVER rename the marketplace `name` field.** Cowork uses it as a lookup key (e.g., `product-kit@plugin-marketplace`). Renaming breaks the link.
 - **Cowork plugins are session-immutable.** Plugins are cloned at session start and read-only during the session. Version bumps only take effect in new sessions.
 - **Plugin caching is aggressive.** If a new version isn't picked up, use "Check for updates" on the marketplace `...` menu in Cowork, then restart.
 - **Cowork uses server-managed plugin system.** Marketplaces are registered server-side via the `create-account-marketplace` API. Local-only injection (writing files to `cowork_plugins/` or `remote_cowork_plugins/`) is not sufficient for full functionality (update button, sync).
 - **The "Update" button is grayed out when current.** It only activates when the server detects a newer commit on the GitHub repo than the synced commit shown in the marketplace `...` menu.
 - **Legacy `cowork_plugins/` directory** may still exist from older sessions but is superseded by `remote_cowork_plugins/`. New sessions only use the remote system.
-- **Cowork forces subagents to Haiku** via `CLAUDE_CODE_SUBAGENT_MODEL=claude-haiku-4-5-20251001`. The Agent tool is unusable for complex analysis. Workaround: launch via `claude` CLI with `--model sonnet`. See "Cowork CLI Agent Routing" section above.
-- **`>` redirect kills CLI agents in sandbox** — non-interactive shell causes SIGHUP. Always use `| tee` for background CLI agent output. See launch command template above.
-- **`--bare` flag breaks auth in Cowork** — skips keychain/OAuth, requires `ANTHROPIC_API_KEY` env var which isn't set. Don't use it.
-- **`--output-format json` buffers entirely** — result file stays 0 bytes until process completes. Use heartbeat files for progress monitoring.
-
----
-
-## Debugging Subagent Sessions
-
-Cowork stores subagent session data on the Mac filesystem. Use these paths to inspect which model a subagent ran on, read its full conversation, or debug failures.
-
-### Where Subagent JSONLs Live
-
-```
-~/Library/Application Support/Claude/local-agent-mode-sessions/
-  {sessionId}/{conversationId}/
-    local_{conversationLocalId}/
-      .claude/projects/-sessions-{session-slug}/{sessionFileId}/
-        subagents/
-          agent-{agentId}.jsonl        ← full conversation transcript
-          agent-{agentId}.meta.json    ← agent type + description
-          agent-acompact-{id}.jsonl    ← compacted parent context (if conversation was long)
-```
-
-### How to Find the Right Directory
-
-1. The `{sessionId}` and `{conversationId}` are the same UUIDs as the Cowork session (visible in the cache path or the Desktop Commander).
-2. The `local_{conversationLocalId}` directories correspond to individual Cowork conversations. Sort by modification time to find the most recent.
-3. Inside each `local_*` dir, the `.claude/projects/` path contains a slug-named directory matching the Cowork session slug (e.g., `-sessions-intelligent-dazzling-pascal`).
-4. The `subagents/` folder contains one `.jsonl` + one `.meta.json` per subagent launched via the Agent tool.
-
-### What's in the Files
-
-- **`.meta.json`**: Small JSON with `agentType` (e.g., `"Explore"`, `"general-purpose"`) and `description`.
-- **`.jsonl`**: Full conversation log. Each line is a JSON object. To check the model, grep for `"model"`:
-  ```bash
-  grep -o '"model":"[^"]*"' agent-*.jsonl | head -1
-  ```
-- **`acompact-*.jsonl`**: Parent session compaction data (runs on the parent model, e.g., Opus). Not a subagent.
-
-### Quick Model Check Across All Subagents
-
-```bash
-cd "~/Library/Application Support/Claude/local-agent-mode-sessions/{sessionId}/{conversationId}/local_{id}/.claude/projects/-sessions-{slug}/{fileId}/subagents/"
-for f in agent-a*.jsonl; do
-  echo -n "$f: "; grep -o '"model":"[^"]*"' "$f" | head -1
-done
-```
-
-This confirms the Haiku subagent lock: every Agent-tool-launched subagent shows `claude-haiku-4-5-20251001`, while the parent session runs on the configured model (Opus/Sonnet).
-
+- **Cowork has forced Agent-tool subagents to Haiku** via `CLAUDE_CODE_SUBAGENT_MODEL`. Skills run in the main conversation, so they are unaffected. Avoid designs that move heavy analysis into subagents.

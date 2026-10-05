@@ -63,7 +63,7 @@ jobs:
           NEW="$MAJOR.$MINOR.$((PATCH + 1))"
           echo "Bumping $CURRENT -> $NEW"
           jq --arg v "$NEW" '.version = $v' plugins/product-kit/.claude-plugin/plugin.json > /tmp/plugin.json && mv /tmp/plugin.json plugins/product-kit/.claude-plugin/plugin.json
-          jq --arg v "$NEW" '.metadata.version = $v | .plugins[0].version = $v' .claude-plugin/marketplace.json > /tmp/marketplace.json && mv /tmp/marketplace.json .claude-plugin/marketplace.json
+          jq --arg v "$NEW" '.version = $v | .plugins[0].version = $v' .claude-plugin/marketplace.json > /tmp/marketplace.json && mv /tmp/marketplace.json .claude-plugin/marketplace.json
 
           # Prepend a CHANGELOG entry
           python3 - "$NEW" <<'PY'
@@ -85,7 +85,7 @@ jobs:
           git push origin "$BRANCH"
           gh pr create \
             --title "Sync gstack frameworks $(date +%Y-%m-%d)" \
-            --body "Automated sync of upstream gstack framework changes into Product Kit agents." \
+            --body "Automated sync of upstream gstack framework changes into Product Kit skills." \
             --base main \
             --head "$BRANCH"
           # Wait for status checks (e.g. GitGuardian) then merge.
