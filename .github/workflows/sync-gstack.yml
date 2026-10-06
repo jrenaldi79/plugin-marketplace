@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -29,10 +29,17 @@ jobs:
           curl -sL "https://raw.githubusercontent.com/garrytan/gstack/main/office-hours/SKILL.md" \
             -o sync/fixtures/gstack-office-hours-raw.md
 
-      - name: Fetch raw gstack plan-ceo-review SKILL.md
+      # office-hours keeps most of its framework in on-demand section files that
+      # SKILL.md points to (~/.claude/skills/gstack/office-hours/sections/*.md).
+      # plan-ceo-review is no longer synced; see sync/scripts/run_sync.py.
+      - name: Fetch gstack office-hours section files
         run: |
-          curl -sL "https://raw.githubusercontent.com/garrytan/gstack/main/plan-ceo-review/SKILL.md" \
-            -o sync/fixtures/gstack-ceo-review-raw.md
+          DIR=sync/fixtures/gstack-office-hours-sections
+          rm -rf "$DIR" && mkdir -p "$DIR"
+          for f in $(grep -o 'gstack/office-hours/sections/[A-Za-z0-9_-]*\.md' sync/fixtures/gstack-office-hours-raw.md | sort -u); do
+            curl -sSfL "https://raw.githubusercontent.com/garrytan/gstack/main/${f#gstack/}" -o "$DIR/$(basename "$f")"
+          done
+          ls -l "$DIR"
 
       - name: Run sync
         id: sync

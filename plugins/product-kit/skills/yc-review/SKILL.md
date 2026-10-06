@@ -108,6 +108,10 @@ These examples show the difference between soft exploration and rigorous diagnos
 
 Ask these questions **ONE AT A TIME** via AskUserQuestion. Push on each one until the answer is specific, evidence-based, and uncomfortable. Comfort means the founder hasn't gone deep enough.
 
+These questions are open-ended (no fixed option set): if AskUserQuestion is unavailable, ask each one in plain prose.
+
+When a forcing question's options describe the founder's own evidence, the `Recommendation:` still takes a position: recommend the option the founder's own words already support ("zero users" supports the no-evidence-yet answer) because of what that answer means for the next step, and name the evidence that would change it. Never recommend an option only because it would be the best position to be in.
+
 **Smart routing based on product stage — you don't always need all six:**
 - Pre-product → Q1, Q2, Q3
 - Has users → Q2, Q4, Q5
@@ -201,6 +205,7 @@ The pressure is in the stacking — don't collapse it into a single ask. The spe
 ## Phase 2B: Builder Mode — Design Partner
 
 Use this mode when the user is building for fun, learning, hacking on open source, at a hackathon, or doing research.
+The section below applies to every builder-mode reply, including a direct request for ideas or unlocks that skips the generative questions.
 
 ### Operating Principles
 
@@ -209,11 +214,13 @@ Use this mode when the user is building for fun, learning, hacking on open sourc
 3. **The best side projects solve your own problem.** If you're building it for yourself, trust that instinct.
 4. **Explore before you optimize.** Try the weird idea first. Polish later.
 
+Before choosing what to pitch, name what the core capability makes possible beyond the user's current task. Imagine someone using it for a different purpose, or combining it with another activity; follow that possibility into a concrete scene you want to try. If the ideas all help the same person do the same job better, keep exploring. Then riff on what someone could do with it, and say which possibility you'd try first.
+
 **Wild exemplar:**
 
-STRUCTURED (avoid): "Consider adding a share feature. This would improve user retention by enabling virality."
+STRUCTURED (avoid): "Consider adding tags and search to the sound recorder. This would improve retention by making recordings easier to organize."
 
-WILD (aim for): "Oh — and what if you also let them share the visualization as a live URL? Or pipe it into a Slack thread? Or animate the generation so viewers see it draw itself? Each one's a 30-minute unlock. Any of them turn this from 'a tool I used' into 'a thing I showed a friend.'"
+WILD (aim for): "Oh — what if your sound recorder became an instrument? Record the kettle, a slammed door, your dog snoring, then play a beat made entirely out of your house. Or take it outside: leave a sound-only scavenger hunt for a friend and see if they can find the squeaky gate. I'd try the kitchen beat tonight. You already own the drum kit."
 
 Both are outcome-framed. Only one has the 'whoa.' Builder mode's job is to surface the most exciting version of the idea, not the most strategically optimized one. Lead with the fun; let the user edit it down.
 
@@ -227,6 +234,8 @@ Both are outcome-framed. Only one has the 'whoa.' Builder mode's job is to surfa
 ### Questions (generative, not interrogative)
 
 Ask these **ONE AT A TIME** via AskUserQuestion. The goal is to brainstorm and sharpen the idea, not interrogate.
+
+These questions are open-ended (no fixed option set): if AskUserQuestion is unavailable, ask each one in plain prose.
 
 - **What's the coolest version of this?** What would make it genuinely delightful?
 - **Who would you show this to?** What would make them say "whoa"?
@@ -256,17 +265,19 @@ When searching, use **generalized category terms** — never the user's specific
 
 If WebSearch is unavailable, skip this phase and note: "Search unavailable — proceeding with in-distribution knowledge only."
 
-**Startup mode:** WebSearch for:
+Search with the WebSearch tool:
+
+**Startup mode:** search for:
 - "[problem space] startup approach {current year}"
 - "[problem space] common mistakes"
 - "why [incumbent solution] fails" OR "why [incumbent solution] works"
 
-**Builder mode:** WebSearch for:
+**Builder mode:** search for:
 - "[thing being built] existing solutions"
 - "[thing being built] open source alternatives"
 - "best [thing category] {current year}"
 
-Read the top 2-3 results. Run the three-layer synthesis:
+Read the top 2-3 sources it cites. Run the three-layer synthesis:
 - **[Layer 1]** What does everyone already know about this space?
 - **[Layer 2]** What are the search results and current discourse saying?
 - **[Layer 3]** Given what WE learned in Phase 2A/2B — is there a reason the conventional approach is wrong?
@@ -301,9 +312,9 @@ Use AskUserQuestion to confirm. If the user disagrees with a premise, revise und
 
 ---
 
-## Phase 4: Alternatives Generation (MANDATORY)
+## Phase 4: Alternatives Generation
 
-Produce 2-3 distinct implementation approaches. This is NOT optional.
+Produce 2-3 distinct implementation approaches.
 
 For each approach:
 ```
@@ -328,9 +339,11 @@ Rules:
 - One must be the **"ideal architecture"** (best long-term trajectory, most elegant).
 - One can be **creative/lateral** (unexpected approach, different framing of the problem).
 
-**RECOMMENDATION:** Choose [X] because [one-line reason].
+**RECOMMENDATION:** Choose [X] because [one-line reason mapped to the founder's stated goal].
 
-Present via AskUserQuestion. Do NOT proceed without user approval of the approach.
+Emit ONE AskUserQuestion that lists every alternative (A/B and optionally C) as numbered options. The AskUserQuestion call is a tool_use, not prose — write the question text and call the tool.
+
+**STOP.** Do NOT proceed to Phase 4.5 (Founder Signal Synthesis), Phase 5 (Design Doc), Phase 6 (Closing), or any design-doc generation until the user responds. A "clearly winning approach" is still an approach decision and still needs explicit user approval before it lands in the design doc. Writing the recommendation in chat prose and continuing forward is the failure mode this gate exists to prevent.
 
 ---
 
@@ -351,7 +364,14 @@ Track which of these signals appeared during the session:
 
 Write the design document to `./outputs/` (see Deliverable below).
 
-After writing the design doc, tell the user:
+**Decision-record concision.** The doc is a decision record, not a
+transcript: one bullet per decision with its why; an approach the user ruled
+out DURING the session gets one line (name + rejection reason), never a
+resurrected full section that re-argues the case; omit template sections that
+are empty or that restate what's already settled. No page cap — extra length
+must come from genuinely open questions, not template completeness.
+
+After writing, tell the user:
 **"Design doc saved to: {full path}. /ceo-review and /prd will find it in ./outputs/."**
 
 ### Startup mode design doc template:
@@ -466,69 +486,10 @@ Supersedes: {prior filename — omit this line if first design on this branch}
 
 ---
 
-## Spec Review Loop
-
-Before presenting the document to the user for approval, run an adversarial review.
-
-**Step 1: Dispatch reviewer subagent**
-
-Use the Agent tool to dispatch an independent reviewer. The reviewer has fresh context
-and cannot see the brainstorming conversation — only the document. This ensures genuine
-adversarial independence.
-
-Prompt the subagent with:
-- The file path of the document just written
-- "Read this document and review it on 5 dimensions. For each dimension, note PASS or
-  list specific issues with suggested fixes. At the end, output a quality score (1-10)
-  across all dimensions."
-
-**Dimensions:**
-1. **Completeness** — Are all requirements addressed? Missing edge cases?
-2. **Consistency** — Do parts of the document agree with each other? Contradictions?
-3. **Clarity** — Could an engineer implement this without asking questions? Ambiguous language?
-4. **Scope** — Does the document creep beyond the original problem? YAGNI violations?
-5. **Feasibility** — Can this actually be built with the stated approach? Hidden complexity?
-
-The subagent should return:
-- A quality score (1-10)
-- PASS if no issues, or a numbered list of issues with dimension, description, and fix
-
-**Step 2: Fix and re-dispatch**
-
-If the reviewer returns issues:
-1. Fix each issue in the document on disk (use Edit tool)
-2. Re-dispatch the reviewer subagent with the updated document
-3. Maximum 3 iterations total
-
-**Convergence guard:** If the reviewer returns the same issues on consecutive iterations
-(the fix didn't resolve them or the reviewer disagrees with the fix), stop the loop
-and persist those issues as "Reviewer Concerns" in the document rather than looping
-further.
-
-If the subagent fails, times out, or is unavailable — skip the review loop entirely.
-Tell the user: "Spec review unavailable — presenting unreviewed doc." The document is
-already written to disk; the review is a quality bonus, not a gate.
-
-**Step 3: Report and persist metrics**
-
-After the loop completes (PASS, max iterations, or convergence guard):
-
-1. Tell the user the result — summary by default:
-   "Your doc survived N rounds of adversarial review. M issues caught and fixed.
-   Quality score: X/10."
-   If they ask "what did the reviewer find?", show the full reviewer output.
-
-2. If issues remain after max iterations or convergence, add a "## Reviewer Concerns"
-   section to the document listing each unresolved issue. Downstream skills will see this.
-
----
-
-Present the reviewed design doc to the user via AskUserQuestion:
+Present the design doc to the user via AskUserQuestion:
 - A) Approve — mark Status: APPROVED and proceed to handoff
 - B) Revise — specify which sections need changes (loop back to revise those sections)
 - C) Start over — return to Phase 2
-
----
 
 ## Phase 6: Handoff — The Relationship Closing
 
@@ -621,7 +582,7 @@ If E: continue.
 ## Important Rules
 
 - **Never start implementation.** This skill produces design docs, not code. Not even scaffolding.
-- **Questions ONE AT A TIME.** Never batch multiple questions into one AskUserQuestion.
+- **Questions ONE AT A TIME.** Never batch multiple questions into one AskUserQuestion. Without AskUserQuestion, ask in plain prose.
 - **The assignment is mandatory.** Every session ends with a concrete real-world action — something the user should do next, not just "go build it."
 - **If user provides a fully formed plan:** skip Phase 2 (questioning) but still run Phase 3 (Premise Challenge) and Phase 4 (Alternatives). Even "simple" plans benefit from premise checking and forced alternatives.
 - **Completion status:**

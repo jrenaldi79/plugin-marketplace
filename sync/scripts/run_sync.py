@@ -24,15 +24,15 @@ SKILLS = [
     {
         "name": "office-hours",
         "raw_file": SYNC_DIR / "fixtures" / "gstack-office-hours-raw.md",
+        "sections_dir": SYNC_DIR / "fixtures" / "gstack-office-hours-sections",
         "snapshot": SYNC_DIR / "gstack-snapshot" / "office-hours.md",
         "agent": SKILLS_DIR / "yc-review" / "SKILL.md",
     },
-    {
-        "name": "plan-ceo-review",
-        "raw_file": SYNC_DIR / "fixtures" / "gstack-ceo-review-raw.md",
-        "snapshot": SYNC_DIR / "gstack-snapshot" / "plan-ceo-review.md",
-        "agent": SKILLS_DIR / "ceo-review" / "SKILL.md",
-    },
+    # plan-ceo-review is no longer synced. Since gstack's 2026 restructure its
+    # framework is built around gstack's own review workflow (decision ledger,
+    # storage policy, plan-file gates, /autoplan task files), which cannot be
+    # stripped without leaving broken instructions. skills/ceo-review keeps the
+    # last clean extraction (sync/gstack-snapshot/plan-ceo-review.md).
 ]
 
 
@@ -52,9 +52,13 @@ def run_sync() -> int:
 
         raw_content = raw_file.read_text()
 
+        sections = {
+            p.name: p.read_text() for p in sorted(skill["sections_dir"].glob("*.md"))
+        } if skill["sections_dir"].exists() else {}
+
         # Extract framework
         try:
-            extracted = extract_framework(raw_content)
+            extracted = extract_framework(raw_content, sections)
         except ValueError as e:
             print(f"  ERROR extracting {name}: {e}")
             return 2

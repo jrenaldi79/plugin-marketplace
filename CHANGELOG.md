@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.5.2] - 2026-10-06
+
+### Fixed
+- gstack sync works again. It had failed every night since gstack moved most of `office-hours` into on-demand section files (`sections/*.md`) that its SKILL.md tells Claude to read. The sync now downloads those files and inlines them before extraction.
+- `/yc-review` updated to the current gstack office-hours framework, with the new gstack-only features removed: Brain context and write-back, Aside web research (searches use WebSearch), the section index and self-check, the `~/.gstack` and `docs/designs` design-doc copies (the doc goes to `./outputs/`), the founder-resources opt-out stored in gstack config, and `Q<N>`/`D<N>` question numbering. The spec review loop is dropped because it now runs through a gstack helper script.
+
+### Changed
+- `/ceo-review` is no longer synced from gstack. The current `plan-ceo-review` is built around gstack's own review workflow (decision ledger, storage policy, plan-file gates, `/autoplan` task files), so `/ceo-review` keeps the last clean extraction of the earlier framework.
+- Sync workflow uses `actions/checkout@v5` and `actions/setup-python@v6` (Node 24).
+
 ## [0.5.1] - 2026-10-05
 
 ### Fixed

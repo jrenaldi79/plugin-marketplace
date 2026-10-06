@@ -7,7 +7,8 @@ import re
 import pytest
 from pathlib import Path
 
-from extract import extract_framework, _find_skill_start, _strip_bash_blocks
+from extract import extract_framework as _extract_framework
+from extract import _find_skill_start, _strip_bash_blocks
 from extract import _strip_gstack_lines, _strip_gstack_paragraphs
 from extract import _strip_gstack_sections
 from merge import merge_framework, MARKER_START, MARKER_END
@@ -15,6 +16,20 @@ from merge import merge_framework, MARKER_START, MARKER_END
 FIXTURES_DIR = Path(__file__).resolve().parent.parent / "fixtures"
 OFFICE_HOURS_RAW = FIXTURES_DIR / "gstack-office-hours-raw.md"
 CEO_REVIEW_RAW = FIXTURES_DIR / "gstack-ceo-review-raw.md"
+OFFICE_HOURS_SECTIONS = {
+    p.name: p.read_text()
+    for p in sorted((FIXTURES_DIR / "gstack-office-hours-sections").glob("*.md"))
+}
+
+
+def extract_framework(raw_content, sections=None):
+    """Extract with the office-hours section files unless others are given.
+
+    The CEO review fixture has no section pointers, so passing these is harmless.
+    """
+    return _extract_framework(
+        raw_content, OFFICE_HOURS_SECTIONS if sections is None else sections
+    )
 
 
 # ─── Extraction Tests ────────────────────────────────────────────
@@ -160,10 +175,10 @@ class TestGstackCleanup:
             "### The Six Forcing Questions",
             "## Phase 2.75: Landscape Awareness",
             "## Phase 3: Premise Challenge",
-            "## Phase 4: Alternatives Generation (MANDATORY)",
+            "## Phase 4: Alternatives Generation",
             "## Phase 4.5: Founder Signal Synthesis",
             "### Startup mode design doc template:",
-            "## Spec Review Loop",
+            "Present the design doc to the user via AskUserQuestion:",
             "### Founder Resources",
             "## Important Rules",
         ]:
@@ -185,6 +200,24 @@ class TestGstackCleanup:
             assert heading in result, heading
         # Audit content that sits under the dropped prerequisite-skill section in the raw file
         assert "When reading TODOS.md, specifically:" in result
+
+    def test_office_hours_inlines_section_files(self):
+        result = extract_framework(OFFICE_HOURS_RAW.read_text())
+        assert "sections/" not in result
+        # one heading from each section file
+        assert "#### Q1: Demand Reality" in result or "Q1: Demand Reality" in result
+        assert result.count("### Operating Principles") == 2
+        assert "### Builder mode design doc template:" in result
+
+    def test_missing_section_file_raises(self):
+        with pytest.raises(ValueError, match="Missing gstack section file"):
+            _extract_framework(OFFICE_HOURS_RAW.read_text(), {})
+
+    def test_office_hours_drops_gstack_only_features(self):
+        result = extract_framework(OFFICE_HOURS_RAW.read_text())
+        for gone in ["Aside", "Brain Context", "Section index", "Section self-check",
+                     "Repo copy (dual-write)", "Standing opt-out check", "Q<N>", "D<N>"]:
+            assert gone not in result, gone
 
     def test_skill_names_mapped_to_product_kit(self):
         result = extract_framework(CEO_REVIEW_RAW.read_text())

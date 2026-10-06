@@ -249,7 +249,7 @@ Since v0.5.0 every capability is a skill that runs in the main conversation, on 
 - Conversational skills must ask their questions and wait for answers, and push back on vague inputs.
 - Every skill writes its full deliverable to `./outputs/<command>-YYYY-MM-DD.md` and gives the user a concise summary in chat.
 - No corporate tone. Direct, specific, evidence-based language.
-- `yc-review` and `ceo-review` contain gstack framework content between `<!-- GSTACK-FRAMEWORK-START -->` / `<!-- GSTACK-FRAMEWORK-END -->` markers. The nightly sync overwrites that block — edit only outside the markers.
+- `yc-review` and `ceo-review` contain gstack framework content between `<!-- GSTACK-FRAMEWORK-START -->` / `<!-- GSTACK-FRAMEWORK-END -->` markers. Only `yc-review` is still synced (from gstack `office-hours` plus its `sections/*.md` files); `ceo-review` is frozen, see `sync/scripts/run_sync.py`. The nightly sync overwrites the `yc-review` block — edit only outside the markers.
 
 ### using-product-kit is the Orchestration Brain
 

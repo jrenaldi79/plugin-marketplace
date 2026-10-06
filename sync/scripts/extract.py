@@ -1,6 +1,7 @@
 """Extract clean framework content from raw gstack SKILL.md files.
 
-Strips YAML frontmatter, bash preamble blocks, gstack-specific tooling
+Inlines gstack's on-demand section files (sections/*.md) at the points where
+the main SKILL.md tells Claude to read them. Strips YAML frontmatter, bash preamble blocks, gstack-specific tooling
 references, telemetry, and config boilerplate, plus whole sections that only
 work with gstack's own tooling (Codex, the design and browse binaries, the
 ~/.gstack learnings store and builder profile, other gstack skills). Renames
@@ -48,7 +49,16 @@ GSTACK_PATTERNS = [
     r"LAKE_INTRO",
     r"preamble-tier",
     r"REVIEW READINESS DASHBOARD",
+    r"AUTO-GENERATED from",
 ]
+
+# gstack's pointer to an on-demand section file, a two-line blockquote:
+#   > **STOP.** Before ..., Read `~/.claude/skills/gstack/<skill>/sections/<file>.md` and execute it
+#   > in full. Do not work from memory — ...
+SECTION_POINTER = re.compile(
+    r"^> \*\*STOP\.\*\*[^\n]*Read `~/\.claude/skills/gstack/[^`]*/sections/([\w-]+\.md)`[^\n]*\n>[^\n]*\n",
+    re.M,
+)
 
 # Sections that only work with gstack's own tooling. Each entry is
 # (heading regex, end), where end says how far to drop:
@@ -68,6 +78,15 @@ GSTACK_SECTIONS = [
     (r"If TIER = ", "section"),
     (r"Next-skill recommendations", "section"),
     (r"Capture Learnings", "section"),
+    (r"Brain Context", "section"),
+    (r"Brain Calibration Write-Back", "section"),
+    (r"Brain Cache Background Refresh", "section"),
+    (r"Section index", "section"),
+    (r"Section self-check", "section"),
+    (r"Web research runs in Aside", "section"),
+    # Since 2026 the office-hours spec review runs through a gstack helper script.
+    # Keep the approval step that follows it.
+    (r"Spec Review Loop$", r"^Present the reviewed design doc"),
     # plan-ceo-review
     (r"Prerequisite Skill Offer", r"^When reading TODOS\.md"),
     # Persisting the CEO plan to ~/.gstack, plus the spec review loop that follows it
@@ -91,6 +110,14 @@ GSTACK_PARAGRAPH_PATTERNS = [
     r"resource-tracking entry",
     r"Design lineage",
     r"\$PRIOR",
+    r"PROJECT_DIR",
+    r"Repo copy \(dual-write\)",
+    r"Scan at sink first",
+    r"Standing opt-out check",
+    r"skip this entire section silently",
+    r"close with the standing choice",
+    r"never show me these again",
+    r"If the user opts out",
 ]
 
 # Single lines that are dropped. Unlike GSTACK_PATTERNS, these never cause a
@@ -137,6 +164,22 @@ GSTACK_REWRITES = [
     (r"^\d+\. (Use AskUserQuestion to offer opening the resources:)", r"\1"),
     (r"If E: proceed to next-skill recommendations\.", "If E: continue."),
     (r"^### Founder Resources \(all tiers\)", "### Founder Resources"),
+    (r"Present the reviewed design doc", "Present the design doc"),
+    (r"Design doc saved to: \{repo path if written, else ~/\.gstack path\}"
+     r"\{when both: ' \(cross-session copy in ~/\.gstack\)'\}\.", "Design doc saved to: {full path}."),
+    (r" to a search engine through your Aside browser \(or the WebSearch tool if Aside is not running\)",
+     " to a search provider"),
+    (r"If the Aside check did not print `READY`, run the same searches with the WebSearch tool "
+     r"when the host provides it; with neither, skip this phase and note:",
+     "If WebSearch is unavailable, skip this phase and note:"),
+    (r"Research through Aside \(Web research runs in Aside, above\), one read-only request per mode:",
+     "Search with the WebSearch tool:"),
+    (r"when AskUserQuestion is unavailable \(Conductor, or a failed call\), ask each in the `Q<N>` "
+     r"open-question prose form, never as a `D<N>` decision brief\.",
+     "if AskUserQuestion is unavailable, ask each one in plain prose."),
+    (r" Without AskUserQuestion, use `Q<N>` for open-ended questions and `D<N>` for discrete decisions\.",
+     " Without AskUserQuestion, ask in plain prose."),
+    (r",? using the preamble's AskUserQuestion Format section", ""),
     (r"Write the design document to the project directory\.",
      "Write the design document to `./outputs/` (see Deliverable below)."),
     (r"^## Cross-Model Perspective\n", ""),
@@ -145,8 +188,13 @@ GSTACK_REWRITES = [
 ]
 
 
-def extract_framework(raw_content: str) -> str:
-    """Main extraction function: raw gstack SKILL.md -> clean framework content."""
+def extract_framework(raw_content: str, sections: dict[str, str] | None = None) -> str:
+    """Main extraction function: raw gstack SKILL.md -> clean framework content.
+
+    sections maps section file names (e.g. "design-and-handoff.md") to their
+    raw content. Every section the SKILL.md points to must be provided.
+    """
+    raw_content = _inline_sections(raw_content, sections or {})
     lines = raw_content.split("\n")
 
     # Step 1: Find the framework start (first h1 outside code fences, past line 100)
@@ -176,6 +224,18 @@ def extract_framework(raw_content: str) -> str:
     content = _clean_whitespace(content)
 
     return content.strip() + "\n"
+
+
+def _inline_sections(content: str, sections: dict[str, str]) -> str:
+    """Replace each pointer to a sections/*.md file with that file's content."""
+    def replace(match: re.Match) -> str:
+        name = match.group(1)
+        if name not in sections:
+            raise ValueError(f"Missing gstack section file: {name}")
+        body = re.sub(r"^<!--.*-->\n", "", sections[name], flags=re.M)
+        return body.rstrip("\n") + "\n"
+
+    return SECTION_POINTER.sub(replace, content)
 
 
 def _find_skill_start(lines: list[str]) -> int | None:
