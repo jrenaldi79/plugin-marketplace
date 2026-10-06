@@ -22,8 +22,6 @@ plugin-marketplace/
 │           │   └── SKILL.md      # One skill per capability; folder name = slash command (e.g. critic → /critic)
 │           └── using-product-kit/
 │               └── SKILL.md      # Catalog skill — behavioral rules, workflow, skill catalog
-├── scripts/
-│   └── install-product-kit.py    # Cross-platform installer for Cowork (workaround for #40600)
 ├── sync/                         # gstack sync scripts and fixtures (internal tooling)
 ├── CHANGELOG.md                  # Release history (single source of truth)
 ├── README.md                     # Public-facing docs, credits, skill tables
@@ -144,17 +142,7 @@ All endpoints are under `https://claude.ai/api/organizations/{orgId}/marketplace
 
 Plugin IDs and marketplace IDs are assigned server-side and cannot be fabricated locally.
 
-### Programmatic Installation
-
-A bash script (`scripts/cowork-install.sh`) automates marketplace registration via the API.
-Requires a session cookie and org ID from Claude Desktop's DevTools.
-
-```bash
-./scripts/cowork-install.sh \
-  --session-key "sk-ant-..." \
-  --org-id "your-org-uuid" \
-  --repo "jrenaldi79/plugin-marketplace"
-```
+Installation goes through the Cowork UI (Customize > Browse Marketplace > Add Marketplace). Through v0.5.2 the repo carried `scripts/install-product-kit.py`, which wrote plugin files into the local cache to work around Claude Code issue #40600 (personal-account marketplaces wiped on restart). It was removed in v0.5.3.
 
 ---
 

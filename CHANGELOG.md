@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.5.3] - 2026-10-06
+
+### Removed
+- `scripts/install-product-kit.py`, the Cowork installer that wrote plugin files into the local cache to work around Claude Code issue #40600, and its daily update task. Cowork installs the plugin through Customize > Browse Marketplace. README install and troubleshooting sections rewritten to match.
+
 ## [0.5.2] - 2026-10-06
 
 ### Fixed
